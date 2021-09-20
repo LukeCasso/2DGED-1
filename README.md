@@ -4,8 +4,8 @@
 
 ```
 2DGED
-│   index.html
-│   README.md    
+│    index.html
+│    README.md
 │
 └─── Exercises
 │    │    index.html
