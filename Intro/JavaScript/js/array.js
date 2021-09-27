@@ -127,5 +127,3 @@ arrReturn = arr.sort();
  
 print(arr);
 print(arrReturn);
- 
-// Homework - Sort Numerically
