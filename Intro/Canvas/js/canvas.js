@@ -103,31 +103,70 @@ context.stroke();
 
 // Close the path
 context.closePath();
+
 // PI Radians = 180 Degrees
 // 2 PI Radians = 360 Degrees
 // PI / 2 Radians = 90 Degrees
 // 3 * PI / 2 Radians = 270 Degrees
 
-function drawArc(lineWidth, strokeStyle, fillStyle,
-        position, radius, startAngleInRads,
-        endAngleInRads, drawCounterClockwise) {
+// We can use Math.toRadians(x) to convert a value x from degrees to radians
+function drawArc(
+    lineWidth, 
+    strokeStyle, 
+    fillStyle, 
+    position, 
+    radius, 
+    startAngleInRads, 
+    endAngleInRads, 
+    drawCounterClockwise
+    ) {
 
-        context.beginPath();
+    context.beginPath();
 
-        context.lineWidth = lineWidth;
-        context.strokeStyle = strokeStyle;
+    context.lineWidth = lineWidth;
+    
+    context.arc(position.x, position.y, radius, startAngleInRads,
+        endAngleInRads, drawCounterClockwise);    
+
+    if (fillStyle != null) {
         context.fillStyle = fillStyle;
-        context.arc(position.x, position.y, radius, startAngleInRads,
-            endAngleInRads, drawCounterClockwise);
-
-        context.stroke();
         context.fill();
-        context.closePath();
+    }
+    
+    if (strokeStyle != null) {
+        context.strokeStyle = strokeStyle;
+        context.stroke();
+    }
+
+    context.closePath();
 }
 
-drawArc(8, "purple", "red", new Vector2(400, 200), 70, 0, Math.PI * 2, false);
+drawArc(8, "purple", null, new Vector2(400, 200), 70, 0, Math.PI * 2, false);
 
+context.clearRect(0, 0, 640, 480);
 
+context.beginPath();
+
+// Face
+context.moveTo(400, 240);
+context.arc(320, 240, 80, 0, Math.PI * 2);
+
+// Left Eye
+context.moveTo(290, 200);
+context.arc(280, 200, 10, 0, Math.PI * 2);
+
+// Right Eye
+context.moveTo(370, 200);
+context.arc(360, 200, 10, 0, Math.PI * 2);
+
+// Smile
+context.moveTo(380, 240);
+context.arc(320, 240, 60, 0, Math.PI);
+
+context.strokeStyle = "black";
+context.stroke();
+
+context.closePath();
 
 
 
