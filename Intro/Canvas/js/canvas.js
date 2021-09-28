@@ -7,9 +7,8 @@ let canvas = document.getElementById("main_canvas");
 // Access the 2D context of our canvas - this allow us to 
 // draw to our canvas in 2D
 //
-// We can think of context simply as the type of canvas that 
-// we are drawing to - in this case, we are drawing to a 2D 
-// canvas
+// We can think of context as the way in which we draw to the 
+// canvas - it is essentially our paint brush
 let context = canvas.getContext("2d");
 
 /** Draw a Line */
@@ -86,3 +85,49 @@ let r3 = r2.clone();
 
 // Draw rect to canvas
 r3.draw(context, 4, "red");
+
+// Begin our path
+context.beginPath();
+
+// Create an arc
+context.arc(240, 150, 50, 0, Math.PI);
+
+// Set up the line width
+context.lineWidth = 8;
+
+// Set the stroke style
+context.strokeStyle = "blue";
+
+// Draw the line
+context.stroke();
+
+// Close the path
+context.closePath();
+// PI Radians = 180 Degrees
+// 2 PI Radians = 360 Degrees
+// PI / 2 Radians = 90 Degrees
+// 3 * PI / 2 Radians = 270 Degrees
+
+function drawArc(lineWidth, strokeStyle, fillStyle,
+        position, radius, startAngleInRads,
+        endAngleInRads, drawCounterClockwise) {
+
+        context.beginPath();
+
+        context.lineWidth = lineWidth;
+        context.strokeStyle = strokeStyle;
+        context.fillStyle = fillStyle;
+        context.arc(position.x, position.y, radius, startAngleInRads,
+            endAngleInRads, drawCounterClockwise);
+
+        context.stroke();
+        context.fill();
+        context.closePath();
+}
+
+drawArc(8, "purple", "red", new Vector2(400, 200), 70, 0, Math.PI * 2, false);
+
+
+
+
+
