@@ -19,6 +19,8 @@ let paddleWidth;
 let paddleHeight;
 let margin;
 
+let paddleMovementSpeed;
+
 // Create a function that will load our game
 function loadGame() {
     initializeGame();
@@ -113,7 +115,7 @@ function initializePaddles() {
     );
 
     // Set the paddle movement speed
-    let paddleMovementSpeed = 2;
+    paddleMovementSpeed = 2;
 }
 
 // Create a function that will run every time the browser updates
