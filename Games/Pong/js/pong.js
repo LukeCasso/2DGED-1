@@ -34,7 +34,6 @@ function initializeGame() {
     initializePaddles();
 }
 
-
 function initializeBall() {
     // Create a ball at the center of our screen
     ball = new Arc(
@@ -172,7 +171,7 @@ function updatePaddles() {
         // i.e. check if moving the paddle will move it outside of the cavnas
         if (
             leftPaddle.position.y + leftPaddleMovement.y > 0 &&
-            leftPaddle.position.y + leftPaddleMovement.y + paddleWidth < canvas.clientHeight
+            leftPaddle.position.y + leftPaddleMovement.y + paddleHeight < canvas.clientHeight
         ) {
 
             // Move the paddle if it is safe to move
@@ -194,12 +193,12 @@ function updatePaddles() {
         // Check if it is safe to move the right paddle
         // i.e. check if moving the paddle will move it outside of the cavnas
         if (
-            rightPaddle.position.y + rightPaddleMovement.y > margin &&
-            rightPaddle.position.y + rightPaddleMovement.y + paddleWidth < canvas.clientHeight - margin
+            rightPaddle.position.y + rightPaddleMovement.y > 0 &&
+            rightPaddle.position.y + rightPaddleMovement.y + paddleHeight < canvas.clientHeight /* - margin */
         ) {
 
             // Move the paddle if it is safe to move
-            leftPaddle.move(leftPaddleMovement);
+            rightPaddle.move(rightPaddleMovement);
         }
     }
 }
