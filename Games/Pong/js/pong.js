@@ -55,7 +55,7 @@ function updateScore() {
 
 function resetRound() {
 
-    clearCanvas("rgb(230, 230, 230");
+    clearCanvas();
     initializeBall();
 }
 
@@ -308,7 +308,7 @@ let altColor2 = "green";
 
 // Create a function that will re-draw our updated game
 function draw() {
-    clearCanvas("rgb(230, 230, 230)");
+    clearCanvas();
 
     drawBall();
     drawPaddles();
@@ -329,11 +329,8 @@ function drawPaddles() {
     rightPaddle.draw(context, 1, "blue");
 }
 
-function clearCanvas(color) {
-    context.save();
-    context.fillStyle = color;
-    context.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    context.restore();
+function clearCanvas() {
+    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
 // Load our game when the webpage is loaded
@@ -364,14 +361,3 @@ window.addEventListener("keyup", function (event) {
     // from our keysDown object
     delete keysDown[event.key];
 });
-
-// Code referenced: https://www.toolbox.com/tech/devops/question/random-number-generator-needs-to-exclude-two-values-121014/ 
-function getRandomInRangeExcluding(min, max, excl) {
-    let value = excl;
-
-    while (value == excl) {
-        value = Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
-    return value;
-}
