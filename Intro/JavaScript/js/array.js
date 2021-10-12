@@ -201,7 +201,6 @@ print("\n\n-- Reduce Array --\n");
 // time
  
 // For example, imagine that we had an array with 6 numbers in it.
-//
 // Using reduce(), we can create a function that adds up each element
 // in the array to determine its total value
  

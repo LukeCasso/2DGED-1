@@ -7,7 +7,16 @@ class Arc {
         this.endAngleInRads = endAngleInRads;
     }
 
-    draw(context, lineWidth, strokeStyle, fillStyle, drawCounterClockwise) {
+    /**
+     * Draw this arc to the screen
+     * 
+     * @param {CanvasRenderingContext2D} context 
+     * @param {Number} lineWidth 
+     * @param {String} strokeStyle 
+     * @param {String} fillStyle 
+     * @param {Boolean} drawCounterClockwise 
+     */
+    draw(context, lineWidth, strokeStyle, fillStyle, drawCounterClockwise = true) {
         context.beginPath();
 
         context.arc(

@@ -1,11 +1,11 @@
 class Constants {
 
-    static BALL_SPEED = 5;
-    static BALL_RADIUS = 10;
+    static BALL_SPEED = 1;
+    static BALL_RADIUS = 100;
     static BALL_LINE_WIDTH = 2;
 
     static PADDLE_SPEED = 4;
-    static PADDLE_WIDTH = 10;
+    static PADDLE_WIDTH = 50;
     static PADDLE_HEIGHT = 80;
     static PADDLE_LINE_WIDTH = 2;
 

@@ -30,11 +30,12 @@
     }
 
     /**
-     * Draw this rect to the canvas
+     * Draw this rect to the screen
      * 
      * @param {CanvasRenderingContext2D} context 
      * @param {Number} lineWidth 
      * @param {String} strokeStyle 
+     * @param {String} fillStyle 
      */
     draw(context, lineWidth, strokeStyle = null, fillStyle = null) {
 

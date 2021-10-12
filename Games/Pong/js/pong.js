@@ -1,10 +1,10 @@
 // Create a handle to our canvas
-let canvas = document.getElementById("main_canvas");
+const canvas = document.getElementById("main_canvas");
 
 // Get a handle to our canvas 2D context
-let context = canvas.getContext("2d");
+const context = canvas.getContext("2d");
 
-let scoreBoard = document.getElementById("score_board");
+const scoreBoard = document.getElementById("score_board");
 
 // Create some variables that will represent the various elements
 // of our game
@@ -63,14 +63,14 @@ function initializeBall() {
     // Create a ball at the center of our screen
     ball = new Arc(
         new Vector2(canvas.clientWidth / 2, canvas.clientHeight / 2),
-        10,
+        Constants.BALL_RADIUS,
         0,
         Math.PI * 2
     );
 
     // Generate a random x and a random y value
-    let randomX = GDUtilities.getRandomInRangeExcluding(-10, 10, 0);
-    let randomY = GDUtilities.getRandomInRangeExcluding(-0.5, 0.5, 0);
+    let randomX = GDUtilities.getRandomInRangeExcluding(Constants.MIN_X_RANGE, Constants.MAX_X_RANGE, 0);
+    let randomY = GDUtilities.getRandomInRangeExcluding(Constants.MAX_Y_RANGE, Constants.MAX_Y_RANGE, 0);
 
     // Use our random x and random y values to create a Vector2 that will
     // determine what direction our ball moves in at the start of our game
@@ -81,14 +81,14 @@ function initializeBall() {
 
     // Create a speed for the ball to move
     // This will be used later to speed our movement up
-    ballSpeed = 3;
+    ballSpeed = Constants.BALL_SPEED;
 }
 
 function initializePaddles() {
 
-    paddleWidth = 10;
-    paddleHeight = 80;
-    margin = 10;
+    paddleWidth = Constants.PADDLE_WIDTH;
+    paddleHeight = Constants.PADDLE_HEIGHT;
+    margin = Constants.CANVAS_MARGIN;
 
     leftPaddle = new Rect(
         paddleWidth,
@@ -154,8 +154,11 @@ function animate() {
     window.requestAnimationFrame(animate);
 }
 
+let bPaused = false;
+
 // Create a function that will update our game
 function update() {
+
     checkCollisions();
     checkBallToPaddleCollisions();
 
@@ -172,7 +175,7 @@ function checkCollisions() {
         updateScore();
         resetRound();
     }
-    
+
     // Check if the ball is leaving the left hand side of our canvas
     else if (ball.position.x - ball.radius <= 0) {
 
@@ -240,7 +243,7 @@ function updateBall() {
 function updatePaddles() {
 
     // Loop through the keysDown object
-    
+
     // The keysDown object contains a list of all the keys which are
     // currently held-down by the user
     for (const key in keysDown) {
@@ -317,7 +320,7 @@ function draw() {
 function drawBall() {
 
     // Draw ball
-    ball.draw(context, 1, ballColor, ballColor, false);
+    ball.draw(context, 1, ballColor, ballColor);
 }
 
 function drawPaddles() {
