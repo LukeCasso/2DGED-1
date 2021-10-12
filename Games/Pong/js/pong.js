@@ -4,6 +4,8 @@ let canvas = document.getElementById("main_canvas");
 // Get a handle to our canvas 2D context
 let context = canvas.getContext("2d");
 
+let scoreBoard = document.getElementById("score_board");
+
 // Create some variables that will represent the various elements
 // of our game
 
@@ -32,6 +34,29 @@ function initializeGame() {
 
     initializeBall();
     initializePaddles();
+    initializeScore();
+}
+
+let player1Score;
+let player2Score;
+
+function initializeScore() {
+
+    player1Score = 0;
+    player2Score = 0;
+
+    updateScore();
+}
+
+function updateScore() {
+
+    scoreBoard.innerHTML = player1Score + " - " + player2Score;
+}
+
+function resetRound() {
+
+    clearCanvas("rgb(230, 230, 230");
+    initializeBall();
 }
 
 function initializeBall() {
@@ -44,8 +69,8 @@ function initializeBall() {
     );
 
     // Generate a random x and a random y value
-    let randomX = getRandomInRangeExcluding(-10, 10, 0);
-    let randomY = getRandomInRangeExcluding(-0.5, 0.5, 0);
+    let randomX = GDUtilities.getRandomInRangeExcluding(-10, 10, 0);
+    let randomY = GDUtilities.getRandomInRangeExcluding(-0.5, 0.5, 0);
 
     // Use our random x and random y values to create a Vector2 that will
     // determine what direction our ball moves in at the start of our game
@@ -132,9 +157,79 @@ function animate() {
 // Create a function that will update our game
 function update() {
     checkCollisions();
+    checkBallToPaddleCollisions();
 
     updateBall();
     updatePaddles();
+}
+
+function checkCollisions() {
+
+    // Check if the ball is leaving the right hand side of our canvas
+    if (ball.position.x + ball.radius >= canvas.clientWidth) {
+
+        player1Score++;
+        updateScore();
+        resetRound();
+    }
+    
+    // Check if the ball is leaving the left hand side of our canvas
+    else if (ball.position.x - ball.radius <= 0) {
+
+        player2Score++;
+        updateScore();
+        resetRound();
+    }
+
+    // Check if the ball is leaving the bottom of our canvas
+    if (ball.position.y + ball.radius >= canvas.clientHeight) {
+
+        ballMovementVector.y *= -1;
+
+        // Change the colour of the ball if it touches the bottom of 
+        // our canvas
+        ballColor = altColor1;
+    }
+
+    // Check if the ball is leaving the top of our canvas
+    else if (ball.position.y - ball.radius <= 0) {
+
+        ballMovementVector.y *= -1;
+
+        // Change the colour of the ball if it touches the top of our
+        // canvas
+        ballColor = altColor2;
+    }
+}
+
+function checkBallToPaddleCollisions() {
+
+    let projectedBallPosition = new Vector2(
+        ball.position.x + ballMovementVector.x,
+        ball.position.y + ballMovementVector.y
+    );
+
+    // Collision Detection (Left Paddle)
+    if (
+        projectedBallPosition.y >= leftPaddle.position.y &&
+        projectedBallPosition.y <= leftPaddle.position.y + paddleHeight
+    ) {
+        if (projectedBallPosition.x - ball.radius <= leftPaddle.position.x + paddleWidth) {
+
+            // Collision Response
+            ballMovementVector.x *= -1;
+        }
+    }
+
+    if (
+        projectedBallPosition.y >= rightPaddle.position.y &&
+        projectedBallPosition.y <= rightPaddle.position.y + paddleHeight
+    ) {
+        if (projectedBallPosition.x + ball.radius >= rightPaddle.position.x) {
+
+            ballMovementVector.x *= -1;
+        }
+    }
 }
 
 function updateBall() {
@@ -203,40 +298,9 @@ function updatePaddles() {
     }
 }
 
-function checkCollisions() {
 
-    // Check if the ball is leaving the right hand side of our canvas
-    if (ball.position.x + ball.radius >= canvas.clientWidth) {
 
-        ballMovementVector.x *= -1;
-    }
 
-    // Check if the ball is leaving the left hand side of our canvas
-    else if (ball.position.x - ball.radius <= 0) {
-
-        ballMovementVector.x *= -1;
-    }
-
-    // Check if the ball is leaving the bottom of our canvas
-    if (ball.position.y + ball.radius >= canvas.clientHeight) {
-
-        ballMovementVector.y *= -1;
-
-        // Change the colour of the ball if it touches the bottom of 
-        // our canvas
-        ballColor = altColor1;
-    }
-
-    // Check if the ball is leaving the top of our canvas
-    else if (ball.position.y - ball.radius <= 0) {
-
-        ballMovementVector.y *= -1;
-
-        // Change the colour of the ball if it touches the top of our
-        // canvas
-        ballColor = altColor2;
-    }
-}
 
 let ballColor = "black";
 let altColor1 = "red";
@@ -244,10 +308,10 @@ let altColor2 = "green";
 
 // Create a function that will re-draw our updated game
 function draw() {
-    clearCanvas("rgb(230, 230, 230)");
-
     drawBall();
     drawPaddles();
+
+    clearCanvas("rgb(230, 230, 230)");
 }
 
 function drawBall() {

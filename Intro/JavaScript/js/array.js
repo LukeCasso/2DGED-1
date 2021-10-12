@@ -103,7 +103,7 @@ print(arrReturn);
  
 // Remove 1 Element at Index
 print("\n\n-- Remove Middle Two Elements --\n");
-
+ 
 //                   Find Mid Point        Remove Two Elements
 //                                |        |
 //                                v        v
@@ -127,3 +127,92 @@ arrReturn = arr.sort();
  
 print(arr);
 print(arrReturn);
+ 
+// Filter Array
+print("\n\n-- Filter Array --\n");
+ 
+// Filtering allows us to create a copy of an array which
+// only contains elements that pass a certain test
+//
+// This certain test is known as a filter function
+//
+// In this case, we will create a function that returns
+// 'true' if element is greater than 5, or 'false' otherwise
+function filterFunction (element) {
+    return element > 5;
+}
+ 
+// Like with variables, functions can be passed as a parameter
+// In this case, we pass our filterFunction to filter()
+let filteredArr = arr.filter(filterFunction);
+ 
+// filter() works by stepping through each element of the array
+// As it steps through our array, it applies our filter function to
+// each element
+//
+// If the element passes our test (i.e., if our filterFunction
+// returns true), then that element will be copied over to our new
+// array. Otherwise, it will be ignored
+ 
+print(arr);
+print(filteredArr);
+ 
+// Note, that in our previous example, we wrote the filter function
+// seperately
+//
+// We also have the option of writing the function direclty into
+// filter() - the same result will be produced
+//
+// Also note that the original arr did not change - this is because
+// filter is a non-destructive operation (i.e. it does not change
+// the original data)
+filteredArr = arr.filter(function (element) {
+    return element > 5;
+});
+ 
+print(arr);
+print(filteredArr);
+ 
+// Map Array Values
+print("\n\n-- Map Array --\n");
+ 
+// Mapping allows us to modify each element in an array using a
+// function that we provide
+//
+// In this case, we multiply each element in the array by two
+ 
+// Note that map is also a non-destructive operation, meaning that
+// it will not change the original contents of arr
+let mappedArr = arr.map(function (element) {
+    return element * 2;
+});
+ 
+print(arr);
+print(mappedArr);
+ 
+// Reduce Array
+print("\n\n-- Reduce Array --\n");
+ 
+// The reduce function allows us to step through an array, performing
+// some action at each step
+//
+// The output of each step feeds directly into the input of the next
+// step, allowing us to perform operations that chain together over
+// time
+ 
+// For example, imagine that we had an array with 6 numbers in it.
+//
+// Using reduce(), we can create a function that adds up each element
+// in the array to determine its total value
+ 
+// Below, I have written a small function which takes two values and
+// adds them together
+function sumFunction(a, b) {
+    return a + b;
+}
+ 
+// I then pass that function to reduce (just like I did with filter())
+let reducedArr = arr.reduce(sumFunction);
+ 
+print(arr);
+print(reducedArr);

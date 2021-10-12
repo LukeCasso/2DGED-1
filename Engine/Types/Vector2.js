@@ -16,11 +16,9 @@ class Vector2 {
     }
     
     set x(value) {
-        // this._x = (value > 0) ? value : 0;
         this._x = value;
     }
     set y(value) {
-        // this._y = (value > 0) ? value : 0;
         this._y = value;
     }
 
