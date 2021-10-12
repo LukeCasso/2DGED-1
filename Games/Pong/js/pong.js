@@ -147,7 +147,7 @@ function animate() {
     // Update game state
     update();
 
-    // Re-draw update game state
+    // Re-draw updated game state
     draw();
 
     // Loop
@@ -308,10 +308,10 @@ let altColor2 = "green";
 
 // Create a function that will re-draw our updated game
 function draw() {
+    clearCanvas("rgb(230, 230, 230)");
+
     drawBall();
     drawPaddles();
-
-    clearCanvas("rgb(230, 230, 230)");
 }
 
 function drawBall() {
