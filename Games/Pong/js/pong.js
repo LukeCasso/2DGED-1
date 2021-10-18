@@ -4,363 +4,367 @@ const canvas = document.getElementById("main_canvas");
 // Get a handle to our canvas 2D context
 const context = canvas.getContext("2d");
 
+// Get a handle to our scoreboard
 const scoreBoard = document.getElementById("score_board");
 
 // Create some variables that will represent the various elements
 // of our game
-
-// Ball variables
 let ball;
 let ballMovementVector;
 let ballSpeed;
+let ballLineWidth;
 
-// Paddle variables
 let leftPaddle;
 let rightPaddle;
+let paddleMoveSpeed;
+let paddleLineWidth;
+
 let paddleWidth;
 let paddleHeight;
 let margin;
 
-let paddleMovementSpeed;
+let ballColor;
+let altColor1;
+let altColor2;
+let altColor3;
 
-// Create a function that will load our game
-function loadGame() {
-    initializeGame();
-    window.requestAnimationFrame(animate);
-}
-
-// Set up game values
-function initializeGame() {
-
-    initializeBall();
-    initializePaddles();
-    initializeScore();
-}
+let leftPaddleStroke;
+let rightPaddleStroke;
+let paddleFill;
 
 let player1Score;
 let player2Score;
 
-function initializeScore() {
+// Create a function that will load our game
+function loadGame() {
 
-    player1Score = 0;
-    player2Score = 0;
+  // Initialize game
+  initializeGame();
 
-    updateScore();
+  // Start game loop
+  window.requestAnimationFrame(animate);
 }
 
-function updateScore() {
+// Create a function that will reset our game
+function resetGame() {
 
-    scoreBoard.innerHTML = player1Score + " - " + player2Score;
+  clearCanvas(Constants.CANVAS_COLOR);
+  loadGame();
 }
 
 function resetRound() {
 
-    clearCanvas();
-    initializeBall();
+  clearCanvas(Constants.CANVAS_COLOR);
+  initializeBall();
 }
 
+function initializeGame() {
+
+  initializeCanvas();
+  initializeScore();
+
+  initializeBall();
+  initializePaddles();
+}
+
+function initializeCanvas() {
+  canvas.style.backgroundColor = Constants.CANVAS_COLOR;
+  canvas.style.border = Constants.CANVAS_BORDER;
+
+  canvas.width = Constants.CANVAS_WIDTH;
+  canvas.height = Constants.CANVAS_HEIGHT;
+}
+
+function initializeScore() {
+
+  player1Score = 0;
+  player2Score = 0;
+
+  updateScore();
+}
+
+function updateScore() {
+
+  scoreBoard.innerHTML = player1Score + " - " + player2Score;
+}
+
+// Initialize our ball
 function initializeBall() {
-    // Create a ball at the center of our screen
-    ball = new Arc(
-        new Vector2(canvas.clientWidth / 2, canvas.clientHeight / 2),
-        Constants.BALL_RADIUS,
-        0,
-        Math.PI * 2
-    );
 
-    // Generate a random x and a random y value
-    let randomX = GDUtilities.getRandomInRangeExcluding(Constants.MIN_X_RANGE, Constants.MAX_X_RANGE, 0);
-    let randomY = GDUtilities.getRandomInRangeExcluding(Constants.MAX_Y_RANGE, Constants.MAX_Y_RANGE, 0);
+  // Set ball movement speed
+  ballSpeed = Constants.BALL_SPEED;
 
-    // Use our random x and random y values to create a Vector2 that will
-    // determine what direction our ball moves in at the start of our game
-    ballMovementVector = new Vector2(randomX, randomY);
+  // Set ball line width
+  ballLineWidth = Constants.BALL_LINE_WIDTH;
 
-    // (See the Vector2 class to see how we wrote the normalize function)
-    ballMovementVector.normalize();
+  // Set ball primary color
+  ballColor = Constants.BALL_COLOR_0;
 
-    // Create a speed for the ball to move
-    // This will be used later to speed our movement up
-    ballSpeed = Constants.BALL_SPEED;
+  // Set ball bounce colors
+  altColor1 = Constants.BALL_COLOR_1;
+  altColor2 = Constants.BALL_COLOR_2;
+  altColor3 = Constants.BALL_COLOR_3;
+
+  // Create a ball at the middle of the screen
+  ball = new Arc(
+    canvas.clientWidth / 2, 
+    canvas.clientHeight / 2,
+    Constants.BALL_RADIUS,
+    0,
+    Math.PI * 2
+  );
+
+  // Use our new function to generate values for our Vector
+  const randomX = GDUtilities.GetRandomInRangeExcluding(Constants.MIN_X_RANGE, Constants.MAX_X_RANGE, 0);
+  const randomY = GDUtilities.GetRandomInRangeExcluding(Constants.MIN_Y_RANGE, Constants.MAX_Y_RANGE, 0);
+
+  // Create a vector which will determine where the ball will 
+  // move at the start of the game
+  ballMovementVector = new Vector2(randomX, randomY);
+
+  // Normalise our vector
+  ballMovementVector.normalize();
 }
 
+// Initialize our two paddles
 function initializePaddles() {
 
-    paddleWidth = Constants.PADDLE_WIDTH;
-    paddleHeight = Constants.PADDLE_HEIGHT;
-    margin = Constants.CANVAS_MARGIN;
+  // Set paddle dimensions
+  paddleWidth = Constants.PADDLE_WIDTH;
+  paddleHeight = Constants.PADDLE_HEIGHT;
 
-    leftPaddle = new Rect(
-        paddleWidth,
-        paddleHeight,
-        new Vector2(
+  // Set paddle margin
+  margin = Constants.CANVAS_MARGIN;
 
-            // Place the paddle on the left hand side of our canvas
+  // Set paddle move speed
+  paddleMoveSpeed = Constants.PADDLE_SPEED;
 
-            // We use a small margin value (10px) to move the canvas in slightly
-            // from the left of the canvas
-            margin,
+  // Set paddle line width
+  paddleLineWidth = Constants.PADDLE_LINE_WIDTH;
 
-            // Place the paddle at the center of our canvas (y axis)
+  // Set paddle stroke style
+  leftPaddleStroke = Constants.LEFT_PADDLE_STROKE;
+  rightPaddleStroke = Constants.RIGHT_PADDLE_STROKE;
 
-            // Subtract half of the paddles height to move the center point of 
-            // the paddle up to the center line of the canvas
+  // Set paddle fill style
+  paddleFill = Constants.PADDLE_FILL;
 
-            // We must do this because the Rect object is drawn starting from the 
-            // top-left corner
+  // Create left paddle
+  leftPaddle = new Rect(
+    margin,
+    canvas.clientHeight / 2 - paddleHeight / 2,
+    paddleWidth,
+    paddleHeight,
+  );
 
-            // If we don't do this, the top-left corner of our Rect would be placed 
-            // along the center line of our cavnas, and as such, the rest of the
-            // Rect would be drawn below the center line
-            canvas.clientHeight / 2 - (paddleHeight / 2)
-        )
-    );
-
-    rightPaddle = new Rect(
-        paddleWidth,
-        paddleHeight,
-        new Vector2(
-            // Place the paddle on the right hand side of our canvas (canvas width
-            // on the x axis)
-
-            // We must subtract the width of the paddle to factor in how wide the 
-            // paddle is (remember, the Rect object is drawn from the top-left
-            // corner)
-
-            // If we didn't factor in the paddle's width, then the paddle would begin
-            // to be drawn from the edge of our canvas, and would ultimately be drawn
-            // outside of our canvas
-
-            // We also subtract a small margin (10px) to move the paddle in from the 
-            // right-hand side of the canvas
-            canvas.clientWidth - paddleWidth - margin,
-            canvas.clientHeight / 2 - (paddleHeight / 2)
-        )
-    );
-
-    // Set the paddle movement speed
-    paddleMovementSpeed = 2;
+  // Create right paddle
+  rightPaddle = new Rect(
+    canvas.clientWidth - paddleWidth - margin,
+    canvas.clientHeight / 2 - paddleHeight / 2,
+    paddleWidth,
+    paddleHeight
+  );
 }
 
 // Create a function that will run every time the browser updates
 function animate() {
-    // Update game state
-    update();
 
-    // Re-draw updated game state
-    draw();
+  // Update game
+  update();
 
-    // Loop
-    window.requestAnimationFrame(animate);
+  // Re-draw game
+  draw();
+
+  // Loop
+  window.requestAnimationFrame(animate);
 }
-
-let bPaused = false;
 
 // Create a function that will update our game
 function update() {
 
-    checkCollisions();
-    checkBallToPaddleCollisions();
+  updateBall();
+  updatePaddles();
 
-    updateBall();
-    updatePaddles();
-}
-
-function checkCollisions() {
-
-    // Check if the ball is leaving the right hand side of our canvas
-    if (ball.position.x + ball.radius >= canvas.clientWidth) {
-
-        player1Score++;
-        updateScore();
-        resetRound();
-    }
-
-    // Check if the ball is leaving the left hand side of our canvas
-    else if (ball.position.x - ball.radius <= 0) {
-
-        player2Score++;
-        updateScore();
-        resetRound();
-    }
-
-    // Check if the ball is leaving the bottom of our canvas
-    if (ball.position.y + ball.radius >= canvas.clientHeight) {
-
-        ballMovementVector.y *= -1;
-
-        // Change the colour of the ball if it touches the bottom of 
-        // our canvas
-        ballColor = altColor1;
-    }
-
-    // Check if the ball is leaving the top of our canvas
-    else if (ball.position.y - ball.radius <= 0) {
-
-        ballMovementVector.y *= -1;
-
-        // Change the colour of the ball if it touches the top of our
-        // canvas
-        ballColor = altColor2;
-    }
-}
-
-function checkBallToPaddleCollisions() {
-
-    let projectedBallPosition = new Vector2(
-        ball.position.x + ballMovementVector.x,
-        ball.position.y + ballMovementVector.y
-    );
-
-    // Collision Detection (Left Paddle)
-    if (
-        projectedBallPosition.y >= leftPaddle.position.y &&
-        projectedBallPosition.y <= leftPaddle.position.y + paddleHeight
-    ) {
-        if (projectedBallPosition.x - ball.radius <= leftPaddle.position.x + paddleWidth) {
-
-            // Collision Response
-            ballMovementVector.x *= -1;
-        }
-    }
-
-    if (
-        projectedBallPosition.y >= rightPaddle.position.y &&
-        projectedBallPosition.y <= rightPaddle.position.y + paddleHeight
-    ) {
-        if (projectedBallPosition.x + ball.radius >= rightPaddle.position.x) {
-
-            ballMovementVector.x *= -1;
-        }
-    }
+  checkCollisions();
+  checkBallToPaddleCollision();
 }
 
 function updateBall() {
-    ball.position.x += ballMovementVector.x * ballSpeed;
-    ball.position.y += ballMovementVector.y * ballSpeed;
+  // Move our ball across the screen with every update
+  ball.x += ballMovementVector.x * ballSpeed;
+  ball.y += ballMovementVector.y * ballSpeed;
 }
 
 function updatePaddles() {
 
-    // Loop through the keysDown object
+  // Initialize paddle movement vectors
+  let leftPaddleMovement = new Vector2(0, 0);
+  let rightPaddleMovement = new Vector2(0, 0);
 
-    // The keysDown object contains a list of all the keys which are
-    // currently held-down by the user
-    for (const key in keysDown) {
+  for (const key in keysDown) {
 
-        // Initialize paddle movement vectors
-        // Is this a good place to initialize these Vectors?
-        let leftPaddleMovement = new Vector2(0, 0);
-        let rightPaddleMovement = new Vector2(0, 0);
+    // Left paddle
+    if (key === Constants.LEFT_KEY_UP) {
 
-        // If the user is pressing the w key, create a Vector that will move
-        // the left paddle upwards
-        if (key === "w") {
-            leftPaddleMovement = new Vector2(0, -paddleMovementSpeed);
-        }
-
-        // If the user is pressing the s key, create a Vector that will move 
-        // the left paddle downwards
-        else if (key === "s") {
-            leftPaddleMovement = new Vector2(0, paddleMovementSpeed);
-        }
-
-        // Check if it is safe to move the left paddle
-        // i.e. check if moving the paddle will move it outside of the cavnas
-        if (
-            leftPaddle.position.y + leftPaddleMovement.y > 0 &&
-            leftPaddle.position.y + leftPaddleMovement.y + paddleHeight < canvas.clientHeight
-        ) {
-
-            // Move the paddle if it is safe to move
-            leftPaddle.move(leftPaddleMovement);
-        }
-
-        // If the user is pressing the ArrowUp key, create a Vector that will move 
-        // the right paddle upwards
-        if (key === "ArrowUp") {
-            rightPaddleMovement = new Vector2(0, -paddleMovementSpeed);
-        }
-
-        // If the user is pressing the ArrowDown key, create a Vector that will move
-        // the right paddle downwards
-        else if (key === "ArrowDown") {
-            rightPaddleMovement = new Vector2(0, paddleMovementSpeed);
-        }
-
-        // Check if it is safe to move the right paddle
-        // i.e. check if moving the paddle will move it outside of the cavnas
-        if (
-            rightPaddle.position.y + rightPaddleMovement.y > 0 &&
-            rightPaddle.position.y + rightPaddleMovement.y + paddleHeight < canvas.clientHeight /* - margin */
-        ) {
-
-            // Move the paddle if it is safe to move
-            rightPaddle.move(rightPaddleMovement);
-        }
+      leftPaddleMovement = new Vector2(0, -paddleMoveSpeed);
     }
+    else if (key === Constants.LEFT_KEY_DOWN) {
+
+      leftPaddleMovement = new Vector2(0, paddleMoveSpeed);
+    }
+
+    // Vertical bounds check
+    if (
+      (leftPaddle.y + leftPaddleMovement.y) > margin &&
+      (leftPaddle.y + leftPaddleMovement.y) + paddleHeight < canvas.clientHeight - margin
+    ) {
+
+      // Apply movement
+      leftPaddle.moveByDelta(leftPaddleMovement);
+    }
+
+    // Right paddle
+    if (key == Constants.RIGHT_KEY_UP) {
+
+      rightPaddleMovement = new Vector2(0, -paddleMoveSpeed);
+    }
+    else if (key == Constants.RIGHT_KEY_DOWN) {
+
+      rightPaddleMovement = new Vector2(0, paddleMoveSpeed);
+    }
+
+    // Vertical bounds check
+    if (
+      (rightPaddle.y + rightPaddleMovement.y) > margin &&
+      (rightPaddle.y + rightPaddleMovement.y + paddleHeight) < canvas.clientHeight - margin
+    ) {
+
+      // Apply movement
+      rightPaddle.moveByDelta(rightPaddleMovement);
+    }
+  }
 }
 
+function checkCollisions() {
+  // Check if the ball is leaving the x bounds
+  if (ball.x + ball.radius >= canvas.clientWidth) {
 
+    player1Score++;
 
+    updateScore();
+    resetRound();
+  }
+  else if (ball.x - ball.radius <= 0) {
 
+    player2Score++;
 
-let ballColor = "black";
-let altColor1 = "red";
-let altColor2 = "green";
+    updateScore();
+    resetRound();
+  }
+
+  // Check if leaving the y bounds
+  if (ball.y + ball.radius >= canvas.clientHeight) {
+
+    // Invert ball y movement
+    ballMovementVector.y *= -1;
+
+    // Make the ball change colour on bounce
+    ballColor = altColor3;
+  }
+  else if (ball.y - ball.radius <= 0) {
+
+    // Invert ball y movement
+    ballMovementVector.y *= -1;
+
+    // Make the ball change colour on bounce
+    ballColor = altColor3;
+  }
+}
+
+function checkBallToPaddleCollision() {
+
+  // Project balls next position
+  let projectedBallPosition = new Vector2(
+    ballMovementVector.x + ball.x,
+    ballMovementVector.y + ball.y
+  );
+
+  // Check if ball in line with the left paddle
+  if (
+    projectedBallPosition.y >= leftPaddle.y &&
+    projectedBallPosition.y <= leftPaddle.y + leftPaddle.height
+  ) {
+
+    // Check if ball colliding with the left paddle
+    if (projectedBallPosition.x - ball.radius <= leftPaddle.x + leftPaddle.width) {
+
+      ballMovementVector.x *= -1;
+
+      ballColor = altColor1;
+    }
+  }
+
+  // Check if ball in line with the right paddle
+  if (
+    projectedBallPosition.y >= rightPaddle.y &&
+    projectedBallPosition.y <= rightPaddle.y + rightPaddle.height
+  ) {
+
+    // Check if ball colliding with the left paddle
+    if (projectedBallPosition.x + ball.radius >= rightPaddle.x) {
+
+      ballMovementVector.x *= -1;
+
+      ballColor = altColor2;
+    }
+  }
+}
 
 // Create a function that will re-draw our updated game
 function draw() {
-    clearCanvas();
+  clearCanvas(Constants.CANVAS_COLOR);
 
-    drawBall();
-    drawPaddles();
-}
+  ball.draw(context, ballLineWidth, ballColor, ballColor);
 
-function drawBall() {
-
-    // Draw ball
-    ball.draw(context, 1, ballColor, ballColor);
-}
-
-function drawPaddles() {
-
-    // Draw left paddle
-    leftPaddle.draw(context, 1, "blue");
-
-    // Draw right paddle
-    rightPaddle.draw(context, 1, "blue");
+  leftPaddle.draw(context, paddleLineWidth, leftPaddleStroke, paddleFill);
+  rightPaddle.draw(context, paddleLineWidth, rightPaddleStroke, paddleFill);
 }
 
 function clearCanvas() {
-    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
-// Load our game when the webpage is loaded
+// Load our game when the webpage loads
 window.addEventListener("load", loadGame);
 
+// Create keys down object
+// This will be used to determine which keys are currently
+// held down by the user
+//
+// This will allow us to loop through each element in the object
+// to determine if we need to perform some action, based on the
+// users current input (i.e., if the user is currently holding down
+// the 'w' key, we would want to move the left paddle up)
 let keysDown = {};
 
-// Add an event listener that will be triggered when the
-// user presses (or holds) a button
-
-// In this example, we are using an anonymouse function
-// i.e. a function without a name
+// Trigger a function when a key is pressed
 window.addEventListener("keydown", function (event) {
 
-    // Add the button that the user has pressed to a 
-    // keysDown object
-    keysDown[event.key] = true;
+  keysDown[event.key] = true;
 });
 
-// Add an event listener that will be triggered when the 
-// user releases a button
-
-// In this example, we are using an anonymouse function
-// i.e. a function without a name
+// Trigger a function when a key is released
 window.addEventListener("keyup", function (event) {
 
-    // Remove the key that the user is no longer pressing
-    // from our keysDown object
-    delete keysDown[event.key];
+  delete keysDown[event.key];
 });
+
+function getRandomInRangeExcluding(min, max, excluded) {
+  let value = excluded;
+
+  while (value == excluded) {
+    value = Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  return value;
+}

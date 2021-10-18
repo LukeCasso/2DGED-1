@@ -1,21 +1,21 @@
 class Constants {
 
-    static BALL_SPEED = 1;
-    static BALL_RADIUS = 100;
+    static BALL_SPEED = 5;
+    static BALL_RADIUS = 10;
     static BALL_LINE_WIDTH = 2;
 
     static PADDLE_SPEED = 4;
-    static PADDLE_WIDTH = 50;
     static PADDLE_HEIGHT = 80;
+    static PADDLE_WIDTH = 10;
     static PADDLE_LINE_WIDTH = 2;
-
+    
     static CANVAS_WIDTH = 640;
     static CANVAS_HEIGHT = 480;
     static CANVAS_MARGIN = 10;
 
     static CANVAS_COLOR = "rgb(230, 230, 230)";
     static CANVAS_BORDER = "1px solid black";
-
+    
     static BALL_COLOR_0 = "black";
     static BALL_COLOR_1 = "blue";
     static BALL_COLOR_2 = "green";
@@ -35,5 +35,5 @@ class Constants {
     static LEFT_KEY_DOWN = "s";
 
     static RIGHT_KEY_UP = "ArrowUp";
-    static RIGHT_DOWN_UP = "ArrowDown";
+    static RIGHT_KEY_DOWN = "ArrowDown";
 }

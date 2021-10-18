@@ -1,71 +1,74 @@
 /**
- * Primitive to support drawing rectangles
+ * Represents a 2D rectangle (x, y, width, height) which is typically used for collision detection/collision response.
+ * 
+ * @author Niall McGuinness
+ * @version 1.0
+ * @class Rect
  */
  class Rect {
 
+    static get Zero() {
+        return new Rect(0, 0, 1, 1);
+    }
+
+    get x() {
+        return this._x;
+    }
+    get y() {
+        return this._y;
+    }
     get width() {
         return this._width;
     }
     get height() {
         return this._height;
     }
-    get position() {
-        return this._position;
+    get center() {
+        return new Vector2(this.x + this.width / 2, this.y + this.height / 2);
     }
 
+    set x(value) {
+        this._x = value;
+    }
+    set y(value) {
+        this._y = value;
+    }
     set width(value) {
         this._width = value > 0 ? value : 0;
     }
     set height(value) {
         this._height = value > 0 ? value : 0;
     }
-    set position(value) {
-        this._position = value;
+
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.originalX = x;
+        this.originalY = y;
+        this.originalWidth = width;
+        this.originalHeight = height;
     }
 
-    constructor(width, height, position) {
-        this._width = width;
-        this._height = height;
-        this._position = position;
+    reset() {
+        this.x = this.originalX;
+        this.y = this.originalY;
+
+        this.width = this.originalWidth;
+        this.height = this.originalHeight;
     }
 
     /**
-     * Draw this rect to the screen
+     * Move this rect by some distance on the x and y, as
+     * defined by x, y
      * 
-     * @param {CanvasRenderingContext2D} context 
-     * @param {Number} lineWidth 
-     * @param {String} strokeStyle 
-     * @param {String} fillStyle 
+     * @param {number} x
+     * @param {number} y 
      */
-    draw(context, lineWidth, strokeStyle = null, fillStyle = null) {
-
-        context.lineWidth = lineWidth;
-
-        // If a stroke style has been provided
-        // Then add a stroke to the rect
-        if (strokeStyle !== null) {
-            context.strokeStyle = strokeStyle;
-            
-            context.strokeRect(
-                this.position.x, 
-                this.position.y, 
-                this.width, 
-                this.height
-            );
-        }
-
-        // If a fill style has been provided
-        // Then add fill to the rect
-        if (fillStyle !== null) {
-            context.fillStyle = fillStyle;
-    
-            context.fillRect(
-                this.position.x,
-                this.position.y,
-                this.width,
-                this.height,
-            );
-        }
+    moveBy(x, y) {
+        this.x += x;
+        this.y += y;
     }
 
     /**
@@ -78,9 +81,21 @@
      * 
      * @param {Vector2} delta 
      */
-    move(delta) {
-        this.position.x += delta.x;
-        this.position.y += delta.y;
+    moveByDelta(delta) {
+        this.x += delta.x;
+        this.y += delta.y;
+    }
+
+    /**
+     * Move this rect to the x, y position on our cavnas
+     * that is defined by the input parameters x, y
+     * 
+     * @param {number} x
+     * @param {number} y 
+     */
+    moveTo(x, y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -89,17 +104,172 @@
      * 
      * @param {Vector2} position 
      */
-    moveTo(position) {
-        this.position.x = position.x;
-        this.position.y = position.y;
+    moveToPosition(position) {
+        this.x = position.x;
+        this.y = position.y;
     }
 
     /**
-     * Create a clone of this Rect object 
+     * Check if otherRect is contained within this Rect.
+     * Useful for checking if items (such as bullets) are currently on screen.
      * 
-     * @returns a deep-copy of this Rect object
+     * @param {Rect} otherRect 
+     * @returns true if otherRect is contained within this Rect.
      */
+    contains(otherRect) {
+        let enclosingRect = this.getEnclosingRect(otherRect);
+
+        return (
+            enclosingRect.width == Math.max(this.width, otherRect.width) &&
+            enclosingRect.height == Math.max(this.height, otherRect.height)
+        );
+    }
+
+    /**
+     * Check if otherRect is intersecting this Rect.
+     * Useful for checking collision between two Rect objects.
+     * 
+     * @param {Rect} otherRect 
+     * @returns true if otherRect is currently intersecting this Rect. 
+     */
+    intersects(otherRect) {
+        let enclosingRect = this.getEnclosingRect(otherRect);
+
+        return (
+            enclosingRect.width <= this.width + otherRect.width &&
+            enclosingRect.height <= this.height + otherRect.height
+        );
+    }
+
+    /**
+     * Returns a new rect which encloses both this Rect and otherRect.
+     * 
+     * @param {Rect} otherRect 
+     * @returns a new rect which encloses both this Rect and otherRect.
+     */
+    getEnclosingRect(otherRect) {
+        if (
+            otherRect == null ||
+            otherRect == undefined ||
+            !otherRect instanceof Rect
+        ) {
+            throw (
+                "Error: One or more objects is null, undefined, or not type " +
+                this.constructor.name
+            );
+        }
+
+        let minX = Math.min(this.x, otherRect.x);
+        let minY = Math.min(this.y, otherRect.y);
+
+        let width = Math.max(this.x + this.width, otherRect.x + otherRect.width) - minX;
+        let height = Math.max(this.y + this.height, otherRect.y + otherRect.height) - minY;
+
+        return new Rect(minX, minY, width, height);
+    }
+
+    /**
+     * Draw this rect to the canvas
+     * 
+     * @param {CanvasRenderingContext2D} context 
+     * @param {Number} lineWidth 
+     * @param {String} strokeStyle 
+     */
+    draw(context, lineWidth, strokeStyle = null, fillStyle = null) {
+
+        context.lineWidth = lineWidth;
+
+        // If a stroke style has been provided
+        // Then add a stroke to the rect
+        if (strokeStyle !== null) {
+            context.strokeStyle = strokeStyle;
+
+            context.strokeRect(
+                this.x,
+                this.y,
+                this.width,
+                this.height
+            );
+        }
+
+        // If a fill style has been provided
+        // Then add fill to the rect
+        if (fillStyle !== null) {
+            context.fillStyle = fillStyle;
+
+            context.fillRect(
+                this.x,
+                this.y,
+                this.width,
+                this.height,
+            );
+        }
+    }
+
+    equals(otherRect) {
+        return (
+            GDUtility.IsSameTypeAsTarget(this, otherRect) &&
+            this.x === otherRect.x &&
+            this.y === otherRect.y &&
+            this.width === otherRect.width &&
+            this.height === otherRect.height
+        );
+    }
+
     clone() {
-        return new Rect(this.width, this.height, this.position);
+        return new Rect(this.x, this.y, this.width, this.height);
+    }
+
+    toString() {
+        return (
+            "[" + this.x + "," + this.y + "," + this.width + "," + this.height + "]"
+        );
+    }
+
+    static Contains(rect1, rect2) {
+        if (rect1 == null || rect1 == undefined || !rect1 instanceof Rect)
+            throw (
+                "Error: One or more objects is null, undefined, or not type " +
+                rect1.constructor.name
+            );
+
+        return rect1.contains(rect2);
+    }
+
+    static Intersects(rect1, rect2) {
+        if (rect1 == null || rect1 == undefined || !rect1 instanceof Rect)
+            throw (
+                "Error: One or more objects is null, undefined, or not type " +
+                rect1.constructor.name
+            );
+
+        return rect1.intersects(rect2);
+    }
+
+    static GetEnclosingRect(rect1, rect2) {
+        if (rect1 == null || rect1 == undefined || !rect1 instanceof Rect)
+            throw (
+                "Error: One or more objects is null, undefined, or not type " +
+                rect1.constructor.name
+            );
+
+        return rect1.getEnclosingRect(rect2);
+    }
+
+    static Move(rect, vector) {
+        let clone = rect.clone();
+
+        clone.move(vector);
+
+        return clone;
+    }
+
+    static Round(rect, precision) {
+        return new Rect(
+            GDMath.ToFixed(rect.x, precision, 10),
+            GDMath.ToFixed(rect.y, precision, 10),
+            GDMath.ToFixed(rect.width, precision, 10),
+            GDMath.ToFixed(rect.height, precision, 10)
+        );
     }
 }

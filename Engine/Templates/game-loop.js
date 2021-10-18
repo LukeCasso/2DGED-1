@@ -6,6 +6,7 @@ const context = canvas.getContext("2d");
 
 /* GAME VARIABLES HERE */
 
+
 // Create a function that will load our game
 function loadGame() {
     initializeGame();

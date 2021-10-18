@@ -1,40 +1,32 @@
 class Arc {
 
-    constructor(position, radius, startAngleInRads, endAngleInRads) {
-        this.position = position;
+    constructor(x, y, radius, startAngleInRads, endAngleInRads) {
+        this.x = x;
+        this.y = y;
         this.radius = radius;
         this.startAngleInRads = startAngleInRads;
         this.endAngleInRads = endAngleInRads;
     }
 
-    /**
-     * Draw this arc to the screen
-     * 
-     * @param {CanvasRenderingContext2D} context 
-     * @param {Number} lineWidth 
-     * @param {String} strokeStyle 
-     * @param {String} fillStyle 
-     * @param {Boolean} drawCounterClockwise 
-     */
-    draw(context, lineWidth, strokeStyle, fillStyle, drawCounterClockwise = true) {
+    draw(context, lineWidth, strokeStyle, fillStyle, drawCounterClockwise) {
         context.beginPath();
 
         context.arc(
-            this.position.x,
-            this.position.y,
+            this.x,
+            this.y,
             this.radius,
             this.startAngleInRads,
             this.endAngleInRads,
             drawCounterClockwise
         );
-        
+
         context.lineWidth = lineWidth;
 
         if (fillStyle != null) {
             context.fillStyle = fillStyle;
             context.fill();
         }
-        
+
         if (strokeStyle != null) {
             context.strokeStyle = strokeStyle;
             context.stroke();
@@ -45,8 +37,7 @@ class Arc {
 
     // Create a deep copy of our arc
     clone() {
-        return new Arc(this.position, this.radius, 
-            this.startAngleInRads, this.endAngleInRads);
+        return new Arc(this.x, this.y, this.radius, this.startAngleInRads, this.endAngleInRads);
     }
 
     // Check if two arcs are equal
@@ -59,11 +50,12 @@ class Arc {
         }
 
         return (
-            this.position == other.position
+            this.x == other.x
+            && this.y == other.y
             && this.radius == other.radius
             && this.startAngleInRads == other.startAngleInRads
             && this.endAngleInRads == other.endAngleInRads
         )
     }
-    
+
 }
