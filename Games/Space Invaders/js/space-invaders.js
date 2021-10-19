@@ -30,8 +30,6 @@ function initializeGame() {
 // Create a function that will run every time the browser updates
 function animate(now) {
 
-    // gameTime.update(now);
-
     // Update game state
     update();
 
@@ -44,6 +42,21 @@ function animate(now) {
 
 // Create a function that will update our game
 function update() {
+
+    let v1 = new Vector2(0, 0);
+    let v2 = Vector2.Zero;
+
+    // let v3 = v1 + v2;
+
+    // Changes v1
+    v1.add(v2);
+
+    let v3 = Vector2.Add(v1, v2);
+
+    let r1 = Rect.Zero;
+    let r2 = Rect.Zero;
+
+    r1.contains(r2);
 
 }
 
@@ -70,7 +83,7 @@ function draw() {
 
     // Count time
     // Here, we assume that 16ms have passed since the last draw call (i.e., 60 FPS)
-    totalTime += gameTime.elapsedTimeInMs;
+    totalTime += 16;
 
     // If 300ms have passed
     if (totalTime > 300) {

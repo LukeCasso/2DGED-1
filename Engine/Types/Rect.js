@@ -23,6 +23,7 @@
     get height() {
         return this._height;
     }
+
     get center() {
         return new Vector2(this.x + this.width / 2, this.y + this.height / 2);
     }
@@ -36,6 +37,7 @@
     set width(value) {
         this._width = value > 0 ? value : 0;
     }
+
     set height(value) {
         this._height = value > 0 ? value : 0;
     }

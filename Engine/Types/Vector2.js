@@ -64,8 +64,10 @@
     }
 
     divideScalar(s) {
-        this.x /= s;
-        this.y /= s;
+        if (s !== 0) {
+            this.x /= s;
+            this.y /= s;
+        }
     }
 
     dot(otherVector) {
@@ -73,7 +75,7 @@
     }
 
     length() {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));;
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
 
     angleInRadiansBetween(otherVector) {
