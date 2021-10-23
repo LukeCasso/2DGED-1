@@ -14,12 +14,12 @@
         this.artist = artist;
     }
 
-    update(gameTime) {
+    update() {
 
     }
 
-    draw(gameTime) {
-        this.artist.draw(gameTime, this);
+    draw() {
+        this.artist.draw(this);
     }
 
     clone() {
