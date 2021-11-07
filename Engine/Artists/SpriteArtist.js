@@ -6,13 +6,11 @@
  * @class SpriteArtist
  */
 
-class SpriteArtist {
+class SpriteArtist extends Artist {
 
-    constructor(context, spritesheet, sourcePosition, sourceDimensions, alpha = 1) {
-        this.context = context;
-        this.alpha = alpha;
+    constructor(context, spriteSheet, alpha, sourcePosition, sourceDimensions) {
+        super(context, spriteSheet, alpha);
 
-        this.spritesheet = spritesheet;
         this.sourcePosition = sourcePosition;
         this.sourceDimensions = sourceDimensions;
     }
@@ -23,7 +21,7 @@ class SpriteArtist {
      * @param {Sprite} parent (unused)
      * @memberof SpriteArtist
      */
-    update(parent) {
+    update(gameTime, parent) {
 
     }
 
@@ -33,7 +31,7 @@ class SpriteArtist {
      * @param {Sprite} parent the Sprite object that this artist is attached to
      * @memberof SpriteArtist
      */
-    draw(parent) {
+    draw(gameTime, parent) {
 
         // Save whatever context settings were used before this (color, line, text styles)
         // This will allow us to restore later
@@ -55,15 +53,15 @@ class SpriteArtist {
 
         // Draw image
         this.context.drawImage(
-            this.spritesheet,
+            this.spriteSheet,
             this.sourcePosition.x,
             this.sourcePosition.y,
             this.sourceDimensions.x,
             this.sourceDimensions.y,
-            transform.translation.x,
-            transform.translation.y,
-            transform.scale.x,
-            transform.scale.y
+            transform.translation.x - transform.origin.x,
+            transform.translation.y - transform.origin.y,
+            transform.dimensions.x * transform.scale.x,
+            transform.dimensions.y * transform.scale.y
         );
 
         // Restore the state of our context before we began to draw
@@ -72,6 +70,6 @@ class SpriteArtist {
 
     // Clone allows us to quickly create deep-copies of our objects
     clone() {
-        return new SpriteArtist(this.context, this.spritesheet, this.sourcePosition, this.sourceDimensions, this.alpha);
+        return new SpriteArtist(this.context, this.spriteSheet, this.alpha, this.sourcePosition, this.sourceDimensions);
     }
 }

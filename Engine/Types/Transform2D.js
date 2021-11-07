@@ -6,10 +6,53 @@
  * @class Transform2D
  */
 
- class Transform2D {
+class Transform2D {
 
     static get Zero() {
         return new Transform2D(Vector2.Zero, 0, Vector2.Zero);
+    }
+
+    get translation() {
+        return this._translation;
+    }
+    get rotationInRadians() {
+        return this._rotationInRadians;
+    }
+    get scale() {
+        return this._scale;
+    }
+    get origin() {
+        return this._origin;
+    }
+    get dimensions() {
+        return this._dimensions;
+    }
+    get isDirty() {
+        return this._isDirty;
+    }
+
+    set dimensions(dimensions) {
+        this._dimensions = dimensions.clone();
+        this.isDirty = true;
+    }
+    set translation(translation) {
+        this._translation = translation.clone();
+        this.isDirty = true;
+    }
+    set rotationInRadians(rotationInRadians) {
+        this._rotationInRadians = rotationInRadians;
+        this.isDirty = true;
+    }
+    set scale(scale) {
+        this._scale = scale.clone();
+        this.isDirty = true;
+    }
+    set origin(origin) {
+        this._origin = origin.clone();
+        this.isDirty = true;
+    }
+    set isDirty(isDirty) {
+        this._isDirty = isDirty;
     }
 
     /**
@@ -19,13 +62,15 @@
      * @param {number} rotationInRadians Floating-point angle in radians to rotate the sprite (+ve = CW, -ve=CCW)
      * @param {Vector2} scale Vector2 with the scale of the sprite on the screen
      * @param {Vector2} origin Vector2 centre of rotation for the image between (0,0) and (w,h) of the original image
+     * @param {Vector2} dimensions Vector2 original dimensions of the sprite in the image 
      * @memberof Transform2D
      */
-    constructor(translation, rotationInRadians, scale) {
+    constructor(translation, rotationInRadians, scale, origin, dimensions) {
         this.translation = translation;
         this.rotationInRadians = rotationInRadians;
         this.scale = scale;
         this.origin = origin;
+        this.dimensions = dimensions;
     }
 
     /**
@@ -98,9 +143,11 @@
     equals(other) {
         return (
             GDUtility.IsSameTypeAsTarget(this, other) &&
-            this.translation.Equals(other.translation) &&
+            this.translation.equals(other.translation) &&
             this.rotationInRadians === other.rotationInRadians &&
-            this.scale.Equals(other.scale)
+            this.scale.equals(other.scale) &&
+            this.origin.equals(other.origin) &&
+            this.dimensions.equals(other.dimensions)
         );
     }
 
@@ -108,7 +155,9 @@
         return new Transform2D(
             this.translation.clone(),
             this.rotationInRadians,
-            this.scale.clone()
+            this.scale.clone(),
+            this.origin.clone(),
+            this.dimensions.clone()
         );
     }
 
@@ -120,6 +169,10 @@
             this.rotationInRadians +
             "," +
             this.scale.toString() +
+            "," +
+            this.origin.toString() +
+            "," +
+            this.dimensions.toString() +
             "]"
         );
     }

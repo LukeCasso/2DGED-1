@@ -26,16 +26,23 @@
         return this._y;
     }
 
-    set x(value) {
-        this._x = value;
+    set x(x) {
+        this._x = x;
+        this.isDirty = true;
     }
-    set y(value) {
-        this._y = value;
+    set y(y) {
+        this._y = y;
+        this.isDirty = true;
+    }
+    set isDirty(isDirty) {
+        this._isDirty = isDirty;
     }
 
     constructor(x, y) {
         this.x = x;
         this.y = y;
+
+        this.isDirty = true;
     }
 
     add(otherVector) {

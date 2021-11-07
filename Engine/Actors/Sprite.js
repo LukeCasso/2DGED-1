@@ -6,23 +6,63 @@
  * @class Sprite
  */
 
- class Sprite {
+class Sprite extends Actor2D {
 
-    constructor(id, transform, artist) {
-        this.id = id;
-        this.transform = transform;
+    get artist() {
+        return this._artist;
+    }
+
+    set artist(artist) {
+        this._artist = artist;
+    }
+
+    /**
+     * 
+     * @param {*} id 
+     * @param {*} transform 
+     * @param {*} actorType 
+     * @param {*} statusType 
+     * @param {*} artist 
+     */
+    constructor(id, transform, actorType, statusType, artist) {
+        super(id, transform, actorType, statusType);
+
         this.artist = artist;
     }
 
-    update() {
+    /**
+     * 
+     * @param {GameTime} gameTime 
+     */
+    update(gameTime) {
+        if ((this.statusType & StatusType.Updated) != 0) {
+            this.artist.update(gameTime, this);
+        }
 
+        super.update(gameTime);
     }
 
-    draw() {
-        this.artist.draw(this);
+    /**
+     * 
+     * @param {GameTime} gameTime 
+     */
+    draw(gameTime) {
+        if ((this.statusType & StatusType.Drawn) != 0) {
+            this.artist.draw(gameTime, this);
+        }
     }
 
+    /**
+     * 
+     * @returns 
+     */
     clone() {
-        return new Sprite(this.id + "- Clone", this.transform.clone(), this.artist.clone());   
+        return new Sprite(
+            this.id + " - clone",
+            this.transform.clone(),
+            this.actorType,
+            this.statusType,
+            this.artist.clone()
+        );
     }
 }
