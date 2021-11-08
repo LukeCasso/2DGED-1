@@ -41,7 +41,8 @@ function animate(now) {
 
 function update(gameTime) {
 
-    // TO DO - CALL OBJECT MANAGER UPDATE...
+    // Call the update method of the object manager class
+    // to update all sprites
     objectManager.update(gameTime);
 }
 
@@ -50,7 +51,8 @@ function draw(gameTime) {
     // Clear previous draw
     clearCanvas(Color.White);
 
-    // TO DO - CALL OBJECT MANAGER DRAW...
+    // Call the draw method of the object manager class
+    // to draw all sprites
     objectManager.draw(gameTime);
 }
 
@@ -82,7 +84,7 @@ function loadSpriteSheets() {
 
 function loadSounds() {
 
-    // TO DO - LOAD SOUNDS...
+    // TO DO...
 }
 
 function initialize() {
@@ -107,38 +109,60 @@ function initializeSprites() {
 function initializeBackground() {
 
     let transform = null;
-    let artist = null
+    let artist = null;
 
+    // Set up the sprite transform
+    // The transform of a given object dictates three things:
+    // Where on the screen the object is placed (translation)
+    // What rotation is applied to the object (rotation)
+    // How big the object is (scale)
+    // We can also define the pivot point of the object (origin)
+    // And the original size of the object, before it is scaled (dimension)
     transform = new Transform2D(
-        Vector2.Zero,               // Translation
-        0,                          // Rotation
-        Vector2.One,                // Scale
-        Vector2.Zero,               // Origin
-        new Vector2(                // Dimensions (Width, Height)
+        Vector2.Zero,                   // Translation
+        0,                              // Rotation
+        Vector2.One,                    // Scale
+        Vector2.Zero,                   // Origin
+        new Vector2(                    // Dimension
             canvas.clientWidth,
             canvas.clientHeight
         ),
     );
 
+    // Set up the sprite artist
+    // The sprite artist uses the following parameters to draw a sprite to the canvas:
+    //
+    // CONTEXT - allows the artist to draw to the canvas
+    // SPRITE SHEET - provides the artist with an image to create a sprite from
+    // ALPHA - dictates how transparent the sprite should be
+    // SELECTION START POINT - dictates where on the sprite sheet to start a selection from
+    // SELECTION AREA - dictates how large the selection area is
+
+    // Using these parameters, the sprite artist can select an area of the SPRITE SHEET (as defined by
+    // the SELECTION START POINT, and the SELECTION AREA), to draw to the canvas using CONTEXT.
+
+    // In this case, we are selecting the entire background image - from the top left corner of the
+    // image (0, 0), to the bottom right of the image (image width, image height).
     artist = new SpriteArtist(
-        context,
-        backgroundSpriteSheet,
-        1,
-        Vector2.Zero,
-        new Vector2(
-            backgroundSpriteSheet.width,
-            backgroundSpriteSheet.height
-        )
+        context,                                                // 2D Context                   (Context)
+        backgroundSpriteSheet,                                  // Sprite sheet                 (Image)
+        1,                                                      // Alpha                        (Number)
+        Vector2.Zero,                                           // Selection start point        (Vector2)
+        new Vector2(                                            // Selection area (             (Vector2)
+            backgroundSpriteSheet.width,                                // selection width
+            backgroundSpriteSheet.height                                // selection height
+        )                                                       // )
     );
 
     let backgroundSprite = new Sprite(
-        "Background",
-        transform,
-        ActorType.Background,
-        StatusType.Drawn,
-        artist
+        "background",                                           // ID
+        transform,                                              // Transform
+        ActorType.Background,                                   // ActorType    (Background, NPC, Player, Projectile)
+        StatusType.Drawn,                                       // StatusType   (Off, Drawn, Updated)
+        artist                                                  // Artist
     );
 
+    // Add to the object manager
     objectManager.add(backgroundSprite);
 }
 
@@ -149,19 +173,12 @@ function initializeEnemies() {
 
     /********************************* ANIMATED ENEMY ONE *********************************/
 
-    // TO DO - ADD ENEMY ONE...
-
     /********************************* ANIMATED ENEMY TWO *********************************/
-
-    // TO DO - ADD ENEMY TWO...
 
     /******************************** ANIMATED ENEMY THREE ********************************/
 
-    // TO DO - ADD ENEMY THREE...
-
     /********************************* ENEMY THREE CLONES *********************************/
 
-    // TO DO - ADD CLONES...
 }
 
 function initializePlayers() {
@@ -170,28 +187,22 @@ function initializePlayers() {
     let artist;
 
     transform = new Transform2D(
-        Vector2.Zero,               // Translation
-        0,                          // Rotation
-        Vector2.One,                // Scale
-        Vector2.Zero,               // Origin
-        new Vector2(                // Dimensions (Width, Height)
-            SpriteData.PLAYER_WIDTH,
-            SpriteData.PLAYER_HEIGHT
+        new Vector2(
+            canvas.clientWidth / 2 - SpriteData.PLAYER_WIDTH / 2,
+            canvas.clientHeight - 100
         ),
+        0,
+        new Vector2(2, 2),
+        Vector2.Zero,
+        new Vector2(SpriteData.PLAYER_WIDTH, SpriteData.PLAYER_HEIGHT)
     );
 
     artist = new SpriteArtist(
         context,
         invadersSpriteSheet,
         1,
-        new Vector2(
-            SpriteData.PLAYER_X,
-            SpriteData.PLAYER_Y
-        ),
-        new Vector2(
-            SpriteData.PLAYER_WIDTH,
-            SpriteData.PLAYER_HEIGHT
-        )
+        new Vector2(SpriteData.PLAYER_X, SpriteData.PLAYER_Y),
+        new Vector2(SpriteData.PLAYER_WIDTH, SpriteData.PLAYER_HEIGHT),
     );
 
     let playerSprite = new Sprite(
@@ -202,7 +213,8 @@ function initializePlayers() {
         artist
     );
 
-    objectManager.add(playerSprite);
+    // Add to the object manager
+    this.objectManager.add(playerSprite);
 }
 
 function initializeBarriers() {
@@ -228,11 +240,11 @@ function resetGame() {
 // Well, let's imagine that we have an animation cycle that updates every 300ms
 // We could roughly estimate how much time has passed by adding 16ms to a total time variable in the 'requestAnimationFrame' function
 // However, we cannot be sure that 16ms are passing each time 'requestAnimationFrame' is called
-// requestAnimationFrame is called each time that the browser updates, and the browser may update 120 times per second (which is only 
+// requestAnimationFrame is called each time that the browser updates, and the browser may update 120 times per second (which is only
 // 8ms between each frame), or 30 times per second (which is 32ms between each frame).
 
 // As such, we will reach 300ms three times as quick when running at 120 FPS, as compared to when running at 30 FPS.
-// So, we need to come up with a solution that accurately describes the amount of time that has passed, rather than relying on an 
+// So, we need to come up with a solution that accurately describes the amount of time that has passed, rather than relying on an
 // estimated measure based on the number of frame.
 
 // Luckily, requestAnimationFrame provides us with access to a variable - 'now' - which keeps track of the total time since the start
