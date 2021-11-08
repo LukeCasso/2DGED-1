@@ -21,6 +21,34 @@ const StatusType = {
     Drawn: 1,   // 0001
     Updated: 2, // 0010
 
+    // 4        // 0100
+    // 8        // 1000
+
+    // X && Y   Z
+    // T    T   T
+    // F    T   F
+    // T    F   F
+    // F    F   F
+
+    // Actor.StatusType = StatusType.Drawn | Status.Updated
+
+    //   0001 1 (Drawn)
+    //   0010 2 (Updated)
+    // | 0011 3 (Drawn | Updated)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Add more here as required but ENSURE they are 2^N values
     // It's important that the values are powers of two because we combine them 
     // using a Bitwise OR operation

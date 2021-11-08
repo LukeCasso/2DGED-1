@@ -34,6 +34,18 @@ class Sprite extends Actor2D {
      * @param {GameTime} gameTime 
      */
     update(gameTime) {
+
+        //   0011 3 (Drawn | Updated)
+        // & 0010
+        //   0010
+        
+        //   0010   (Updated)   <- this.statusType
+        // & 0010   (Updated)
+        //   0010
+
+        //   0001   (Drawn)     <- this.statusType
+        // & 0010   (Updated)
+        //   0000
         if ((this.statusType & StatusType.Updated) != 0) {
             this.artist.update(gameTime, this);
         }

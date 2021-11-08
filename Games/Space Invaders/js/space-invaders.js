@@ -42,6 +42,7 @@ function animate(now) {
 function update(gameTime) {
 
     // TO DO - CALL OBJECT MANAGER UPDATE...
+    objectManager.update(gameTime);
 }
 
 function draw(gameTime) {
@@ -50,6 +51,7 @@ function draw(gameTime) {
     clearCanvas(Color.White);
 
     // TO DO - CALL OBJECT MANAGER DRAW...
+    objectManager.draw(gameTime);
 }
 
 function clearCanvas() {
@@ -91,7 +93,7 @@ function initialize() {
 
 function initializeManagers() {
 
-    // TO DO - INITIALIZE OBJECT MANAGER...
+    objectManager = new ObjectManager(context);
 }
 
 function initializeSprites() {
@@ -107,7 +109,37 @@ function initializeBackground() {
     let transform = null;
     let artist = null
 
-    // TO DO - ADD BACKGROUND SPRITE
+    transform = new Transform2D(
+        Vector2.Zero,               // Translation
+        0,                          // Rotation
+        Vector2.One,                // Scale
+        Vector2.Zero,               // Origin
+        new Vector2(                // Dimensions (Width, Height)
+            canvas.clientWidth,
+            canvas.clientHeight
+        ),
+    );
+
+    artist = new SpriteArtist(
+        context,
+        backgroundSpriteSheet,
+        1,
+        Vector2.Zero,
+        new Vector2(
+            backgroundSpriteSheet.width,
+            backgroundSpriteSheet.height
+        )
+    );
+
+    let backgroundSprite = new Sprite(
+        "Background",
+        transform,
+        ActorType.Background,
+        StatusType.Drawn,
+        artist
+    );
+
+    objectManager.add(backgroundSprite);
 }
 
 function initializeEnemies() {
@@ -128,7 +160,7 @@ function initializeEnemies() {
     // TO DO - ADD ENEMY THREE...
 
     /********************************* ENEMY THREE CLONES *********************************/
-    
+
     // TO DO - ADD CLONES...
 }
 
@@ -136,6 +168,41 @@ function initializePlayers() {
 
     let transform;
     let artist;
+
+    transform = new Transform2D(
+        Vector2.Zero,               // Translation
+        0,                          // Rotation
+        Vector2.One,                // Scale
+        Vector2.Zero,               // Origin
+        new Vector2(                // Dimensions (Width, Height)
+            SpriteData.PLAYER_WIDTH,
+            SpriteData.PLAYER_HEIGHT
+        ),
+    );
+
+    artist = new SpriteArtist(
+        context,
+        invadersSpriteSheet,
+        1,
+        new Vector2(
+            SpriteData.PLAYER_X,
+            SpriteData.PLAYER_Y
+        ),
+        new Vector2(
+            SpriteData.PLAYER_WIDTH,
+            SpriteData.PLAYER_HEIGHT
+        )
+    );
+
+    let playerSprite = new Sprite(
+        "Player",
+        transform,
+        ActorType.Player,
+        StatusType.Updated | StatusType.Drawn,
+        artist
+    );
+
+    objectManager.add(playerSprite);
 }
 
 function initializeBarriers() {

@@ -54,6 +54,7 @@ class Actor2D {
     constructor(id, transform, actorType, statusType) {
         this.id = id;
         this.transform = transform;
+        
         this.actorType = actorType;
         this.statusType = statusType;
 

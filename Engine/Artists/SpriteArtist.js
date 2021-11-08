@@ -44,6 +44,7 @@ class SpriteArtist extends Artist {
         // This allows the sprite to call the Sprite Artist's draw function.
         // The sprite then passes a reference to itself through as the 'parent' to the
         // draw function (using 'this').
+        // 
         // That allows the Sprite Artist to access properties that belong to the parent,
         // such as the transform listed below.
         let transform = parent.transform;
