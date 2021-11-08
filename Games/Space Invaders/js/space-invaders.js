@@ -4,185 +4,26 @@ const canvas = document.getElementById("main_canvas");
 // Get a handle to our canvas 2D context
 const context = canvas.getContext("2d");
 
-// Add variables here
+/** CORE GAME LOOP CODE - DO NOT CHANGE */
 
-// Create a function that will load our game
-function loadGame() {
+let gameTime;
 
-    // Load game assets
-    loadAssets();
+function start() {
 
-    // Initialize all sprites
-    initializeSprites();
+    // Create a new gameTime object
+    // This will allow us to keep track of the time in our game
+    gameTime = new GameTime();
 
-    // Set up game elements
-    initializeGame();
+    // Load game elements
+    load();
+
+    // Initialize game elements
+    initialize();
 
     // Start the game loop
     window.requestAnimationFrame(animate);
 }
 
-// Create a function that will reset our game
-function resetGame() {
-
-    // Clear the canvas
-    clearCanvas();
-
-    // Reload our game
-    loadGame();
-}
-
-let invadersSpriteSheet;
-let backgroundSpriteSheet;
-
-function loadAssets() {
-    invadersSpriteSheet = document.getElementById("invaders_sprite_sheet");
-    backgroundSpriteSheet = document.getElementById("background_sprite_sheet");
-}
-
-let backgroundSprite = null;
-let enemySprite = null;
-let clonedEnemySprite1 = null;
-let clonedEnemySprite2 = null;
-let clonedEnemySprite3 = null;
-let clonedEnemySprite4 = null;
-
-function initializeSprites() {
-    
-    let transform;
-    let artist;
-
-    // CREATE BACKGROUND SPRITE
-
-    // Set up the sprite transform
-    // The transform of a given object dictates three things:
-    // Where on the screen the object is placed
-    // What rotation is applied to the object (in radians)
-    // How big the object is
-    transform = new Transform2D(
-        Vector2.Zero,                                           // Where on the screen the object is placed (Translation)
-        0,                                                      // What rotation is applied to the object   (Rotation)
-        new Vector2(canvas.clientWidth, canvas.clientHeight)    // How big the object is                    (Scale)
-    );
-
-    // The transform of a given object allows us to easily move, rotate, or scale it - all from one place
-
-    // Set up the sprite artist
-    // The sprite artist uses the following parameters to draw a sprite to the canvas:
-    //
-    // CONTEXT - allows the artist to draw to the canvas
-    // SPRITE SHEET - provides the artist with an image to create a sprite from
-    // SELECTION START POINT - dictates where on the sprite sheet to start a selection from
-    // SELECTION AREA - dictates how large the selection area is
-
-    // Using these parameters, the sprite artist can select an area of the SPRITE SHEET (as defined by
-    // the SELECTION START POINT, and the SELECTION AREA), to draw to the canvas using CONTEXT.
-    
-    // In this case, we are selecting the entire background image - from the top left corner of the
-    // image (0, 0), to the bottom right of the image (image width, image height).
-    artist = new SpriteArtist(
-        context,                                                // 2D Context                   (Context)
-        backgroundSpriteSheet,                                  // Sprite sheet                 (Image)
-        Vector2.Zero,                                           // Selection start point        (Vector2)
-        new Vector2(                                            // Selection area (             (Vector2)
-            backgroundSpriteSheet.width,                                // selection width
-            backgroundSpriteSheet.height                                // selection height
-        )                                                       // )
-    );
-
-    // Once the transform and artist has been successfully set up,
-    // we can create the sprite
-    backgroundSprite = new Sprite("Background", transform, artist);
-
-    // Please note that we are only creating the sprites in this function - we are
-    // not actually drawing any of these sprites yet. To draw these sprites, we must
-    // call their draw function (e.g., backgroundSprite.draw()).
-
-    // So, each frame, we should loop through all of our sprites and call their draw
-    // function (we do this in the main game draw function below).
-
-    // To create another sprite, we can then just repeat this above process (see below,
-    // where I use the invaders sprite sheet to create an enemy sprite).
-
-    // CREATE ENEMY SPRITE
-
-    // Set up the sprite transform
-    transform = new Transform2D(
-        new Vector2(                    // Translation i.e., where on the canvas we want to draw the sprite
-            canvas.clientWidth / 2, 
-            canvas.clientHeight / 2
-        ),
-        0,                              // Rotation (in radians)
-        new Vector2(22, 16)             // Scale i.e., how big we want to draw the sprite
-    );
-
-    // Set up the sprite artist
-    artist = new SpriteArtist(
-        context,                        // Context
-        invadersSpriteSheet,            // Sprite sheet
-        new Vector2(
-            38,                         // Selection start x    (I calculated this by examing the sprite sheet in microsoft paint)
-            0                           // Selection start y    (I calculated this by examing the sprite sheet in microsoft paint)
-        ),
-        new Vector2(
-            24,                         // Selection width      (I calculated this by examing the sprite sheet in microsoft paint)
-            16                          // Selection height     (I calculated this by examing the sprite sheet in microsoft paint)
-        )
-    );
-    
-    // Create enemy sprite
-    enemySprite = new Sprite("Enemy", transform, artist);
-
-    // In space invaders, we want to have many enemies on the screen at one time
-    // So, rather than setting up a new sprite artist and transform for each new enemy sprite
-    // we can just call the .clone() method of the Sprite class to create a deep copy of the
-    // enemy sprite that we already created.
-    
-    // Calling the .clone() method of the Sprite class will give us a deep-copy of the enemySprite
-    // object i.e., we are creating an entirely seperate version of the enemySprite object that we
-    // can then use in our game. It's important to note that the cloned object will have the same 
-    // properties as the original object (such as the transform), but we can change the properties
-    // ourselves.
-
-    // Create a clone of the enemy sprite
-    clonedEnemySprite1 = enemySprite.clone();
-
-    // Translate the cloned sprite 
-    // i.e., move the cloned sprite by some distance in the x, 
-    // and by some distance in the y (as defined by a Vector2)
-    clonedEnemySprite1.transform.translateBy(new Vector2(24, 0));
-
-    // Repeat the above process to create a line of cloned enemy sprites
-
-    clonedEnemySprite2 = enemySprite.clone();
-    clonedEnemySprite2.transform.translateBy(new Vector2(-24, 0));
-
-    clonedEnemySprite3 = enemySprite.clone();
-    clonedEnemySprite3.transform.translateBy(new Vector2(24 * 2, 0));
-
-    clonedEnemySprite4 = enemySprite.clone();
-    clonedEnemySprite4.transform.translateBy(new Vector2(-24 * 2, 0));
-
-    // ###################################################################
-    //
-    // Exercise - place the player (spaceship), other enemies, and barriers 
-    // into the scene
-    //
-    // ####################################################################
-}
-
-// Create a gameTime variable which will
-// hold a reference to our gameTime object
-let gameTime;
-
-function initializeGame() {
-
-    // Create a new gameTime object
-    // This will allow us to keep track of the time in our game
-    gameTime = new GameTime();
-}
-
-// Create a function that will be called each time our browser updates
 function animate(now) {
 
     // Update game time
@@ -200,32 +41,112 @@ function animate(now) {
 
 function update(gameTime) {
 
-    // console.log(gameTime.TotalElapsedTimeInMs);
+    // TO DO - CALL OBJECT MANAGER UPDATE...
 }
 
-// Create a function that will re-draw our updated game
 function draw(gameTime) {
 
-    // Clear canvas
+    // Clear previous draw
+    clearCanvas(Color.White);
+
+    // TO DO - CALL OBJECT MANAGER DRAW...
+}
+
+function clearCanvas() {
+    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+}
+
+/** GAME SPECIFIC CODE BELOW - CHANGE AS NECESSARY */
+
+let invadersSpriteSheet;
+let backgroundSpriteSheet;
+
+function load() {
+
+    loadAssets();
+}
+
+function loadAssets() {
+
+    loadSpriteSheets();
+    loadSounds();
+}
+
+function loadSpriteSheets() {
+
+    invadersSpriteSheet = document.getElementById("invaders_sprite_sheet");
+    backgroundSpriteSheet = document.getElementById("background_sprite_sheet");
+}
+
+function loadSounds() {
+
+    // TO DO - LOAD SOUNDS...
+}
+
+function initialize() {
+
+    initializeManagers();
+    initializeSprites();
+}
+
+function initializeManagers() {
+
+    // TO DO - INITIALIZE OBJECT MANAGER...
+}
+
+function initializeSprites() {
+
+    initializeBackground();
+    initializeEnemies();
+    initializePlayers();
+    initializeBarriers();
+}
+
+function initializeBackground() {
+
+    let transform = null;
+    let artist = null
+
+    // TO DO - ADD BACKGROUND SPRITE
+}
+
+function initializeEnemies() {
+
+    let transform = null;
+    let artist = null;
+
+    /********************************* ANIMATED ENEMY ONE *********************************/
+
+    // TO DO - ADD ENEMY ONE...
+
+    /********************************* ANIMATED ENEMY TWO *********************************/
+
+    // TO DO - ADD ENEMY TWO...
+
+    /******************************** ANIMATED ENEMY THREE ********************************/
+
+    // TO DO - ADD ENEMY THREE...
+
+    /********************************* ENEMY THREE CLONES *********************************/
+    
+    // TO DO - ADD CLONES...
+}
+
+function initializePlayers() {
+
+    let transform;
+    let artist;
+}
+
+function initializeBarriers() {
+
+    // TO DO: ADD BARRIER SPRITES
+}
+
+function resetGame() {
+
     clearCanvas();
-
-    // Draw background sprite
-    backgroundSprite.draw();
-
-    // Draw enemy sprite
-    enemySprite.draw();
-
-    // Draw cloned sprites
-    clonedEnemySprite1.draw();
-    
-    // Draw clone sprite
-    clonedEnemySprite2.draw();
-
-    // Draw clone sprite
-    clonedEnemySprite3.draw();
-    
-    // Draw clone sprite
-    clonedEnemySprite4.draw();
+    startGame();
 }
 
 // Why is using gameTime instead of frame rate important?
@@ -260,12 +181,8 @@ function draw(gameTime) {
 
 // As such, our game loop now relies on the amount of time that has passed, and not the number of frames
 
-function clearCanvas() {
-    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-}
-
 // Load our game when the webpage loads
-window.addEventListener("load", loadGame);
+window.addEventListener("load", start);
 
 // Create an object which will store all of our currently held keys
 let keysDown = {};
