@@ -57,18 +57,15 @@ class SpriteData {
         },
     ];
 
+    // Player Sprite position on Sprite Sheet
+    static PLAYER_X = 62;
+    static PLAYER_Y = 0;
+    static PLAYER_WIDTH = 22;
+    static PLAYER_HEIGHT = 16;
+
+    // Barrier Sprite position on Sprite Sheet
     static BARRIER_HEIGHT = 24;
     static BARRIER_WIDTH = 36;
     static BARRIER_x = 84;
     static BARRIER_y = 8;
-
-    // Sprite position on Sprite Sheet
-    static PLAYER_FRAMES = [
-        {
-            x: 62,
-            y: 0,
-            width: 22,
-            height: 16,
-        }
-    ];
 }

@@ -1,11 +1,10 @@
 /**
- * Represents any drawn non-player or non-player character entity within a game with position information (e.g. pickup, obstacle, UI element)
+ * Represents a drawn entity within our game.
  * 
  * @author Niall McGuinness
  * @version 1.0
  * @class Sprite
  */
-
 class Sprite extends Actor2D {
 
     get artist() {

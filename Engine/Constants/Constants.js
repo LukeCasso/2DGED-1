@@ -17,7 +17,7 @@ const ActorType = {
 };
 
 const StatusType = {
-    Off: 0,
+    Off: 0,     // 0000
     Drawn: 1,   // 0001
     Updated: 2, // 0010
 
@@ -32,8 +32,8 @@ const StatusType = {
 const Color = {
     Black: "#000000",
     White: "#FFFFFF",
-    Grey: "#8b8680",
-    CornFlowerBlue: "#6495ed",
+    Grey: "#8B8680",
+    CornFlowerBlue: "#6495ED",
     LightGreen: "#CACB63",
     DarkGreen: "#688318",
     

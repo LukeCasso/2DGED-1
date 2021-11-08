@@ -1,5 +1,7 @@
 /**
- * Renders the pixel data from a spritesheet at a source location (x, y, width, heigth) stored in the current cell index of an array of cells.
+ * Renders the pixel data from a spritesheet at a source location (x, y, width, heigth) stored in the 
+ * current cell index of an array of cells.
+ * 
  * The array of cells indicate the (x, y, width, height) data for each cell in the animation.
  * 
  * @author Niall McGuinness
@@ -75,10 +77,19 @@ class AnimatedSpriteArtist extends Artist {
      * @memberof AnimatedSpriteArtist
      */
     update(gameTime, parent) {
+
+        // Calculate time since last frame
         this.timeSinceLastFrameInMs += Math.round(gameTime.elapsedTimeInMs);
 
+        // Check if time since last frame exceeds the frame interval for this sprite
+        // i.e., check if we should move onto the next frame of the animation because
+        // enough time has passed between frames
         if (this.timeSinceLastFrameInMs > this.frameIntervalInMs) {
+
+            // Reset time since last frame
             this.timeSinceLastFrameInMs = 0;
+
+            // Advance sprite to the next frame
             this.advance(parent);
         }
     }
@@ -89,14 +100,16 @@ class AnimatedSpriteArtist extends Artist {
      * @memberof AnimatedSpriteArtist
      */
     advance(parent) {
-        // If not at end frame then advance 1
+
+        // If not at the end frame, then advance frame by 1
         if (this.currentFrameIndex < this.endFrameIndex) {
 
             this.currentFrameIndex++;
         }
 
-        // If running infinitely then restart
+        // If at the end frame, loop back to the start frame
         else {
+
             this.currentFrameIndex = this.startFrameIndex;
         }
     }
@@ -120,8 +133,10 @@ class AnimatedSpriteArtist extends Artist {
         // Set transparency
         this.context.globalAlpha = this.alpha;
 
+        // Retrieve the current animation frame
         let frame = this.frames[this.currentFrameIndex];
 
+        // Draw current animation frame
         this.context.drawImage(
             this.spriteSheet,
             frame.x,

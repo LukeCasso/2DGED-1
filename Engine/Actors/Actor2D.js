@@ -7,16 +7,6 @@
  * @version 1.1
  * @class Actor2D
  */
-
-/**
- * Represents any entity within a game with position information (e.g. camera, sprite, menu element)
- * This class contains a collisionPrimitive object which stores either a rect or circle collision primitive type.
- * This means that we can choose which primitive best suits the shape or CD/CR requirements for the actor it will be used with.
- *
- * @author niall mcguinness
- * @version 1.1
- * @class Actor2D
- */
 class Actor2D {
 
     get id() {
@@ -31,6 +21,8 @@ class Actor2D {
     get statusType() {
         return this._statusType;
     }
+
+    // Will discuss later
     get controllers() {
         return this._controllers;
     }
@@ -50,6 +42,8 @@ class Actor2D {
     set statusType(statusType) {
         this._statusType = statusType;
     }
+
+    // Will discuss later
     set controllers(controllers) {
         this._controllers = controllers;
     }
@@ -63,6 +57,7 @@ class Actor2D {
         this.actorType = actorType;
         this.statusType = statusType;
 
+        // Will discuss later
         this.controllers = [];
         this.collisionPrimitive = null;
     }
@@ -75,7 +70,6 @@ class Actor2D {
      */
     attachController(controller) {
         if (this.controllers == undefined) {
-
             this.controllers = [];
         }
 
@@ -114,7 +108,6 @@ class Actor2D {
     }
 
     equals(other) {
-
         return GDUtility.IsSameTypeAsTarget(this, other) && (
             this.id === other.ID &&
             this.actorType === other.ActorType &&
