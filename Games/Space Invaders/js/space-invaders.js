@@ -7,6 +7,7 @@ const context = canvas.getContext("2d");
 /** CORE GAME LOOP CODE - DO NOT CHANGE */
 
 let gameTime;
+let objectManager;
 
 function start() {
 
@@ -214,7 +215,7 @@ function initializePlayers() {
     );
 
     // Add to the object manager
-    this.objectManager.add(playerSprite);
+    objectManager.add(playerSprite);
 }
 
 function initializeBarriers() {

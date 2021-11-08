@@ -8,6 +8,20 @@
 
 class SpriteArtist extends Artist {
 
+    get sourcePosition() {
+        return this._sourcePosition;
+    }
+    get sourceDimensions() {
+        return this._sourceDimensions;
+    }
+
+    set sourcePosition(value) {
+        this._sourcePosition = value;
+    }
+    set sourceDimensions(value) {
+        this._sourceDimensions = value;
+    }
+
     constructor(context, spriteSheet, alpha, sourcePosition, sourceDimensions) {
         super(context, spriteSheet, alpha);
 
@@ -71,6 +85,12 @@ class SpriteArtist extends Artist {
 
     // Clone allows us to quickly create deep-copies of our objects
     clone() {
-        return new SpriteArtist(this.context, this.spriteSheet, this.alpha, this.sourcePosition, this.sourceDimensions);
+        return new SpriteArtist(
+            this.context, 
+            this.spriteSheet, 
+            this.alpha, 
+            this.sourcePosition, 
+            this.sourceDimensions
+        );
     }
 }

@@ -5,7 +5,7 @@
  * @version 1.0
  * @class Rect
  */
- class Rect {
+class Rect {
 
     static get Zero() {
         return new Rect(0, 0, 1, 1);
@@ -25,7 +25,10 @@
     }
 
     get center() {
-        return new Vector2(this.x + this.width / 2, this.y + this.height / 2);
+        return new Vector2(
+            this.x + this.width / 2,
+            this.y + this.height / 2
+        );
     }
 
     set x(value) {
@@ -37,22 +40,36 @@
     set width(value) {
         this._width = value > 0 ? value : 0;
     }
-
     set height(value) {
         this._height = value > 0 ? value : 0;
     }
 
+    /**
+     * Constructs a Rect object (x,y,w,h)
+     * @param {Number} x X-ordinate of the top-left corner of the Rect object
+     * @param {Number} y Y-ordinate of the top-left corner of the Rect object
+     * @param {Number} width Width in pixels of the Rect object
+     * @param {Number} height Height in pixels of the Rect object
+     */
     constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+
+        // If we ever change the Rect object (e.g. x, y, w, h) then we may want 
+        // to reset it to its original state. So, we store its original values.
         this.originalX = x;
         this.originalY = y;
         this.originalWidth = width;
         this.originalHeight = height;
     }
 
+    /**
+     * Resets the Rect object to its original state (x,y,w,h)
+     *
+     * @memberof Rect
+     */
     reset() {
         this.x = this.originalX;
         this.y = this.originalY;

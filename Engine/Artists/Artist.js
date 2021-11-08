@@ -7,13 +7,32 @@
  */
 class Artist {
 
+    get context() {
+        return this._context;
+    }
+    get spriteSheet() {
+        return this._spriteSheet;
+    }
     get alpha() {
         return this._alpha;
+    }
+
+    set context(value) {
+        this._context = value;
+    }
+    set spriteSheet(value) {
+        this._spriteSheet = value;
     }
     set alpha(value) {
         this._alpha = (value > 1 || value < 0) ? 1 : value;
     }
 
+    /**
+     * Constructs the Artist object which is the parent for SpriteArtist(static images) and AnimatedSpriteArtist(animated images)
+     * @param {CanvasRenderingContext2D} context Handle to draw context
+     * @param {HTMLImageElement} spriteSheet Handle to the image data
+     * @param {Number} alpha Floating point value (0-1) indicating sprite transparency
+     */
     constructor(context, spriteSheet, alpha) {
         this.context = context;
         this.spriteSheet = spriteSheet;

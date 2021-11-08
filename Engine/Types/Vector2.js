@@ -4,7 +4,7 @@
  * @version 1.0
  * @class Vector2
  */
- class Vector2 {
+class Vector2 {
 
     static get Zero() {
         return new Vector2(0, 0);
@@ -34,6 +34,7 @@
         this._y = y;
         this.isDirty = true;
     }
+
     set isDirty(isDirty) {
         this._isDirty = isDirty;
     }

@@ -104,15 +104,15 @@ class Actor2D {
 
         for (let i = 0; i < this.controllers.length; i++) {
 
-            this.controllers[i].execute(gameTime, this);
+            this.controllers[i].update(gameTime, this);
         }
     }
 
     equals(other) {
         return GDUtility.IsSameTypeAsTarget(this, other) && (
-            this.id === other.ID &&
+            this.id === other.id &&
             this.actorType === other.ActorType &&
-            this.transform2D.Equals(other.Transform2D)
+            this.transform.equals(other.transform)
         );
     }
 

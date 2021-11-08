@@ -86,11 +86,11 @@ class AnimatedSpriteArtist extends Artist {
         // enough time has passed between frames
         if (this.timeSinceLastFrameInMs > this.frameIntervalInMs) {
 
+            // Advance sprite to the next frame
+            this.advance();
+
             // Reset time since last frame
             this.timeSinceLastFrameInMs = 0;
-
-            // Advance sprite to the next frame
-            this.advance(parent);
         }
     }
 
@@ -99,7 +99,7 @@ class AnimatedSpriteArtist extends Artist {
      *
      * @memberof AnimatedSpriteArtist
      */
-    advance(parent) {
+    advance() {
 
         // If not at the end frame, then advance frame by 1
         if (this.currentFrameIndex < this.endFrameIndex) {
