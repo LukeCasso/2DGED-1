@@ -227,10 +227,10 @@ function initializeEnemies() {
         context,
         invadersSpriteSheet,
         1, // Opaque
-        SpriteData.ENEMY_TWO_FRAMES,        // Array of Source Position and Source Dimensions
-        0,                                  // Start frame
-        1,                                  // End frame
-        7                                   // Animation frame rate (speed)
+        SpriteData.ENEMY_TWO_FRAMES,            // Array of Source Position and Source Dimensions
+        0,                                      // Start frame
+        1,                                      // End frame
+        7                                       // Animation frame rate (speed)
     );
 
     let animatedEnemyTwoSprite = new Sprite(
