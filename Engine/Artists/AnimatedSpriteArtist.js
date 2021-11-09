@@ -139,9 +139,9 @@ class AnimatedSpriteArtist extends Artist {
         // Draw current animation frame
         this.context.drawImage(
             this.spriteSheet,
-            frame.x,
+            frame.x,                // What is x/y?
             frame.y,
-            frame.width,
+            frame.width,            // What is width/height?
             frame.height,
             transform.translation.x - transform.origin.x,
             transform.translation.y - transform.origin.y,

@@ -52,26 +52,19 @@ class SpriteArtist extends Artist {
         this.context.save();
 
         // Access the transform for the parent that this artist is attached to
-
-        // The parent, in this case, is some Sprite object (i.e., 'enemySprite').
-        // Remember, the sprite class has an 'artist' property (i.e., a Sprite Artist).
-        // This allows the sprite to call the Sprite Artist's draw function.
-        // The sprite then passes a reference to itself through as the 'parent' to the
-        // draw function (using 'this').
-        // 
-        // That allows the Sprite Artist to access properties that belong to the parent,
-        // such as the transform listed below.
         let transform = parent.transform;
 
         // Set the objects transparency
         this.context.globalAlpha = this.alpha;
 
+
+
         // Draw image
         this.context.drawImage(
             this.spriteSheet,
-            this.sourcePosition.x,
+            this.sourcePosition.x,      // What is source position?
             this.sourcePosition.y,
-            this.sourceDimensions.x,
+            this.sourceDimensions.x,    // What is source dimension?
             this.sourceDimensions.y,
             transform.translation.x - transform.origin.x,
             transform.translation.y - transform.origin.y,
@@ -83,13 +76,22 @@ class SpriteArtist extends Artist {
         this.context.restore();
     }
 
+    // The parent, in this case, is some Sprite object (i.e., 'enemySprite').
+    // Remember, the sprite class has an 'artist' property (i.e., a Sprite Artist).
+    // This allows the sprite to call the Sprite Artist's draw function.
+    // The sprite then passes a reference to itself through as the 'parent' to the
+    // draw function (using 'this').
+    // 
+    // That allows the Sprite Artist to access properties that belong to the parent,
+    // such as the transform listed below.
+
     // Clone allows us to quickly create deep-copies of our objects
     clone() {
         return new SpriteArtist(
-            this.context, 
-            this.spriteSheet, 
-            this.alpha, 
-            this.sourcePosition, 
+            this.context,
+            this.spriteSheet,
+            this.alpha,
+            this.sourcePosition,
             this.sourceDimensions
         );
     }

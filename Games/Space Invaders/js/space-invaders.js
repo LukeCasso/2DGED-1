@@ -214,6 +214,8 @@ function initializePlayers() {
         artist
     );
 
+    // TO DO - ATTACH PLAYER MOVE CONTROLLER
+
     // Add to the object manager
     objectManager.add(playerSprite);
 }
