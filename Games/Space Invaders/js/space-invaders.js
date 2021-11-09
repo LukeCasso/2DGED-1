@@ -190,11 +190,11 @@ function initializeEnemies() {
     artist = new AnimatedSpriteArtist(
         context,
         invadersSpriteSheet,
-        1,                                  // Opaque
-        SpriteData.ENEMY_ONE_FRAMES,        // Array of Source Position and Source Dimensions
-        0,                                  // Start frame
-        1,                                  // End frame
-        7                                   // Animation frame rate (speed)
+        1,                                      // Opaque
+        SpriteData.ENEMY_ONE_FRAMES,            // Array of Source Position and Source Dimensions
+        0,                                      // Start frame
+        1,                                      // End frame
+        5                                       // Animation frame rate (speed)
     );
 
     let animatedEnemyOneSprite = new Sprite(
@@ -230,7 +230,7 @@ function initializeEnemies() {
         SpriteData.ENEMY_TWO_FRAMES,            // Array of Source Position and Source Dimensions
         0,                                      // Start frame
         1,                                      // End frame
-        7                                       // Animation frame rate (speed)
+        3                                       // Animation frame rate (speed)
     );
 
     let animatedEnemyTwoSprite = new Sprite(
@@ -246,8 +246,61 @@ function initializeEnemies() {
 
     /******************************** ANIMATED ENEMY THREE ********************************/
 
+    // Where and how to draw our sprite on screen
+    transform = new Transform2D(
+        new Vector2(                        // Translation
+            canvas.clientWidth / 2,
+            100
+        ),
+        0,                                  // Rotation
+        new Vector2(2, 2),                  // Scale (Scale x2)
+        Vector2.Zero,                       // Origin (Top-Left Corner)
+        new Vector2(24, 16)                 // Source Dimensions
+    );
+
+    // What area of a sprite sheet to draw on screen
+    artist = new AnimatedSpriteArtist(
+        context,
+        invadersSpriteSheet,
+        1,                                      // Opaque
+        SpriteData.ENEMY_THREE_FRAMES,          // Array of Source Position and Source Dimensions
+        0,                                      // Start frame
+        1,                                      // End frame
+        10                                      // Animation frame rate (speed)
+    );
+
+    let animatedEnemyThreeSprite = new Sprite(
+        "Animated Enemy 3",                     // Unique ID
+        transform,                              // Transform (Set up above)
+        ActorType.NPC,                          // Non playable character
+        StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
+        artist                                  // Artist (Set up above)
+    );
+
+    // Add to the object manager
+    objectManager.add(animatedEnemyThreeSprite);
+
     /********************************* ENEMY THREE CLONES *********************************/
 
+    let clonedEnemySprite = null;
+
+    // Loop 10 times
+    for (let i = -5; i < 5; i++) {
+
+        // Create a clone of animated enemy three
+        clonedEnemySprite = animatedEnemyThreeSprite.clone();
+
+        // Move the clone (relative to the animatedEnemyThreeSprite's position)
+        clonedEnemySprite.transform.translateBy(
+            new Vector2(
+                i * 50,             // -250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250
+                50
+            )
+        );
+
+        // Add this clone to our object manager
+        objectManager.add(clonedEnemySprite);
+    }
 }
 
 function initializePlayers() {
