@@ -7,16 +7,16 @@ class SpriteData {
     static ENEMY_ONE_FRAMES = [
         {
             // Animation Frame 1
-            x: 0,
+            x: 0,                   // Source Position
             y: 0,
-            width: 22,
+            width: 22,              // Source Dimensions
             height: 16,
         },
         {
             // Animation Frame 2
-            x: 0,
+            x: 0,                   // Source Position
             y: 16,
-            width: 22,
+            width: 22,              // Source Dimension
             height: 16,
         },
     ];
