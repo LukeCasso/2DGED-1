@@ -19,6 +19,19 @@ class Vector2 {
         return new Vector2(0, 1);
     }
 
+    static get Up() {
+        return new Vector2(0, -1);
+    }
+    static get Down() {
+        return new Vector2(0, 1);
+    }
+    static get Left() {
+        return new Vector2(-1, 0);
+    }
+    static get Right() {
+        return new Vector2(1, 0);
+    }
+
     get x() {
         return this._x;
     }

@@ -1,7 +1,7 @@
 class PlayerMoveController {
 
-    constructor(movementSpeed) {
-        this.movementSpeed = movementSpeed;
+    constructor(moveSpeed) {
+        this.moveSpeed = moveSpeed;
 
         this.keyState = {};
 
@@ -15,21 +15,22 @@ class PlayerMoveController {
     }
 
     update(gameTime, parent) {
-
+        
+        // If the A key is pressed
         if (this.keyState[Keys.A]) {
+            
+            // Move left
             parent.transform.translateBy(
-                new Vector2(
-                    -1 * this.movementSpeed,
-                    0
-                )
+                Vector2.MultiplyScalar(Vector2.Left, this.moveSpeed)
             );
         }
+
+        // If the D key is pressed
         else if (this.keyState[Keys.D]) {
-            parent.transform.translateBy(
-                new Vector2(
-                    1 * this.movementSpeed,
-                    0
-                )
+
+            // Move right
+            parent.transform.translateBy(    
+                Vector2.MultiplyScalar(Vector2.Right, this.moveSpeed)
             );
         }
     }
