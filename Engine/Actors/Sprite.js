@@ -68,12 +68,24 @@ class Sprite extends Actor2D {
      * @returns 
      */
     clone() {
-        return new Sprite(
+        let clone = new Sprite(
             this.id + " - clone",
             this.transform.clone(),
             this.actorType,
             this.statusType,
-            this.artist.clone()
+            this.artist.clone(),
         );
+
+        // Clone all of the actor's attached behaviors
+        for (let controller of this.controllers) {
+            clone.attachController(controller.clone());
+        }
+
+        // Clone collision primitive (if present)
+        if (this.collisionPrimitive) {
+            clone.collisionPrimitive = this.collisionPrimitive.clone();
+        }
+
+        return clone;
     }
 }
