@@ -1,5 +1,31 @@
 class GameTime {
 
+    get startTimeInMs() {
+        return this._startTimeInMs;
+    }
+    get totalElapsedTimeInMs() {
+        return this._totalElapsedTimeInMs;
+    }
+    get lastAnimationFrameTime() {
+        return this._lastAnimationFrameTime;
+    }
+    get elapsedTimeInMs() {
+        return this._elapsedTimeInMs;
+    }
+
+    set startTimeInMs(value) {
+        this._startTimeInMs = value;
+    }
+    set totalElapsedTimeInMs(value) {
+        this._elapsedTimeInMs = value;
+    }
+    set lastAnimationFrameTime(value) {
+        this._lastAnimationFrameTime = value;
+    }
+    set elapsedTimeInMs(value) {
+        this._elapsedTimeInMs = value;
+    }
+    
     constructor() {
         
         // What time the game was started (in ms)
