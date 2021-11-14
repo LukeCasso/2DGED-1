@@ -11,18 +11,41 @@ class ObjectManager {
         this.sprites = [];
     }
 
-    // Note that this.sprites is a 2D array
-    // Each cell in the row contains an array of sprites
-    // Each cell is split into sprites based on their ActorType
+    // Note that this.sprites is a 2D array of sprites.
+
+    // To understand 2D arrays, first consider 1D arrays. A 1D array is a typical array
+    // that you would have used in first year. Each cell in a 1D array can contain a value.
+    // For example, the array [1, 2, 3, 4, 5] is a traditional '1D' array.
+
+    // To create a 2D array, all we need to do is replace the values in a 1D array with arrays.
+    // So, instead of just storing numbers [1, 2, 3], or strings ["James", "Farrell"], a 2D array
+    // stores arrays [[], [], []].
+
+    // The benefit of 2D arrays, is that each individual inner array can be of different length, 
+    // and can contain different values.
+
+    // In our case, we are creating a 2D array which contains sprites. We could just use a 1D array
+    // and simply place all of our sprites into one long array, but this would not be practical. We
+    // want to group our sprites together based on their ActorType. This allows us to then draw our
+    // sprites in a particular order. For example, we may wish to draw any background sprites first, 
+    // before we draw our enemies and player. If we did this operation in reverse (draw the enemies
+    // and players before drawing our background), then we would not be able to see our enemy or
+    // player sprites.
+    
+
+    // As such, we split our sprites up into sub-arrays based on their ActorType. We then use this
+    // categorisation of sprites to draw them in the order we choose.
+
+    // Thus, our 2D array will contain an array of arrays. Each 'sub-array' will be an array of 
+    // sprites that all belong to one ActorType. In our case, we will have a Background sub-array, 
+    // a NPC sub-array, a Player sub-array, and a Projectile sub-array.
 
     // e.g. Array[0] is an array of sprites that have the 'Background' ActorType
     //      Array[1] is an array of sprites that have the 'NPC' ActorType
     //      and so on...
 
-    // This is why it is important that we give each sprite an ActorType, and also
-    // why it is important that we correctly order our ActorTypes (because each 'ActorType' 
-    // layer is drawn on top of the previous layers).
     add(sprite) {
+
         // Do we have a row for this ActorType?
         if (!this.sprites[sprite.actorType]) {
 
@@ -32,6 +55,49 @@ class ObjectManager {
 
         // Add this sprite to the appropriate array
         this.sprites[sprite.actorType].push(sprite);
+    }
+
+    /**
+     * Removes a sprite from the sprites array.
+     * @param {Sprite} sprite
+     * @returns {Boolean} True if removed, otherwise false
+     */
+    remove(sprite) {
+
+        // Remember, this.sprites is a 2D array.
+        // As such, we must first check to see if the relevant sub-array exists.
+        if (this.sprites[sprite.ActorType]) {
+
+            // Check if the sprite exists in the array
+            let index = this.sprites[sprite.ActorType].indexOf(sprite);
+            
+            // If the sprite is found
+            if (index != -1) {
+
+                // Remove the sprite from the array
+                this.sprites[sprite.ActorType].splice(index, 1);
+
+                // Indicate that the sprite was successfully removed from
+                // the this.sprites array
+                return true;
+            }
+
+            // Indicate that the operation was unsuccessful
+
+            // In this case, the operation was unsuccessful because the
+            // provided sprite didn't exist in the sprite's ActorType 
+            // sub-array
+            return false;
+        }
+        else {
+
+            // Indicate that the operation was unsuccessful
+
+            // In this case, the operation was unsuccessful because a related
+            // sub-array for the provided sprite's ActorType doesn't exist in 
+            // the this.sprites array.
+            return false;
+        }
     }
 
     find(predicate) {
@@ -69,10 +135,10 @@ class ObjectManager {
     }
 
     draw(gameTime) {
-        
+
         // Loop through each ActorType
         for (let key in this.sprites) {
-            
+
             // Loop through each Sprite of ActorType
             for (let sprite of this.sprites[key]) {
 
