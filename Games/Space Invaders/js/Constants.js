@@ -3,7 +3,7 @@
  */
 class SpriteData {
 
-    // Sprite position on Sprite Sheet
+    // Sprite position and dimensions on Sprite Sheet
     static ENEMY_ONE_FRAMES = [
         {
             // Animation Frame 1
@@ -21,7 +21,7 @@ class SpriteData {
         },
     ];
 
-    // Sprite position on Sprite Sheet
+    // Sprite position and dimensions on Sprite Sheet
     static ENEMY_TWO_FRAMES = [
         {
             // Animation Frame 1
@@ -39,7 +39,7 @@ class SpriteData {
         },
     ];
 
-    // Sprite position on Sprite Sheet
+    // Sprite position and dimensions on Sprite Sheet
     static ENEMY_THREE_FRAMES = [
         {
             // Animation Frame 1
@@ -54,6 +54,25 @@ class SpriteData {
             y: 16,
             width: 24,
             height: 16,
+        },
+    ];
+
+    static BULLET_WIDTH = 7;
+    static BULLET_HEIGHT = 12;
+
+    // Sprite position and dimensions on Sprite Sheet
+    static BULLET_FRAMES = [
+        {
+            x: 67,
+            y: 20,
+            width: this.BULLET_WIDTH,
+            height: this.BULLET_HEIGHT
+        },
+        {
+            x: 74,
+            y: 20,
+            width: this.BULLET_WIDTH,
+            height: this.BULLET_HEIGHT
         },
     ];
 
