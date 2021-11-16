@@ -19,10 +19,11 @@
 </head>
 
 <body>
-    <h2>Space Invaders</h2>
 
     <!-- Create Canvas -->
-    <canvas id="main_canvas" width="480" height="640"></canvas>
+    <div style="text-align: center;">
+        <canvas id="main_canvas" width="550" height="700"></canvas>        
+    </div>
 
     <!-- Load Assets -->
     <img id="background_sprite_sheet" class="sprite" src="assets/images/background.png">
@@ -48,11 +49,13 @@
     <script src="../../Engine/Utilities/GDUtilities.js"></script>
 
     <!-- Load Game Scripts -->
-    <script src="js/Constants.js"></script>
-    <script src="js/BulletMoveController.js"></script>
-    <script src="js/PlayerMoveController.js"></script>
-    <script src="js/PlayerShootController.js"></script>
+    <script src="js/Constants/Constants.js"></script>
+    <script src="js/Controllers/BulletMoveController.js"></script>
+    <script src="js/Controllers/PlayerMoveController.js"></script>
+    <script src="js/Controllers/PlayerShootController.js"></script>
+    <script src="js/Controllers/CycleMoveDescendController.js"></script>
 
+    <!-- Load Game -->
     <script src="js/space-invaders.js"></script>
 </body>
 

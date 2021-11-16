@@ -3,23 +3,29 @@
  */
 class SpriteData {
 
+    static ENEMY_ONE_WIDTH = 22;
+    static ENEMY_ONE_HEIGHT = 16;
+
     // Sprite position and dimensions on Sprite Sheet
     static ENEMY_ONE_FRAMES = [
         {
             // Animation Frame 1
-            x: 0,                   // Source Position
+            x: 0,                           // Source Position
             y: 0,
-            width: 22,              // Source Dimensions
-            height: 16,
+            width: this.ENEMY_ONE_WIDTH,    // Source Dimensions
+            height: this.ENEMY_ONE_HEIGHT,
         },
         {
             // Animation Frame 2
-            x: 0,                   // Source Position
+            x: 0,                           // Source Position
             y: 16,
-            width: 22,              // Source Dimension
-            height: 16,
+            width: this.ENEMY_ONE_WIDTH,    // Source Dimensions
+            height: this.ENEMY_ONE_HEIGHT,
         },
     ];
+
+    static ENEMY_TWO_WIDTH = 16;
+    static ENEMY_TWO_HEIGHT = 16;
 
     // Sprite position and dimensions on Sprite Sheet
     static ENEMY_TWO_FRAMES = [
@@ -27,17 +33,20 @@ class SpriteData {
             // Animation Frame 1
             x: 22,
             y: 0,
-            width: 16,
-            height: 16,
+            width: this.ENEMY_TWO_WIDTH,
+            height: this.ENEMY_TWO_HEIGHT,
         },
         {
             // Animation Frame 2
             x: 22,
             y: 16,
-            width: 16,
-            height: 16,
+            width: this.ENEMY_TWO_WIDTH,
+            height: this.ENEMY_TWO_HEIGHT,
         },
     ];
+
+    static ENEMY_THREE_WIDTH = 24;
+    static ENEMY_THREE_HEIGHT = 16;
 
     // Sprite position and dimensions on Sprite Sheet
     static ENEMY_THREE_FRAMES = [
@@ -45,15 +54,15 @@ class SpriteData {
             // Animation Frame 1
             x: 38,
             y: 0,
-            width: 24,
-            height: 16,
+            width: this.ENEMY_THREE_WIDTH,
+            height: this.ENEMY_THREE_HEIGHT,
         },
         {
             // Animation Frame 2
             x: 38,
             y: 16,
-            width: 24,
-            height: 16,
+            width: this.ENEMY_THREE_WIDTH,
+            height: this.ENEMY_THREE_HEIGHT,
         },
     ];
 
@@ -83,10 +92,10 @@ class SpriteData {
     static PLAYER_HEIGHT = 16;
 
     // Barrier Sprite position on Sprite Sheet
+    static BARRIER_X = 84;
+    static BARRIER_Y = 8;
     static BARRIER_HEIGHT = 24;
     static BARRIER_WIDTH = 36;
-    static BARRIER_x = 84;
-    static BARRIER_y = 8;
 }
 
 class GameData {

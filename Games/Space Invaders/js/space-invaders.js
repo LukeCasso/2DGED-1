@@ -169,7 +169,76 @@ function initializeBackground() {
 
 function initializeBarriers() {
 
-    // TO DO: ADD BARRIER SPRITES
+    let transform = null;
+    let artist = null;
+
+    let spriteArchetype = null;
+    let spriteClone = null;
+
+    // Set up object transform
+    transform = new Transform2D(
+        Vector2.Zero,                   // Translation
+        0,                              // Rotation
+        Vector2.One,                    // Scale
+        Vector2.Zero,                   // Origin
+        new Vector2(                    // Dimensions
+            SpriteData.BARRIER_WIDTH,
+            SpriteData.BARRIER_HEIGHT
+        )
+    );
+
+    // Set up sprite artist
+    artist = new SpriteArtist(
+        context,                        // Context
+        invadersSpriteSheet,            // Sprite sheet
+        1,                              // Alpha
+        new Vector2(                    // Source position
+            SpriteData.BARRIER_X,
+            SpriteData.BARRIER_Y
+        ),
+        new Vector2(                    // Source dimensions
+            SpriteData.BARRIER_WIDTH,
+            SpriteData.BARRIER_HEIGHT
+        )
+    );
+
+    // Create barrier archetype
+    // An archetype is a typical object - we can think of it as like a blueprint
+    // for other similar objects.
+    
+    // We can make copies of this archetype using the clone method. We can then
+    // make changes to each clone as we see fit. Note that we don't add the
+    // archetype to the object manager. Instead, we add its clones to the object
+    // manager.
+
+    spriteArchetype = new Sprite(
+        "Barrier",
+        transform,
+        ActorType.Player,
+        StatusType.Updated | StatusType.Drawn,
+        artist
+    );
+
+    // Ceate five barriers
+    for (let i = 0; i < 5; i++) {
+
+        // Clone sprite
+        spriteClone = spriteArchetype.clone();
+
+        // Update ID
+        spriteClone.id = spriteClone.id + i;
+
+        // Update position
+        spriteClone.transform.setTranslation(
+            new Vector2(
+                76 + (90 * i),
+                580
+            )
+        );
+
+        // Add to object manager
+        objectManager.add(spriteClone);
+    }
 }
 
 function initializeEnemies() {
@@ -177,32 +246,35 @@ function initializeEnemies() {
     let transform = null;
     let artist = null;
 
+    let spriteArchetype = null;
+    let spriteClone = null;
+
     /********************************* ANIMATED ENEMY ONE *********************************/
 
     // Where and how to draw our sprite on screen
     transform = new Transform2D(
-        new Vector2(                        // Translation
-            canvas.clientWidth / 2,
-            50
-        ),
-        0,                                  // Rotation
-        new Vector2(2, 2),                  // Scale (Scale x2)
-        Vector2.Zero,                       // Origin (Top-Left Corner)
-        new Vector2(22, 16)                 // Source Dimensions
+        Vector2.Zero,                           // Translation
+        0,                                      // Rotation
+        Vector2.One,                            // Scale
+        Vector2.Zero,                           // Origin
+        new Vector2(                            // Source dimensions
+            SpriteData.ENEMY_ONE_WIDTH,
+            SpriteData.ENEMY_ONE_HEIGHT
+        )
     );
 
     // What area of a sprite sheet to draw on screen
     artist = new AnimatedSpriteArtist(
         context,
         invadersSpriteSheet,
-        1,                                      // Opaque
-        SpriteData.ENEMY_ONE_FRAMES,            // Array of Source Position and Source Dimensions
+        1,                                      // Alpha
+        SpriteData.ENEMY_ONE_FRAMES,            // Array of source positions and source dimensions
         0,                                      // Start frame
         1,                                      // End frame
-        5                                       // Animation frame rate (speed)
+        4                                       // Animation frame rate (speed)
     );
 
-    let animatedEnemyOneSprite = new Sprite(
+    spriteArchetype = new Sprite(
         "Animated Enemy 1",                     // Unique ID
         transform,                              // Transform (Set up above)
         ActorType.NPC,                          // Non playable character
@@ -210,35 +282,63 @@ function initializeEnemies() {
         artist                                  // Artist (Set up above)
     );
 
-    // Add to the object manager
-    objectManager.add(animatedEnemyOneSprite);
+    // Create 8 clones
+    for (let i = 0; i < 8; i++) {
+
+        // Clone sprite
+        spriteClone = spriteArchetype.clone();
+
+        // Update ID
+        spriteClone.id = spriteClone.id + i;
+
+        // Update position
+        spriteClone.transform.setTranslation(
+            new Vector2(
+                (50 * i) + 30,
+                50
+            )
+        );
+
+        // Attach controller
+        spriteClone.attachController(
+            new CycleMoveDescendController(
+                new Vector2(20, 0),
+                4,
+                1000,
+                new Vector2(0, 20)
+            )
+        );
+
+        // Add to object manager
+        objectManager.add(spriteClone);
+    }
 
     /********************************* ANIMATED ENEMY TWO *********************************/
 
     // Where and how to draw our sprite on screen
     transform = new Transform2D(
-        new Vector2(                        // Translation
-            canvas.clientWidth / 2,
-            150
-        ),
-        0,                                  // Rotation
-        new Vector2(2, 2),                  // Scale (Scale x2)
-        Vector2.Zero,                       // Origin (Top-Left Corner)
-        new Vector2(16, 16)                 // Source Dimensions
+        Vector2.Zero,                           // Translation
+        0,                                      // Rotation
+        Vector2.One,                            // Scale
+        Vector2.Zero,                           // Origin
+        new Vector2(                            // Source dimensions
+            SpriteData.ENEMY_TWO_WIDTH,
+            SpriteData.ENEMY_TWO_HEIGHT
+        )
     );
 
     // What area of a sprite sheet to draw on screen
     artist = new AnimatedSpriteArtist(
         context,
         invadersSpriteSheet,
-        1, // Opaque
+        1,                                      // Alpha
         SpriteData.ENEMY_TWO_FRAMES,            // Array of Source Position and Source Dimensions
         0,                                      // Start frame
         1,                                      // End frame
         3                                       // Animation frame rate (speed)
     );
 
-    let animatedEnemyTwoSprite = new Sprite(
+    spriteArchetype = new Sprite(
         "Animated Enemy 2",                     // Unique ID
         transform,                              // Transform (Set up above)
         ActorType.NPC,                          // Non playable character
@@ -246,65 +346,98 @@ function initializeEnemies() {
         artist                                  // Artist (Set up above)
     );
 
-    // Add to the object manager
-    objectManager.add(animatedEnemyTwoSprite);
+    // Create 8 clones
+    for (let i = 0; i < 8; i++) {
+
+        // Clone sprite
+        spriteClone = spriteArchetype.clone();
+
+        // Update ID
+        spriteClone.id = spriteClone.id + i;
+
+        // Update position
+        spriteClone.transform.setTranslation(
+            new Vector2(
+                (50 * i) + 32,
+                80
+            )
+        );
+
+        // Attach controller
+        spriteClone.attachController(
+            new CycleMoveDescendController(
+                new Vector2(20, 0),
+                4,
+                1000,
+                new Vector2(0, 20)
+            )
+        );
+
+        // Add to object manager
+        objectManager.add(spriteClone);
+    }
 
     /******************************** ANIMATED ENEMY THREE ********************************/
 
     // Where and how to draw our sprite on screen
     transform = new Transform2D(
-        new Vector2(                        // Translation
-            canvas.clientWidth / 2,
-            100
-        ),
-        0,                                  // Rotation
-        new Vector2(2, 2),                  // Scale (Scale x2)
-        Vector2.Zero,                       // Origin (Top-Left Corner)
-        new Vector2(24, 16)                 // Source Dimensions
+        Vector2.Zero,                           // Translation
+        0,                                      // Rotation
+        Vector2.One,                            // Scale
+        Vector2.Zero,                           // Origin
+        new Vector2(24, 16)                     // Dimensions
     );
 
     // What area of a sprite sheet to draw on screen
     artist = new AnimatedSpriteArtist(
-        context,
-        invadersSpriteSheet,
-        1,                                      // Opaque
-        SpriteData.ENEMY_THREE_FRAMES,          // Array of Source Position and Source Dimensions
-        0,                                      // Start frame
-        1,                                      // End frame
-        10                                      // Animation frame rate (speed)
+        context,                                // Context
+        invadersSpriteSheet,                    // Sprite sheet
+        1,                                      // Alpha
+        SpriteData.ENEMY_THREE_FRAMES,          // Array of source positions and source dimensions
+        0,                                      // Start frame of animation
+        1,                                      // End frame of animation
+        4                                       // Animation frame rate (speed)
     );
 
-    let animatedEnemyThreeSprite = new Sprite(
+    spriteArchetype = new Sprite(
         "Animated Enemy 3",                     // Unique ID
-        transform,                              // Transform (Set up above)
+        transform,                              // Transform (set up above)
         ActorType.NPC,                          // Non playable character
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
-        artist                                  // Artist (Set up above)
+        artist                                  // Artist (set up above)
     );
-
-    // Add to the object manager
-    objectManager.add(animatedEnemyThreeSprite);
 
     /********************************* ENEMY THREE CLONES *********************************/
 
-    let clonedEnemySprite = null;
+    // Create 8 clones
+    for (let i = 0; i < 8; i++) {
 
-    // Loop 10 times
-    for (let i = -5; i < 5; i++) {
+        // Clone sprite
+        spriteClone = spriteArchetype.clone();
 
-        // Create a clone of animated enemy three
-        clonedEnemySprite = animatedEnemyThreeSprite.clone();
+        // Update ID
+        spriteClone.id = spriteClone.id + i;
 
-        // Move the clone (relative to the animatedEnemyThreeSprite's position)
-        clonedEnemySprite.transform.translateBy(
+        // Update position
+        spriteClone.transform.setTranslation(
             new Vector2(
-                i * 50,             // -250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250
-                50
+                (50 * i) + 28,
+                110
             )
         );
 
-        // Add this clone to our object manager
-        objectManager.add(clonedEnemySprite);
+        // Attach controller
+        spriteClone.attachController(
+            new CycleMoveDescendController(
+                new Vector2(20, 0),
+                4,
+                1000,
+                new Vector2(0, 20)
+            )
+        );
+
+        // Add to object manager
+        objectManager.add(spriteClone);
     }
 }
 
@@ -356,7 +489,7 @@ function initializePlayer() {
         // height).
         new Vector2(
             SpriteData.BULLET_WIDTH,
-            SpriteData.BARRIER_HEIGHT
+            SpriteData.BULLET_HEIGHT
         )
     );
 
@@ -399,13 +532,13 @@ function initializePlayer() {
     transform = new Transform2D(
         new Vector2(
             canvas.clientWidth / 2,
-            canvas.clientHeight - 100
+            canvas.clientHeight - 50
         ),
         0,
-        new Vector2(2, 2),
+        Vector2.One,
         new Vector2(
-            SpriteData.PLAYER_WIDTH,
-            SpriteData.PLAYER_HEIGHT
+            SpriteData.PLAYER_WIDTH / 2,
+            SpriteData.PLAYER_HEIGHT / 2
         ),
         new Vector2(
             SpriteData.PLAYER_WIDTH,
@@ -419,11 +552,11 @@ function initializePlayer() {
         invadersSpriteSheet,                // The sprite sheet that we want to draw from
         1,
         new Vector2(                        // The position of the sprite on the sprite sheet
-            SpriteData.PLAYER_X, 
+            SpriteData.PLAYER_X,
             SpriteData.PLAYER_Y
         ),
         new Vector2(                        // The size of the sprite on the sprite sheet
-            SpriteData.PLAYER_WIDTH, 
+            SpriteData.PLAYER_WIDTH,
             SpriteData.PLAYER_HEIGHT
         ),
     );

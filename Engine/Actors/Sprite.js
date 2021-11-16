@@ -69,7 +69,7 @@ class Sprite extends Actor2D {
      */
     clone() {
         let clone = new Sprite(
-            this.id + " - clone",
+            this.id + " - Clone",
             this.transform.clone(),
             this.actorType,
             this.statusType,

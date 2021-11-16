@@ -8,9 +8,10 @@ const ActorType = {
      * be DRAWN OVER everything else.
      */
     Background: 0,
-    NPC: 1,
+    Decorator: 1,
     Projectile: 2,
-    Player: 3,
+    NPC: 3,
+    Player: 4,
 
     // Add as many actor types as your game needs here BUT remember that the 
     // assigned number will determine drawn sort order...
