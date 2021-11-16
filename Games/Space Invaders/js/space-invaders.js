@@ -102,9 +102,9 @@ function initializeManagers() {
 function initializeSprites() {
 
     initializeBackground();
-    initializeEnemies();
-    initializePlayers();
     initializeBarriers();
+    initializeEnemies();
+    initializePlayer();
 }
 
 function initializeBackground() {
@@ -156,7 +156,7 @@ function initializeBackground() {
     );
 
     let backgroundSprite = new Sprite(
-        "background",                                           // ID
+        "Background",                                           // ID
         transform,                                              // Transform
         ActorType.Background,                                   // ActorType    (Background, NPC, Player, Projectile)
         StatusType.Drawn,                                       // StatusType   (Off, Drawn, Updated)
@@ -165,6 +165,11 @@ function initializeBackground() {
 
     // Add to the object manager
     objectManager.add(backgroundSprite);
+}
+
+function initializeBarriers() {
+
+    // TO DO: ADD BARRIER SPRITES
 }
 
 function initializeEnemies() {
@@ -303,30 +308,127 @@ function initializeEnemies() {
     }
 }
 
-function initializePlayers() {
+function initializePlayer() {
 
     let transform;
     let artist;
 
+    /*************************************** BULLET ***************************************/
+
+    // Where and how to draw our sprite on the screen
+    transform = new Transform2D(
+
+        // Translation
+        // It actually doesn't matter where our sprite is drawn, because we will
+        // set its StatusType to off at the start of the game.
+        Vector2.Zero,
+
+        // Rotation
+        0,
+
+        // Scale
+        Vector2.One,
+
+        // Origin
+        // I use the width and height of the sprite to determine its center
+        // point. I want the origin of this bullet to be at its center, because
+        // I want to center it on the player sprite whenever the player shoots.
+
+        // These values (width and height) are the dimensions of the sprite.
+        // I determined the width and height of the Sprite by inspecting the
+        // invaders sprite sheet using Microsoft Paint. To determine the center
+        // point of this sprite, I then divided each component (width and height)
+        // by 2.
+
+        // However, this implementation is not responsive. For example, if I
+        // were to change the dimension of this sprite, or if I were to change
+        // the scale of this sprite, then the origin would no longer be correct.
+
+        // For our current purposes, this is fine, but how would you change this
+        // system to be more responsive?
+        new Vector2(
+            SpriteData.BULLET_WIDTH / 2,
+            SpriteData.BULLET_HEIGHT / 2
+        ),
+
+        // Dimensions
+        // As mentioned above, this is the dimension of our bullet Sprite (width,
+        // height).
+        new Vector2(
+            SpriteData.BULLET_WIDTH,
+            SpriteData.BARRIER_HEIGHT
+        )
+    );
+
+    // What area of a given spriteSheet do we want to draw on screen
+    artist = new AnimatedSpriteArtist(
+        context,                                // Context
+        invadersSpriteSheet,                    // SpriteSheet
+        1,                                      // Opacity
+        SpriteData.BULLET_FRAMES,               // Array of Source Position and Source Dimensions
+        0,                                      // Start frame
+        1,                                      // End frame
+        2                                       // Animation frame rate (speed)
+    );
+
+    // Create bullet sprite
+    let bulletSprite = new Sprite(
+        "Bullet",                               // Unique ID
+        transform,                              // Transform (Set up above)
+        ActorType.Projectile,                   // Projectile
+        StatusType.Off,                         // Set this to off initially (we will change this later)
+        artist                                  // Artist (Set up above)
+    );
+
+    // Attach bullet controller to the bullet sprite
+    bulletSprite.attachController(new BulletMoveController(Vector2.Up, GameData.BULLET_SPEED));
+
+    // The above controller will move the bullet sprite in the provided direction (Vector2.Up),
+    // at the provided speed (GameData.BULLET_SPEED). Change these input parameters to different 
+    // values, and see what results you get.
+
+    // Notice that we don't actually add the bullet to the object manager at this point. That is
+    // because we don't want to draw or update this bullet sprite. In our PlayerShootController,
+    // we will create a clone of this bullet sprite whenever the player shoots. We will then
+    // change the clone's StatusType to Updated | Drawn, before adding it to the object manager.
+    // As such, we will always have a base bullet sprite that we can reference for making clones. 
+
+    /*************************************** PLAYER ***************************************/
+
+    // Where and how to draw our sprite on the screen
     transform = new Transform2D(
         new Vector2(
-            canvas.clientWidth / 2 - SpriteData.PLAYER_WIDTH / 2,
+            canvas.clientWidth / 2,
             canvas.clientHeight - 100
         ),
         0,
         new Vector2(2, 2),
-        Vector2.Zero,
-        new Vector2(SpriteData.PLAYER_WIDTH, SpriteData.PLAYER_HEIGHT)
+        new Vector2(
+            SpriteData.PLAYER_WIDTH,
+            SpriteData.PLAYER_HEIGHT
+        ),
+        new Vector2(
+            SpriteData.PLAYER_WIDTH,
+            SpriteData.PLAYER_HEIGHT
+        )
     );
 
+    // What area of a given spriteSheet to we want to draw on screen
     artist = new SpriteArtist(
         context,
-        invadersSpriteSheet,
+        invadersSpriteSheet,                // The sprite sheet that we want to draw from
         1,
-        new Vector2(SpriteData.PLAYER_X, SpriteData.PLAYER_Y),
-        new Vector2(SpriteData.PLAYER_WIDTH, SpriteData.PLAYER_HEIGHT),
+        new Vector2(                        // The position of the sprite on the sprite sheet
+            SpriteData.PLAYER_X, 
+            SpriteData.PLAYER_Y
+        ),
+        new Vector2(                        // The size of the sprite on the sprite sheet
+            SpriteData.PLAYER_WIDTH, 
+            SpriteData.PLAYER_HEIGHT
+        ),
     );
 
+    // Create player sprite
     let playerSprite = new Sprite(
         "Player",
         transform,
@@ -335,15 +437,14 @@ function initializePlayers() {
         artist
     );
 
-    // TO DO - ATTACH PLAYER MOVE CONTROLLER
+    // Attach player move controller
+    playerSprite.attachController(new PlayerMoveController(GameData.PLAYER_SPEED));
 
-    // Add to the object manager
+    // Attach player shoot controller
+    playerSprite.attachController(new PlayerShootController(objectManager, bulletSprite, GameData.FIRE_INTERVAL));
+
+    // Add player to the object manager
     objectManager.add(playerSprite);
-}
-
-function initializeBarriers() {
-
-    // TO DO: ADD BARRIER SPRITES
 }
 
 function resetGame() {
@@ -386,18 +487,3 @@ function resetGame() {
 
 // Load our game when the webpage loads
 window.addEventListener("load", start);
-
-// Create an object which will store all of our currently held keys
-let keysDown = {};
-
-// Trigger a function when a key is pressed
-window.addEventListener("keydown", function (event) {
-
-    keysDown[event.key] = true;
-});
-
-// Trigger a function when a key is released
-window.addEventListener("keyup", function (event) {
-
-    delete keysDown[event.key];
-});

@@ -57,8 +57,6 @@ class SpriteArtist extends Artist {
         // Set the objects transparency
         this.context.globalAlpha = this.alpha;
 
-
-
         // Draw image
         this.context.drawImage(
             this.spriteSheet,

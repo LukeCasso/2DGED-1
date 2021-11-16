@@ -21,7 +21,7 @@ class PlayerMoveController {
             
             // Move left
             parent.transform.translateBy(
-                Vector2.MultiplyScalar(Vector2.Left, this.moveSpeed)
+                Vector2.MultiplyScalar(Vector2.Left, gameTime.elapsedTimeInMs * this.moveSpeed)
             );
         }
 
@@ -29,8 +29,8 @@ class PlayerMoveController {
         else if (this.keyState[Keys.D]) {
 
             // Move right
-            parent.transform.translateBy(    
-                Vector2.MultiplyScalar(Vector2.Right, this.moveSpeed)
+            parent.transform.translateBy(
+                Vector2.MultiplyScalar(Vector2.Right, gameTime.elapsedTimeInMs * this.moveSpeed)
             );
         }
     }

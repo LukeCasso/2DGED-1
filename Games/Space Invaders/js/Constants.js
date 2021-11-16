@@ -88,3 +88,13 @@ class SpriteData {
     static BARRIER_x = 84;
     static BARRIER_y = 8;
 }
+
+class GameData {
+
+    // Speed variables
+    static PLAYER_SPEED = 0.2;
+    static BULLET_SPEED = 0.25;
+
+    // Measured in milliseconds
+    static FIRE_INTERVAL = 500;
+}
