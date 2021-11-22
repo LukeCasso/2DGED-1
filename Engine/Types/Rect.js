@@ -129,6 +129,48 @@ class Rect {
     }
 
     /**
+     * Sets the position and size of this Rect object to the
+     * position and size of the provided transform
+     * 
+     * @param {Transform2D} transform 
+     */
+    transform(transform) {
+        this.x = transform.translation.x;
+        this.y = transform.translation.y;
+        this.width = transform.scale.x * transform.dimensions.x;
+        this.height = transform.scale.y * transform.dimensions.y;
+    }
+
+    /**
+     * Make this Rect object larger or smaller by the provided 
+     * explodeBy value. Note that explodeBy is measured in pixels.
+     * 
+     * @param {number} explodeBy 
+     */
+    explode(explodeBy) {
+
+        // Check if explode value invalid 
+        if (explodeBy % 2 != 0) {
+
+            throw "Error: Explode value must be an even number since we explode (i.e. expand or contract) the rectangle evenly on all sides";
+        }
+
+        let explodeHalf = explodeBy / 2;
+
+        this.x -= explodeHalf;
+        this.y -= explodeHalf;
+        this.width += explodeBy;
+        this.height += explodeBy;
+
+        // Check if valid value supplied
+        if (this.width < 0 || this.height < 0) {
+
+            throw "Error: Rectangle cannot have negative width or height";
+        }
+    }
+
+
+    /**
      * Check if otherRect is contained within this Rect.
      * Useful for checking if items (such as bullets) are currently on screen.
      * 

@@ -12,6 +12,51 @@ class Transform2D {
         return new Transform2D(Vector2.Zero, 0, Vector2.Zero);
     }
 
+    get boundingBox() {
+
+        // If this transform object has changed in any way, create an updated 
+        // bounding box.
+        
+        // We set the isDirty flag to true each time a value is changed (this
+        // is done in our setter functions). The isDirty flag indicates whether
+        // a change has been applied to our transform. If the isDirty flag is
+        // true, then we need to update our bounding box calculation. Once we
+        // have updated our bounding box calculation, we set the isDirty flag
+        // to false. As such, we should not need to re-calculate the bounding
+        // box the next time this function is called (unless of course some
+        // change has been applied to our transform, which would have set our
+        // isDirty flag to true.
+        
+        // If this object is dirty
+        if (this.isDirty) {
+
+            // Create a new Rect object
+            this._boundingBox = Rect.Zero;
+
+            // Update the Rect object to match the position and size that is 
+            // described by this transform
+
+            // View the transform function of the Rect class to find out more
+            // about how this works
+            this._boundingBox.transform(this);
+
+            // If an explode value has been set
+            // Explode allows us to make our bounding box bigger or smaller
+            // relative to the size of the sprite
+            if (this.explodeBoundingBoxInPixels != 0) {
+
+                // Explode our bounding box
+                this._boundingBox.explode(this.explodeBoundingBoxInPixels);
+            }
+
+            // Reset isDirty flag
+            this.isDirty = false;
+        }
+
+        // Return boundingBox
+        return this._boundingBox;
+    }
+
     get translation() {
         return this._translation;
     }
@@ -31,9 +76,9 @@ class Transform2D {
         return this._isDirty;
     }
 
-    set dimensions(dimensions) {
-        this._dimensions = dimensions.clone();
-        this.isDirty = true;
+    set boundingBox(boundingBox) {
+        this._boundingBox = boundingBox;
+        this._isDirty = true;
     }
     set translation(translation) {
         this._translation = translation.clone();
@@ -49,6 +94,10 @@ class Transform2D {
     }
     set origin(origin) {
         this._origin = origin.clone();
+        this.isDirty = true;
+    }
+    set dimensions(dimensions) {
+        this._dimensions = dimensions.clone();
         this.isDirty = true;
     }
     set isDirty(isDirty) {
@@ -71,6 +120,20 @@ class Transform2D {
         this.scale = scale;
         this.origin = origin;
         this.dimensions = dimensions;
+
+        // Currently internal - will expose later
+        this.explodeBoundingBoxInPixels = 0;
+
+        // Entirely internal
+        this.boundingBox = null;
+        this.isDirty = true;
+        
+        // Used by the reset method
+        this.originalTranslation = translation.clone();
+        this.originalRotationInRadians = rotationInRadians;
+        this.originalScale = scale.clone();
+        this.originalOrigin = origin.clone();
+        this.originalDimensions = dimensions.clone();
     }
 
     /**
@@ -83,6 +146,7 @@ class Transform2D {
      */
     setTranslation(translation) {
         this.translation = translation.clone();
+        this.isDirty = true;
     }
 
     /**
@@ -95,6 +159,7 @@ class Transform2D {
      */
     translateBy(translateBy) {
         this.translation.add(translateBy);
+        this.isDirty = true;
     }
 
     /**
@@ -105,6 +170,7 @@ class Transform2D {
      */
     setRotationInRadians(rotationInRadians) {
         this.rotationInRadians = rotationInRadians;
+        this.isDirty = true;
     }
 
     /**
@@ -138,6 +204,17 @@ class Transform2D {
     scaleBy(scaleBy) {
         this.scale.add(scaleBy);
         this.isDirty = true;
+    }
+
+    /**
+     * Reset to original state
+     */
+    reset() {
+        this.translation = this.originalTranslation.clone();
+        this.rotation = this.originalRotation;
+        this.scale = this.originalScale.clone();
+        this.origin = this.originalOrigin.clone();
+        this.dimensions = this.originalDimensions.clone();
     }
 
     equals(other) {

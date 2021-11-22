@@ -38,6 +38,9 @@ class Vector2 {
     get y() {
         return this._y;
     }
+    get isDirty() {
+        return this._isDirty;
+    }
 
     set x(x) {
         this._x = x;
@@ -47,7 +50,6 @@ class Vector2 {
         this._y = y;
         this.isDirty = true;
     }
-
     set isDirty(isDirty) {
         this._isDirty = isDirty;
     }
