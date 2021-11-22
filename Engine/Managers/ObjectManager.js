@@ -10,13 +10,9 @@ class ObjectManager {
         return this._sprites;
     }
 
-    set sprites(value) {
-        this._sprites = value;
-    }
-
     constructor(context) {
         this.context = context;
-        this.sprites = [];
+        this._sprites = [];
     }
 
     // Note that this.sprites is a 2D array of sprites.

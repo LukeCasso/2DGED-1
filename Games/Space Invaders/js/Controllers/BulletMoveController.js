@@ -8,8 +8,10 @@ class BulletMoveController {
      * @param {*} moveDirection 
      * @param {*} moveSpeed 
      */
-    constructor(objectManager, moveDirection, moveSpeed) {
+    constructor(objectManager, soundManager, moveDirection, moveSpeed) {
         this.objectManager = objectManager;
+        this.soundManager = soundManager;
+
         this.moveDirection = moveDirection;
         this.moveSpeed = moveSpeed;
     }
@@ -51,6 +53,9 @@ class BulletMoveController {
 
                 // Remove bullet
                 this.objectManager.remove(parent);
+
+                // Play bading
+                this.soundManager.play("sound_bading");
             }
         }
 
@@ -74,6 +79,13 @@ class BulletMoveController {
                 this.objectManager.remove(parent);
             }
         }
+
+        // If the bullet has left the bounds of our canvas
+        if (parent.transform.translation.y < 0) {
+
+            // Remove from object manager
+            this.objectManager.remove(parent);
+        }
     }
 
     /**
@@ -83,6 +95,7 @@ class BulletMoveController {
     clone() {
         return new BulletMoveController(
             this.objectManager,
+            this.soundManager,
             this.moveDirection,
             this.moveSpeed
         );

@@ -12,6 +12,7 @@ let gameTime;
 
 let objectManager;
 let keyboardManager;
+let soundManager;
 
 function start() {
 
@@ -96,8 +97,7 @@ function initializeManagers() {
 
     objectManager = new ObjectManager(context);
     keyboardManager = new KeyboardManager();
-
-    // TO DO: INITIALIZE MANAGERS
+    soundManager = new SoundManager(GameData.AUDIO_CUE_ARRAY);
 }
 
 function initializeSprites() {
@@ -520,6 +520,7 @@ function initializePlayer() {
     bulletSprite.attachController(
         new BulletMoveController(
             objectManager,
+            soundManager,
             Vector2.Up, 
             GameData.BULLET_SPEED
         )
@@ -592,6 +593,7 @@ function initializePlayer() {
         new PlayerShootController(
             objectManager,
             keyboardManager,
+            soundManager,
             bulletSprite, 
             GameData.FIRE_INTERVAL
         )

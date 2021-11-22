@@ -197,7 +197,7 @@ class SoundManager {
 
                 // If the audio object is not already playing
                 if (audioObject.paused) {
-
+                    
                     // Set up the audio object
                     audioObject.currentTime = audioCue.currentTime;
                     audioObject.volume = audioCue.volume;
