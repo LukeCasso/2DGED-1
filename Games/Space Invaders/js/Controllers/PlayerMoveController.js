@@ -1,23 +1,14 @@
 class PlayerMoveController {
 
-    constructor(moveSpeed) {
+    constructor(keyboardManager, moveSpeed) {
+        this.keyboardManager = keyboardManager;
         this.moveSpeed = moveSpeed;
-
-        this.keyState = {};
-
-        window.addEventListener("keydown", (event) => {
-            this.keyState[event.code] = true;
-        });
-
-        window.addEventListener("keyup", (event) => {
-            delete this.keyState[event.code];
-        });
     }
 
     update(gameTime, parent) {
         
         // If the A key is pressed
-        if (this.keyState[Keys.A]) {
+        if (this.keyboardManager.isKeyDown(Keys.A)) {
             
             // Move left
             parent.transform.translateBy(
@@ -26,7 +17,7 @@ class PlayerMoveController {
         }
 
         // If the D key is pressed
-        else if (this.keyState[Keys.D]) {
+        else if (this.keyboardManager.isKeyDown(Keys.D)) {
 
             // Move right
             parent.transform.translateBy(

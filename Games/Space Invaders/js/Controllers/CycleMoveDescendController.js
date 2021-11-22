@@ -17,9 +17,9 @@ class CycleMoveDescendController {
      */
     constructor(moveVector, maxMoveIncrements, intervalBetweenInMs, descendVector) {
         this.moveVector = moveVector;
-        this.descendVector = descendVector;
         this.maxMoveIncrements = maxMoveIncrements;
         this.intervalBetweenInMs = intervalBetweenInMs;
+        this.descendVector = descendVector;
 
         // Internal variables
         this.currentMoveIncrement = 0;

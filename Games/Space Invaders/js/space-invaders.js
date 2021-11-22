@@ -7,7 +7,11 @@ const context = canvas.getContext("2d");
 /** CORE GAME LOOP CODE - DO NOT CHANGE */
 
 let gameTime;
+
+// TO DO: Add Managers
+
 let objectManager;
+let keyboardManager;
 
 function start() {
 
@@ -74,18 +78,12 @@ function load() {
 function loadAssets() {
 
     loadSpriteSheets();
-    loadSounds();
 }
 
 function loadSpriteSheets() {
 
     invadersSpriteSheet = document.getElementById("invaders_sprite_sheet");
     backgroundSpriteSheet = document.getElementById("background_sprite_sheet");
-}
-
-function loadSounds() {
-
-    // TO DO...
 }
 
 function initialize() {
@@ -97,6 +95,9 @@ function initialize() {
 function initializeManagers() {
 
     objectManager = new ObjectManager(context);
+    keyboardManager = new KeyboardManager();
+
+    // TO DO: INITIALIZE MANAGERS
 }
 
 function initializeSprites() {
@@ -106,6 +107,8 @@ function initializeSprites() {
     initializeEnemies();
     initializePlayer();
 }
+
+// TO DO: Update Controllers
 
 function initializeBackground() {
 
@@ -578,6 +581,7 @@ function initializePlayer() {
     // Attach player move controller
     playerSprite.attachController(
         new PlayerMoveController(
+            keyboardManager,
             GameData.PLAYER_SPEED
         )
     );
@@ -586,6 +590,7 @@ function initializePlayer() {
     playerSprite.attachController(
         new PlayerShootController(
             objectManager,
+            keyboardManager,
             bulletSprite, 
             GameData.FIRE_INTERVAL
         )

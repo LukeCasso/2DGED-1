@@ -9,24 +9,15 @@ class PlayerShootController {
      * @param {*} bulletSprite 
      * @param {*} fireIntervalMs 
      */
-    constructor(objectManager, bulletSprite, fireIntervalMs) {
+    constructor(objectManager, keyboardManager, bulletSprite, fireIntervalMs) {
         this.objectManager = objectManager;
+        this.keyboardManager = keyboardManager;
 
         this.bulletSprite = bulletSprite;
         this.fireIntervalMs = fireIntervalMs;
 
         // Create internal time variable
         this.timeSinceLastBullet = 0;
-
-        this.keyState = {};
-
-        window.addEventListener("keydown", (event) => {
-            this.keyState[event.code] = true;
-        });
-
-        window.addEventListener("keyup", (event) => {
-            delete this.keyState[event.code];
-        });
     }
 
     /**
@@ -37,7 +28,7 @@ class PlayerShootController {
     update(gameTime, parent) {
 
         // If the user is pressing the space bar
-        if (this.keyState[Keys.Space]) {
+        if (this.keyboardManager.isKeyDown(Keys.Space)) {
 
             // If enough time has passed since the last bullet was fired
             if (this.timeSinceLastBullet >= this.fireIntervalMs) {
