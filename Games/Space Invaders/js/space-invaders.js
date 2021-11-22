@@ -214,7 +214,7 @@ function initializeBarriers() {
     spriteArchetype = new Sprite(
         "Barrier",
         transform,
-        ActorType.Player,
+        ActorType.Decorator,
         StatusType.Updated | StatusType.Drawn,
         artist
     );
@@ -277,7 +277,7 @@ function initializeEnemies() {
     spriteArchetype = new Sprite(
         "Animated Enemy 1",                     // Unique ID
         transform,                              // Transform (Set up above)
-        ActorType.NPC,                          // Non playable character
+        ActorType.Enemy,                        // Non playable character
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
         artist                                  // Artist (Set up above)
     );
@@ -304,7 +304,7 @@ function initializeEnemies() {
             new CycleMoveDescendController(
                 new Vector2(20, 0),
                 4,
-                1000,
+                GameData.ENEMY_MOVE_INTERVAL,
                 new Vector2(0, 20)
             )
         );
@@ -341,7 +341,7 @@ function initializeEnemies() {
     spriteArchetype = new Sprite(
         "Animated Enemy 2",                     // Unique ID
         transform,                              // Transform (Set up above)
-        ActorType.NPC,                          // Non playable character
+        ActorType.Enemy,                        // Non playable character
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
         artist                                  // Artist (Set up above)
     );
@@ -368,7 +368,7 @@ function initializeEnemies() {
             new CycleMoveDescendController(
                 new Vector2(20, 0),
                 4,
-                1000,
+                GameData.ENEMY_MOVE_INTERVAL,
                 new Vector2(0, 20)
             )
         );
@@ -402,7 +402,7 @@ function initializeEnemies() {
     spriteArchetype = new Sprite(
         "Animated Enemy 3",                     // Unique ID
         transform,                              // Transform (set up above)
-        ActorType.NPC,                          // Non playable character
+        ActorType.Enemy,                        // Non playable character
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
         artist                                  // Artist (set up above)
     );
@@ -429,10 +429,10 @@ function initializeEnemies() {
         // Attach controller
         spriteClone.attachController(
             new CycleMoveDescendController(
-                new Vector2(20, 0),
-                4,
-                1000,
-                new Vector2(0, 20)
+                new Vector2(20, 0),             // Move vector
+                4,                              // Movements per cycle
+                GameData.ENEMY_MOVE_INTERVAL,   // Move interval
+                new Vector2(0, 20)              // Descend vector
             )
         );
 
@@ -514,7 +514,12 @@ function initializePlayer() {
     );
 
     // Attach bullet controller to the bullet sprite
-    bulletSprite.attachController(new BulletMoveController(Vector2.Up, GameData.BULLET_SPEED));
+    bulletSprite.attachController(
+        new BulletMoveController(
+            Vector2.Up, 
+            GameData.BULLET_SPEED
+        )
+    );
 
     // The above controller will move the bullet sprite in the provided direction (Vector2.Up),
     // at the provided speed (GameData.BULLET_SPEED). Change these input parameters to different 
@@ -571,10 +576,20 @@ function initializePlayer() {
     );
 
     // Attach player move controller
-    playerSprite.attachController(new PlayerMoveController(GameData.PLAYER_SPEED));
+    playerSprite.attachController(
+        new PlayerMoveController(
+            GameData.PLAYER_SPEED
+        )
+    );
 
     // Attach player shoot controller
-    playerSprite.attachController(new PlayerShootController(objectManager, bulletSprite, GameData.FIRE_INTERVAL));
+    playerSprite.attachController(
+        new PlayerShootController(
+            objectManager,
+            bulletSprite, 
+            GameData.FIRE_INTERVAL
+        )
+    );
 
     // Add player to the object manager
     objectManager.add(playerSprite);
