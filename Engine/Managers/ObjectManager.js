@@ -6,6 +6,14 @@
  */
 class ObjectManager {
 
+    get sprites() {
+        return this._sprites;
+    }
+
+    set sprites(value) {
+        this._sprites = value;
+    }
+
     constructor(context) {
         this.context = context;
         this.sprites = [];
@@ -66,16 +74,16 @@ class ObjectManager {
 
         // Remember, this.sprites is a 2D array.
         // As such, we must first check to see if the relevant sub-array exists.
-        if (this.sprites[sprite.ActorType]) {
+        if (this.sprites[sprite.actorType]) {
 
             // Check if the sprite exists in the array
-            let index = this.sprites[sprite.ActorType].indexOf(sprite);
+            let index = this.sprites[sprite.actorType].indexOf(sprite);
             
             // If the sprite is found
             if (index != -1) {
 
                 // Remove the sprite from the array
-                this.sprites[sprite.ActorType].splice(index, 1);
+                this.sprites[sprite.actorType].splice(index, 1);
 
                 // Indicate that the sprite was successfully removed from
                 // the this.sprites array
