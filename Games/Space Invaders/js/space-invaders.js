@@ -519,6 +519,7 @@ function initializePlayer() {
     // Attach bullet controller to the bullet sprite
     bulletSprite.attachController(
         new BulletMoveController(
+            objectManager,
             Vector2.Up, 
             GameData.BULLET_SPEED
         )
