@@ -105,5 +105,12 @@ class GameData {
     static BULLET_SPEED = 0.25;
 
     // Measured in milliseconds
-    static FIRE_INTERVAL = 500;
+    static FIRE_INTERVAL = 750;
+    static ENEMY_MOVE_INTERVAL = 500;
+
+    // Audio cue array
+    static AUDIO_CUE_ARRAY = [
+        new AudioCue("sound_shoot", AudioType.Weapon, 1, 1, 0, false),
+        new AudioCue("sound_bading", AudioType.Explosion, 1, 1, 0, false)
+    ];
 }

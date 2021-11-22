@@ -10,8 +10,9 @@ const ActorType = {
     Background: 0,
     Decorator: 1,
     Projectile: 2,
-    NPC: 3,
-    Player: 4,
+    Enemy: 3,
+    NPC: 4,
+    Player: 5,
 
     // Add as many actor types as your game needs here BUT remember that the 
     // assigned number will determine drawn sort order...
@@ -38,6 +39,15 @@ const StatusType = {
     //   0001   1
     // & 0010   2
     //   0000   0
+};
+
+const AudioType = {
+    Background: 0,  
+    Menu: 1,
+    Explosion: 2,
+    WinLose: 3,
+    Weapon: 4,
+    All: 5,
 };
 
 // We use this to define colours for drawing to the screen
