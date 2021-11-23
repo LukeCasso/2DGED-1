@@ -53,7 +53,13 @@ class PlayerShootController {
                 bullet.transform.setTranslation(parent.transform.translation);
 
                 // Add the bullet to the object manager
-                this.objectManager.add(bullet);
+                this.notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sprite,    // Type
+                        NotificationAction.Add,     // Action
+                        [bullet]                    // Arguments
+                    )
+                );
 
                 // Play the shoot sound
                 this.notificationCenter.notify(

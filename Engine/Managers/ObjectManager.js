@@ -13,6 +13,7 @@ class ObjectManager {
     constructor(notificationCenter, context) {
         this.notificationCenter = notificationCenter;
         this.context = context;
+
         this._sprites = [];
 
         this.registerForNotifications();
@@ -66,12 +67,12 @@ class ObjectManager {
 
             case NotificationAction.Add:
 
-                // TO DO: Add call to relevant function here
+                this.add(notification.notificationArguments[0]);
                 break;
 
             case NotificationAction.Remove:
 
-                // TO DO: Add call to relevant function here
+                this.remove(notification.notificationArguments[0]);
                 break;
         }
     }

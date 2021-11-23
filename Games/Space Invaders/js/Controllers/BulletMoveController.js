@@ -11,9 +11,9 @@ class BulletMoveController {
      * @param {*} moveSpeed 
      */
     constructor(
-        notificationCenter, 
-        objectManager, 
-        moveDirection, 
+        notificationCenter,
+        objectManager,
+        moveDirection,
         moveSpeed
     ) {
         this.notificationCenter = notificationCenter;
@@ -29,7 +29,16 @@ class BulletMoveController {
      * @param {*} parent 
      */
     update(gameTime, parent) {
-        
+
+        this.updatePosition(gameTime, parent);
+
+        this.handleEnemyCollision(parent);
+        this.handleDecoratorCollision(parent);
+        this.handleExitCanvas(parent);
+    }
+
+    updatePosition(gameTime, parent) {
+
         // Calculate velocity vector
         let velocity = Vector2.MultiplyScalar(
             this.moveDirection,
@@ -38,6 +47,9 @@ class BulletMoveController {
 
         // Move the bullet
         parent.transform.translateBy(velocity);
+    }
+
+    handleEnemyCollision(parent) {
 
         // Get a list of all enemy sprites
         let enemySprites = this.objectManager.sprites[ActorType.Enemy];
@@ -47,7 +59,7 @@ class BulletMoveController {
 
             // Store a reference to the current enemy
             const enemy = enemySprites[index];
-            
+
             // Store a reference to each bounding box
             const bulletBoundingBox = parent.transform.boundingBox;
             const enemyBoundingBox = enemy.transform.boundingBox;
@@ -56,10 +68,22 @@ class BulletMoveController {
             if (bulletBoundingBox.intersects(enemyBoundingBox)) {
 
                 // Remove enemy
-                this.objectManager.remove(enemy);
+                this.notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sprite,    // Type
+                        NotificationAction.Remove,  // Action
+                        [enemy]                     // Arguments
+                    )
+                );
 
                 // Remove bullet
-                this.objectManager.remove(parent);
+                this.notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sprite,    // Type
+                        NotificationAction.Remove,  // Action
+                        [parent]                    // Arguments
+                    )
+                );
 
                 // Play bading
                 this.notificationCenter.notify(
@@ -71,6 +95,9 @@ class BulletMoveController {
                 );
             }
         }
+    }
+
+    handleDecoratorCollision(parent) {
 
         // Get a list of all enemy sprites
         let decoratorSprites = this.objectManager.sprites[ActorType.Decorator];
@@ -80,7 +107,7 @@ class BulletMoveController {
 
             // Store a reference to the current enemy
             const decorator = decoratorSprites[index];
-            
+
             // Store a reference to each bounding box
             const bulletBoundingBox = parent.transform.boundingBox;
             const decoratorBoundingBox = decorator.transform.boundingBox;
@@ -89,15 +116,30 @@ class BulletMoveController {
             if (bulletBoundingBox.intersects(decoratorBoundingBox)) {
 
                 // Remove bullet
-                this.objectManager.remove(parent);
+                this.notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sprite,    // Type
+                        NotificationAction.Remove,  // Action
+                        [parent]                    // Arguments
+                    )
+                );
             }
         }
+    }
+
+    handleExitCanvas(parent) {
 
         // If the bullet has left the bounds of our canvas
         if (parent.transform.translation.y < 0) {
 
             // Remove from object manager
-            this.objectManager.remove(parent);
+            this.notificationCenter.notify(
+                new Notification(
+                    NotificationType.Sprite,    // Type
+                    NotificationAction.Remove,  // Action
+                    [parent]                    // Arguments
+                )
+            );
         }
     }
 

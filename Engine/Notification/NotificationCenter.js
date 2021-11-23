@@ -71,6 +71,24 @@ const NotificationAction = {
     // Add more here as required
 };
 
+// Objects can register to particular notifications which they are
+// interested about. Any object can register to any notification.
+
+// If a notification is fired, every object which is registered to
+// that notification is notified. This, in turn, calls a method in
+// the object which performs some action. 
+
+// Additionally, we can provide a list of parameters when creating
+// a notification. These parameters are then passed to the handler
+// method.
+
+// For example, we can register the sound manager to sound event. 
+// As such, if a sound event is fired, the sound manager will react. 
+// However, multiple different sound events may be fired. We may 
+// have a 'play sound' event, or a 'pause sound event. As such, we
+// determine which function to call based on the notification 
+// action.
+
 class Notification {
 
     get notificationType() {
