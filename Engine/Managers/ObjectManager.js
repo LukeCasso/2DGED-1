@@ -10,9 +10,12 @@ class ObjectManager {
         return this._sprites;
     }
 
-    constructor(context) {
+    constructor(notificationCenter, context) {
+        this.notificationCenter = notificationCenter;
         this.context = context;
         this._sprites = [];
+
+        this.registerForNotifications();
     }
 
     // Note that this.sprites is a 2D array of sprites.
@@ -35,7 +38,7 @@ class ObjectManager {
     // before we draw our enemies and player. If we did this operation in reverse (draw the enemies
     // and players before drawing our background), then we would not be able to see our enemy or
     // player sprites.
-    
+
 
     // As such, we split our sprites up into sub-arrays based on their ActorType. We then use this
     // categorisation of sprites to draw them in the order we choose.
@@ -47,6 +50,31 @@ class ObjectManager {
     // e.g. Array[0] is an array of sprites that have the 'Background' ActorType
     //      Array[1] is an array of sprites that have the 'NPC' ActorType
     //      and so on...
+
+    registerForNotifications() {
+
+        this.notificationCenter.register(
+            NotificationType.Sprite,            // Register for sound event
+            this,                               // What object is listening for this event
+            this.handleSpriteNotification       // What function is called when a sound notification takes place
+        );
+    }
+
+    handleSpriteNotification(notification) {
+
+        switch (notification.notificationAction) {
+
+            case NotificationType.Add:
+
+                // TO DO: Add call to relevant function here
+                break;
+
+            case NotificationType.Remove:
+
+                // TO DO: Add call to relevant function here
+                break;
+        }
+    }
 
     add(sprite) {
 
@@ -74,7 +102,7 @@ class ObjectManager {
 
             // Check if the sprite exists in the array
             let index = this.sprites[sprite.actorType].indexOf(sprite);
-            
+
             // If the sprite is found
             if (index != -1) {
 

@@ -100,7 +100,11 @@ function initializeNotificationCenter() {
 
 function initializeManagers() {
 
-    objectManager = new ObjectManager(context);
+    objectManager = new ObjectManager(
+        notificationCenter,
+        context
+    );
+
     keyboardManager = new KeyboardManager();
 
     soundManager = new SoundManager(
@@ -528,8 +532,8 @@ function initializePlayer() {
     // Attach bullet controller to the bullet sprite
     bulletSprite.attachController(
         new BulletMoveController(
+            notificationCenter,
             objectManager,
-            soundManager,
             Vector2.Up, 
             GameData.BULLET_SPEED
         )

@@ -61,6 +61,7 @@ const NotificationAction = {
     Pickup: "Pickup",
 
     Play: "Play",
+    Pause: "Pause",
     ShowMenuChanged: "ShowMenuChanged",
     SetVolume: "SetVolume",
     SetVolumeByTheme: "SetVolumeByTheme",

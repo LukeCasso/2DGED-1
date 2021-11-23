@@ -5,12 +5,19 @@ class BulletMoveController {
 
     /**
      * 
+     * @param {*} notificationCenter 
+     * @param {*} objectManager 
      * @param {*} moveDirection 
      * @param {*} moveSpeed 
      */
-    constructor(objectManager, soundManager, moveDirection, moveSpeed) {
+    constructor(
+        notificationCenter, 
+        objectManager, 
+        moveDirection, 
+        moveSpeed
+    ) {
+        this.notificationCenter = notificationCenter;
         this.objectManager = objectManager;
-        this.soundManager = soundManager;
 
         this.moveDirection = moveDirection;
         this.moveSpeed = moveSpeed;
@@ -55,7 +62,13 @@ class BulletMoveController {
                 this.objectManager.remove(parent);
 
                 // Play bading
-                this.soundManager.play("sound_bading");
+                this.notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sound,     // Type
+                        NotificationAction.Play,    // Action
+                        ["sound_bading"]            // Arguments
+                    )
+                );
             }
         }
 
@@ -94,8 +107,8 @@ class BulletMoveController {
      */
     clone() {
         return new BulletMoveController(
+            this.notificationCenter,
             this.objectManager,
-            this.soundManager,
             this.moveDirection,
             this.moveSpeed
         );
