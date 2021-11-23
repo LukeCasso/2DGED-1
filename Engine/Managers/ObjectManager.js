@@ -64,12 +64,12 @@ class ObjectManager {
 
         switch (notification.notificationAction) {
 
-            case NotificationType.Add:
+            case NotificationAction.Add:
 
                 // TO DO: Add call to relevant function here
                 break;
 
-            case NotificationType.Remove:
+            case NotificationAction.Remove:
 
                 // TO DO: Add call to relevant function here
                 break;
