@@ -3,19 +3,25 @@
  */
 class PlayerShootController {
 
-
     /**
      * 
+     * @param {*} notificationCenter 
      * @param {*} objectManager 
-     * @param {*} keyboardManager 
-     * @param {*} soundManager 
+     * @param {*} keyboardManager
      * @param {*} bulletSprite 
      * @param {*} fireIntervalMs 
      */
-    constructor(objectManager, keyboardManager, soundManager, bulletSprite, fireIntervalMs) {
+    constructor(
+        notificationCenter,
+        objectManager,
+        keyboardManager,
+        bulletSprite,
+        fireIntervalMs
+    ) {
+        this.notificationCenter = notificationCenter;
+
         this.objectManager = objectManager;
         this.keyboardManager = keyboardManager;
-        this.soundManager = soundManager;
 
         this.bulletSprite = bulletSprite;
         this.fireIntervalMs = fireIntervalMs;
@@ -48,9 +54,15 @@ class PlayerShootController {
 
                 // Add the bullet to the object manager
                 this.objectManager.add(bullet);
-                
+
                 // Play the shoot sound
-                this.soundManager.play("sound_shoot");
+                this.notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sound,     // Type
+                        NotificationAction.Play,    // Action
+                        ["sound_shoot"]             // Arguments
+                    )
+                );
 
                 // Reset time
                 this.timeSinceLastBullet = 0;
@@ -67,7 +79,9 @@ class PlayerShootController {
      */
     clone() {
         return new PlayerShootController(
+            this.notificationCenter,
             this.objectManager,
+            this.keyboardManager,
             this.bulletSprite.clone(),
             this.moveDirection,
             this.moveSpeed

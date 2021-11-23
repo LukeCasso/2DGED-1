@@ -81,12 +81,15 @@ class SoundManager {
 
     /**
      * 
+     * @param {*} notificationCenter 
      * @param {*} cueArray 
      */
-    constructor(cueArray) {
+    constructor(notificationCenter, cueArray) {
+        this.notificationCenter = notificationCenter;
         this.cueArray = cueArray;
 
         this.initialize();
+        this.registerForNotifications();
     }
 
     /**
@@ -117,6 +120,44 @@ class SoundManager {
 
                 throw "Error: No audio object was found for cue [" + this.cueName + "]";
             }
+        }
+    }
+
+    /**
+     * 
+     */
+    registerForNotifications() {
+
+        this.notificationCenter.register(
+            NotificationType.Sound,             // Register for sound event
+            this,                               // What object is listening for this event
+            this.handleSoundNotification        // What function is called when a sound notification takes place
+        );
+    }
+
+    /**
+     * 
+     * @param {Notification} notification 
+     */
+    handleSoundNotification(notification) {
+
+        // Perform some action based on the notification action
+        switch(notification.notificationAction) {
+
+            case NotificationAction.Play:
+                this.play(notification.notificationArguments[0]);
+                break;
+
+            case NotificationAction.Pause:
+                this.pause(notification.notificationArguments[0]);
+                break;
+
+            case NotificationAction.SetVolume:
+                this.setVolume(
+                    notification.notificationArguments[0],
+                    notification.notificationArguments[1]
+                );
+                break;
         }
     }
 
@@ -176,7 +217,7 @@ class SoundManager {
     /**
      * Play a given audio cue
      * 
-     * @param {*} name 
+     * @param {string} name 
      */
     play(name) {
 

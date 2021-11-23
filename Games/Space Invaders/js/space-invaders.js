@@ -8,7 +8,7 @@ const context = canvas.getContext("2d");
 
 let gameTime;
 
-// TO DO: Add Managers
+let notificationCenter;
 
 let objectManager;
 let keyboardManager;
@@ -89,15 +89,24 @@ function loadSpriteSheets() {
 
 function initialize() {
 
+    initializeNotificationCenter();
     initializeManagers();
     initializeSprites();
+}
+
+function initializeNotificationCenter() {
+    notificationCenter = new NotificationCenter();
 }
 
 function initializeManagers() {
 
     objectManager = new ObjectManager(context);
     keyboardManager = new KeyboardManager();
-    soundManager = new SoundManager(GameData.AUDIO_CUE_ARRAY);
+
+    soundManager = new SoundManager(
+        notificationCenter,
+        GameData.AUDIO_CUE_ARRAY
+    );
 }
 
 function initializeSprites() {
@@ -591,9 +600,9 @@ function initializePlayer() {
     // Attach player shoot controller
     playerSprite.attachController(
         new PlayerShootController(
+            notificationCenter,
             objectManager,
             keyboardManager,
-            soundManager,
             bulletSprite, 
             GameData.FIRE_INTERVAL
         )

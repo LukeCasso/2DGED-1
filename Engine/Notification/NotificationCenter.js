@@ -60,6 +60,7 @@ const NotificationAction = {
 
     Pickup: "Pickup",
 
+    Play: "Play",
     ShowMenuChanged: "ShowMenuChanged",
     SetVolume: "SetVolume",
     SetVolumeByTheme: "SetVolumeByTheme",
@@ -275,6 +276,8 @@ class NotificationCenter {
                     observers[i].observer,      // Of the observer object
                     [notification]              // Passing through 'notification' as a paramter
                 );
+
+                // this.handleSoundNotification(notification)
             }
         }
     }
