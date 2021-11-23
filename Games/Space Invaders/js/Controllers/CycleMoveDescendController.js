@@ -65,7 +65,7 @@ class CycleMoveDescendController {
                 // Reset move increment
                 this.currentMoveIncrement = 0;
 
-                // Reduce time
+                // Reduce time to account for downwards movement
                 this.timeSinceLastMoveInMs = -this.intervalBetweenInMs;
             }
 
