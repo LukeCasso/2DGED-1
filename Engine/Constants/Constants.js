@@ -7,12 +7,18 @@ const ActorType = {
      * would NOT see anything EXCEPT the background sprite because it would 
      * be DRAWN OVER everything else.
      */
+
     Background: 0,
-    Decorator: 1,
-    Projectile: 2,
-    Enemy: 3,
-    NPC: 4,
-    Player: 5,
+    Platform: 1,
+    Decorator: 2,
+    Pickup: 3,
+    Interactable: 4,
+    Projectile: 5,
+    Enemy: 6,
+    NPC: 7,
+    Player: 8,
+    Camera: 9,
+    HUD: 10
 
     // Add as many actor types as your game needs here BUT remember that the 
     // assigned number will determine drawn sort order...
@@ -42,12 +48,47 @@ const StatusType = {
 };
 
 const AudioType = {
-    Background: 0,  
+    Background: 0,
     Menu: 1,
     Explosion: 2,
     WinLose: 3,
     Weapon: 4,
     All: 5,
+};
+
+const CollisionType = {
+    Collidable: true,
+    NotCollidable: false
+};
+
+// See: https://simon.html5.org/dump/html5-canvas-cheat-sheet.html
+const LineCapType = {
+    Butt: "butt",
+    Round: "round",
+    Square: "square"
+};
+
+const LineJoinType = {
+    Bevel: "bevel",
+    Round: "round",
+    Miter: "miter"
+};
+
+const TextAlignType = {
+    Start: "start",
+    End: "end",
+    Left: "left",
+    Right: "right",
+    Center: "center"
+};
+
+// See: https://www.w3schools.com/tags/canvas_textbaseline.asp
+const TextBaselineType = {
+    Top: "top",
+    Bottom: "bottom",
+    Middle: "middle",
+    Alphabetic: "alphabetic",
+    Hanging: "hanging"
 };
 
 // We use this to define colours for drawing to the screen

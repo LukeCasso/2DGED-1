@@ -10,6 +10,7 @@ let gameTime;
 
 let notificationCenter;
 
+let cameraManager;
 let objectManager;
 let keyboardManager;
 let soundManager;
@@ -55,7 +56,7 @@ function update(gameTime) {
 function draw(gameTime) {
 
     // Clear previous draw
-    clearCanvas(Color.White);
+    clearCanvas();
 
     // Call the draw method of the object manager class
     // to draw all sprites
@@ -91,6 +92,7 @@ function initialize() {
 
     initializeNotificationCenter();
     initializeManagers();
+    initializeCameras();
     initializeSprites();
 }
 
@@ -100,9 +102,16 @@ function initializeNotificationCenter() {
 
 function initializeManagers() {
 
+    cameraManager = new CameraManager(
+        "Camera Manager"
+    );
+
     objectManager = new ObjectManager(
+        "Object Manager",
         notificationCenter,
-        context
+        context,
+        StatusType.Drawn | StatusType.Updated,
+        cameraManager
     );
 
     keyboardManager = new KeyboardManager();
@@ -111,6 +120,32 @@ function initializeManagers() {
         notificationCenter,
         GameData.AUDIO_CUE_ARRAY
     );
+}
+
+function initializeCameras() {
+    
+    let transform = new Transform2D(
+        Vector2.Zero,
+        0,
+        Vector2.One,
+        new Vector2(
+            canvas.clientWidth / 2, 
+            canvas.clientHeight / 2
+        ),
+        new Vector2(
+            canvas.clientWidth, 
+            canvas.clientHeight
+        )
+    );
+
+    let camera = new Camera2D(
+        "Camera 1",
+        transform,
+        ActorType.Camera,
+        StatusType.Updated
+    );
+
+    cameraManager.add(camera);
 }
 
 function initializeSprites() {
@@ -175,6 +210,7 @@ function initializeBackground() {
         "Background",                                           // ID
         transform,                                              // Transform
         ActorType.Background,                                   // ActorType    (Background, NPC, Player, Projectile)
+        null,                                                   // CollisionType
         StatusType.Drawn,                                       // StatusType   (Off, Drawn, Updated)
         artist                                                  // Artist
     );
@@ -221,7 +257,7 @@ function initializeBarriers() {
     // Create barrier archetype
     // An archetype is a typical object - we can think of it as like a blueprint
     // for other similar objects.
-    
+
     // We can make copies of this archetype using the clone method. We can then
     // make changes to each clone as we see fit. Note that we don't add the
     // archetype to the object manager. Instead, we add its clones to the object
@@ -231,6 +267,7 @@ function initializeBarriers() {
         "Barrier",
         transform,
         ActorType.Decorator,
+        null,
         StatusType.Updated | StatusType.Drawn,
         artist
     );
@@ -294,6 +331,7 @@ function initializeEnemies() {
         "Animated Enemy 1",                     // Unique ID
         transform,                              // Transform (Set up above)
         ActorType.Enemy,                        // Non playable character
+        null,                                   // CollisionType
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
         artist                                  // Artist (Set up above)
     );
@@ -358,6 +396,7 @@ function initializeEnemies() {
         "Animated Enemy 2",                     // Unique ID
         transform,                              // Transform (Set up above)
         ActorType.Enemy,                        // Non playable character
+        null,                                   // CollisionType
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
         artist                                  // Artist (Set up above)
     );
@@ -419,6 +458,7 @@ function initializeEnemies() {
         "Animated Enemy 3",                     // Unique ID
         transform,                              // Transform (set up above)
         ActorType.Enemy,                        // Non playable character
+        null,                                   // CollisionType
         StatusType.Updated | StatusType.Drawn,  // Draw and update this sprite
         artist                                  // Artist (set up above)
     );
@@ -525,6 +565,7 @@ function initializePlayer() {
         "Bullet",                               // Unique ID
         transform,                              // Transform (Set up above)
         ActorType.Projectile,                   // Projectile
+        null,                                   // CollisionType
         StatusType.Off,                         // Set this to off initially (we will change this later)
         artist                                  // Artist (Set up above)
     );
@@ -534,7 +575,7 @@ function initializePlayer() {
         new BulletMoveController(
             notificationCenter,
             objectManager,
-            Vector2.Up, 
+            Vector2.Up,
             GameData.BULLET_SPEED
         )
     );
@@ -589,6 +630,7 @@ function initializePlayer() {
         "Player",
         transform,
         ActorType.Player,
+        null,
         StatusType.Updated | StatusType.Drawn,
         artist
     );
@@ -607,7 +649,7 @@ function initializePlayer() {
             notificationCenter,
             objectManager,
             keyboardManager,
-            bulletSprite, 
+            bulletSprite,
             GameData.FIRE_INTERVAL
         )
     );

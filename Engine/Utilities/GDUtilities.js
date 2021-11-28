@@ -54,7 +54,7 @@ class GDUtilities {
      */
     static Shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
-            
+
             // Generate random number  
             let j = Math.floor(Math.random() * (i + 1));
             let temp = array[i];
@@ -85,6 +85,7 @@ class GDMath {
      */
     static ToRadians(degrees) {
         degrees %= 360;
+        
         return degrees * (Math.PI / 180);
     }
 
@@ -111,8 +112,7 @@ class GDMath {
      * @memberof GDMath
      */
     static ToFixed(value, precision, base) {
-        if (value == 0)
-            return 0;
+        if (value == 0) return 0;
 
         let pow = Math.pow(base || 10, precision);
         return Math.round(value * pow) / pow;
@@ -120,5 +120,70 @@ class GDMath {
 }
 
 class GDString {
+    /**
+     * Returns a string with the leading/trailing whitespace removed and converted to lowercase
+     *
+     * @static
+     * @param {string} str User-defined string
+     * @returns Converted string
+     * @throws Exception if null, undefined or not a String
+     * @memberof GDString
+     */
+    static TrimToLower(str) {
+        //if invalid then throw exception
+        if (this.IsValidString(str)) throw "Variable does not hold a valid string!";
 
+        return str.trim().toLowerCase();
+    }
+
+    /**
+     * Returns true if a valid string, otherwise false
+     *
+     * @static
+     * @param {string} str User-defined string
+     * @returns True if valid, otherwise false
+     * @throws Exception if null, undefined or not a String
+     * @memberof GDString
+     */
+    static IsValidString(str) {
+        return str == null && str == undefined && new String(str) instanceof String;
+    }
+}
+
+/**
+ * Provides methods to manipulate the DOM
+ *
+ * @class HTMLDom
+ */
+class HTMLDom {
+    /**
+     * Sets text and shows a toast for a period of time in ms
+     *
+     * @static
+     * @param {String} elementID  Valid div element ID
+     * @param {String} text Text to set the innerHTML contents of the element to
+     * @param {Number} durationInMs Time in ms to show the element
+     * @memberof GDUtilities
+     */
+    static RevealToast(elementID, text, durationInMs) {
+        let element = document.getElementById(elementID);
+        element.innerHTML = text;
+        element.style.display = "block";
+
+        setTimeout(function (e) {
+            element.style.display = "none";
+        }, durationInMs);
+    }
+
+    /**
+     * Hides a toast element
+     *
+     * @static
+     * @param {String} elementID Valid div element ID
+     * @memberof GDUtilities
+     */
+    static HideToast(elementID) {
+        let element = document.getElementById(elementID);
+        element.style.display = "none";
+    }
 }

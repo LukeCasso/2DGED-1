@@ -22,7 +22,6 @@ class Actor2D {
         return this._statusType;
     }
 
-    // Will discuss later
     get controllers() {
         return this._controllers;
     }
@@ -42,8 +41,6 @@ class Actor2D {
     set statusType(statusType) {
         this._statusType = statusType;
     }
-
-    // Will discuss later
     set controllers(controllers) {
         this._controllers = controllers;
     }
@@ -51,14 +48,14 @@ class Actor2D {
         this._collisionPrimitive = collisionPrimitive;
     }
 
-    constructor(id, transform, actorType, statusType) {
+    constructor(id, transform, actorType, collisionType, statusType) {
         this.id = id;
         this.transform = transform;
         
         this.actorType = actorType;
+        this.collisionType = collisionType;
         this.statusType = statusType;
 
-        // Will discuss later
         this.controllers = [];
         this.collisionPrimitive = null;
     }
@@ -123,6 +120,7 @@ class Actor2D {
             this.id + " - Clone",
             this.transform.clone(),
             this.actorType,
+            this.collisionType,
             this.statusType
         );
 
@@ -149,6 +147,8 @@ class Actor2D {
             "," +
             this.actorType +
             "," +
+            this.collisionType +
+            ", " +
             this.statusType +
             "]"
         );

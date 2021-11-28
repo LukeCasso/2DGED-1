@@ -10,9 +10,14 @@ class ObjectManager {
         return this._sprites;
     }
 
-    constructor(notificationCenter, context) {
+    constructor(id, notificationCenter, context, statusType, cameraManager) {
+        this.id = id;
+        
         this.notificationCenter = notificationCenter;
         this.context = context;
+
+        this.statusType = statusType;
+        this.cameraManager = cameraManager;
 
         this._sprites = [];
 
@@ -145,8 +150,10 @@ class ObjectManager {
         // TO DO...
     }
 
-    sort(comparator) {
-        // TO DO...
+    sort(actorType, compareFunction) {
+        if (this.sprites[actorType]) {
+            this.sprites[actorType].sort(compareFunction);
+        }
     }
 
     clear() {
@@ -155,28 +162,42 @@ class ObjectManager {
 
     update(gameTime) {
 
-        // Loop through each ActorType
-        for (let key in this.sprites) {
+        // If update is enabled for the object manager
+        if ((this.statusType & StatusType.Drawn) != 0) {
 
-            // Loop through each Sprite of ActorType
-            for (let sprite of this.sprites[key]) {
+            // Loop through each ActorType
+            for (let key in this.sprites) {
 
-                // Update each sprite
-                sprite.update(gameTime);
+                // Loop through each Sprite of ActorType
+                for (let sprite of this.sprites[key]) {
+
+                    // Update each sprite
+                    sprite.update(gameTime, this.cameraManager.activeCamera);
+                }
             }
         }
     }
 
     draw(gameTime) {
 
-        // Loop through each ActorType
-        for (let key in this.sprites) {
+        // If draw is enabled for the object manager
+        if ((this.statusType & StatusType.Drawn) != 0) {
 
-            // Loop through each Sprite of ActorType
-            for (let sprite of this.sprites[key]) {
+            // Loop through each ActorType
+            for (let key in this.sprites) {
 
-                // Draw each sprite
-                sprite.draw(gameTime);
+                // Loop through each Sprite of ActorType
+                for (let sprite of this.sprites[key]) {
+
+                    // If the sprite is a background sprite OR if it is inside the view of the 
+                    // camera, then draw it
+                    if (
+                        sprite.actorType == ActorType.Background ||
+                        sprite.transform.boundingBox.intersects(this.cameraManager.activeCamera.transform.boundingBox)
+                    ) {
+                        sprite.draw(gameTime, this.cameraManager.activeCamera);
+                    }
+                }
             }
         }
     }
