@@ -7,7 +7,17 @@
  
  class KeyboardManager {
  
-    constructor() {
+    get id() {
+        return this._id;
+    }
+
+    set id(id) {
+        this._id = id;
+    }
+
+    constructor(id) {
+        this.id = id;
+
         this.keyState = {};
  
         window.addEventListener("keydown", (event) => {
