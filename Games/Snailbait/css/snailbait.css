@@ -1,0 +1,12 @@
+body{
+    background-color: cornflowerblue;
+}
+
+#main_canvas{
+    border: 1px solid blue;
+    opacity: 1;
+}
+
+.sprite {
+    display: none;
+}
