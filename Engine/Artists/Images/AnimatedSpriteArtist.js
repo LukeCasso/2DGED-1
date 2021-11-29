@@ -122,10 +122,14 @@ class AnimatedSpriteArtist extends Artist {
      * 
      * @memberof AnimatedSpriteArtist
      */
-    draw(gameTime, parent) {
+    draw(gameTime, parent, activeCamera) {
 
         // Save whatever context settings were used before this (color, line, text styles)
         this.context.save();
+
+        // Apply the camera transformations to the scene 
+        // (i.e. to enable camera zoom, pan, rotate)
+        activeCamera.setContext(this.context);
 
         // Access the transform for the parent that this artist is attached to
         let transform = parent.transform;

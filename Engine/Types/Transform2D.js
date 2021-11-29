@@ -211,7 +211,7 @@ class Transform2D {
      */
     reset() {
         this.translation = this.originalTranslation.clone();
-        this.rotation = this.originalRotation;
+        this.rotationInRadians = this.originalRotationInRadians;
         this.scale = this.originalScale.clone();
         this.origin = this.originalOrigin.clone();
         this.dimensions = this.originalDimensions.clone();

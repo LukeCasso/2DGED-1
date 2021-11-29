@@ -1,5 +1,6 @@
 /**
- * Renders a rectangle primitive for the parent sprite
+ * Renders a rectangle primitive for the parent sprite.
+ * 
  * @author
  * @version 1.0
  * @class RectangleSpriteArtist
@@ -63,9 +64,10 @@ class RectangleSpriteArtist extends Artist {
     draw(gameTime, parent, activeCamera) {
 
         // Save whatever context settings were used before this (color, line, text styles)
-        this.Context.save();
+        this.context.save();
 
-        // Apply the camera transformations to the scene (i.e. to enable camera zoom, pan, rotate)
+        // Apply the camera transformations to the scene 
+        // (i.e. to enable camera zoom, pan, rotate)
         activeCamera.setContext(this.context);
 
         // Access the transform for the parent that this artist is attached to
@@ -94,7 +96,6 @@ class RectangleSpriteArtist extends Artist {
 
     equals(other) {
         return super.equals(other)
-            && this.rect.equals(other.rect)
             && this.lineWidth === other.lineWidth
             && this.strokeStyle === other.strokeStyle
             && this.fillStyle === other.fillStyle
@@ -104,7 +105,6 @@ class RectangleSpriteArtist extends Artist {
     clone() {
         return new RectangleSpriteArtist(
             this.context,
-            this.rect.clone(),
             this.lineWidth,
             this.strokeStyle,
             this.fillStyle,
@@ -114,7 +114,6 @@ class RectangleSpriteArtist extends Artist {
 
     toString() {
         return "[" +
-            this.rect + "," +
             this.lineWidth + "," +
             this.strokeStyle + "," +
             this.fillStyle + "," +

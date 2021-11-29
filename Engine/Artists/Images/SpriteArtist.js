@@ -45,11 +45,15 @@ class SpriteArtist extends Artist {
      * @param {Sprite} parent the Sprite object that this artist is attached to
      * @memberof SpriteArtist
      */
-    draw(gameTime, parent) {
+    draw(gameTime, parent, activeCamera) {
 
         // Save whatever context settings were used before this (color, line, text styles)
         // This will allow us to restore later
         this.context.save();
+
+        // Apply the camera transformations to the scene 
+        // (i.e. to enable camera zoom, pan, rotate)
+        activeCamera.setContext(this.context);
 
         // Access the transform for the parent that this artist is attached to
         let transform = parent.transform;

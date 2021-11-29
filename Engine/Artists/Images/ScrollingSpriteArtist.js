@@ -58,14 +58,17 @@ class ScrollingSpriteArtist extends Artist {
      */
     update(gameTime, parent, activeCamera) {
 
-        // this.updateHorizontalScrolling(parent, activeCamera);
+        // Reset horizontal scroll
+        this.updateHorizontalScrolling(parent, activeCamera);
 
-        // If we also include vertical scrolling then we need to complete the method below
-        //this.UpdateVerticalScrolling(parent);
+        // Reset vertical scroll
+        this.updateVerticalScrolling(parent, activeCamera);
     }
 
     /**
-     * Checks if the player has scrolled HORIZONTALLY more than 1 complete SCALED sprite WIDTH and, if true, resets the translation offset.
+     * Checks if the player has scrolled HORIZONTALLY more than 1 complete SCALED sprite WIDTH and, 
+     * if true, resets the translation offset.
+     * 
      * The effect of this is to allow the background to scroll infinitely along the horizontal.
      *
      * @param {Sprite} parent
@@ -73,21 +76,14 @@ class ScrollingSpriteArtist extends Artist {
      */
     updateHorizontalScrolling(parent, activeCamera) {
 
-        let parentTranslationOffsetX = Math.abs(-activeCamera.transform.translation.x);
-
-        let resetScreenWidth = Math.ceil(this.screenWidth * parent.transform.scale.x / parent.scrollSpeedMultiplier);
-
-        // If we have moved across one complete canvas width, either left or right, then 
-        // reset the offset to initial position
-        if (parentTranslationOffsetX >= resetScreenWidth) {
-
-            parent.transform.translation = new Vector2(0, 0);
-        }
+        // TO DO ...
     }
 
     /**
-     * Checks if the player has scrolled VERTICALLY more than 1 complete SCALED sprite HEIGHT and, if true, resets the translation offset.
-     * The effect of this is to allow the background to scroll infinitely along the horizontal.
+     * Checks if the player has scrolled VERTICALLY more than 1 complete SCALED sprite HEIGHT and, 
+     * if true, resets the translation offset.
+     * 
+     * The effect of this is to allow the background to scroll infinitely along the vertical.
      *
      * @param {Sprite} parent
      * @memberof ScrollingSpriteArtist
@@ -110,7 +106,8 @@ class ScrollingSpriteArtist extends Artist {
         // Save whatever context settings were used before this (color, line, text styles)
         this.context.save();
 
-        // Apply the camera transformations to the scene (i.e. to enable camera zoom, pan, rotate)
+        // Apply the camera transformations to the scene 
+        // (i.e. to enable camera zoom, pan, rotate)
         activeCamera.setContext(this.context);
 
         // Access the transform for the parent that this artist is attached to
@@ -122,19 +119,7 @@ class ScrollingSpriteArtist extends Artist {
             -activeCamera.transform.translation.y * parent.scrollSpeedMultiplier
         );
 
-        // Allows us to run left
-        this.context.drawImage(
-            this.spriteSheet,
-            this.sourcePosition.x,
-            this.sourcePosition.y,
-            this.sourceDimensions.x,
-            this.sourceDimensions.y,
-            transform.translation.x - transform.dimensions.x,
-            transform.translation.y,
-            transform.dimensions.x * transform.scale.x,
-            transform.dimensions.y * transform.scale.y
-        );
-
+        // Draw sprite
         this.context.drawImage(
             this.spriteSheet,
             this.sourcePosition.x,
@@ -147,7 +132,20 @@ class ScrollingSpriteArtist extends Artist {
             transform.dimensions.y * transform.scale.y
         );
 
-        // Allows us to run right
+        // Add duplicate to left
+        this.context.drawImage(
+            this.spriteSheet,
+            this.sourcePosition.x,
+            this.sourcePosition.y,
+            this.sourceDimensions.x,
+            this.sourceDimensions.y,
+            transform.translation.x - transform.dimensions.x,
+            transform.translation.y,
+            transform.dimensions.x * transform.scale.x,
+            transform.dimensions.y * transform.scale.y
+        );
+
+        // Add duplicate to right
         this.context.drawImage(
             this.spriteSheet,
             this.sourcePosition.x,

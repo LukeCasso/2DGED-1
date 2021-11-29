@@ -22,11 +22,10 @@ class Camera2D extends Actor2D {
     }
 
     /**
-     * Allows the context to be transformed (i.e. translation, rotation, scale) based on the camera 
-     * (i.e. allows us to create camera effects on-screen).
+     * Allows the context to be transformed (i.e. translation, rotation, scale) based on 
+     * the camera (i.e., this allows us to create camera effects on-screen).
      * 
      * @param {*} context
-     * @see DebugDrawer::drawBoundingBox()
      * @memberof Camera2D
      */
     setContext(context) {
