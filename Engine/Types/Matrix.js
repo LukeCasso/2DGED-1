@@ -48,8 +48,8 @@ class Matrix {
 
     static CreateScale(scale) {
         return new Matrix(
-            scale.X, 0, 0,
-            0, scale.Y, 0,
+            scale.x, 0, 0,
+            0, scale.y, 0,
             0, 0, 1
         );
     }
