@@ -156,8 +156,6 @@ function initializeSprites() {
     initializePlayer();
 }
 
-// TO DO: Update Controllers
-
 function initializeBackground() {
 
     let transform = null;
@@ -696,5 +694,5 @@ function resetGame() {
 
 // As such, our game loop now relies on the amount of time that has passed, and not the number of frames
 
-// Load our game when the webpage loads
+// Start our game when the webpage loads
 window.addEventListener("load", start);

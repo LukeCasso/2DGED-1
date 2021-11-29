@@ -6,7 +6,7 @@
     /* Added to support Intellisense for JS files outside current file */
     "include": [
         "Engine/**/*",
-        "Games/Space Invaders/**/*",
+        "Games/**/*",
     ],
 
     /* We can also exclude folders from the current project */
