@@ -17,8 +17,7 @@ class ScrollingSpriteArtist extends Artist {
     }
 
     set spritesheet(spritesheet) {
-        this._
-        spritesheet = spritesheet;
+        this._spritesheet = spritesheet;
     }
     set sourcePosition(sourcePosition) {
         this._sourcePosition = sourcePosition;
@@ -181,6 +180,10 @@ class ScrollingSpriteArtist extends Artist {
     }
 
     toString() {
-        return "[" + this.spriteSheet + "," + this.sourcePosition + "," + this.sourceDimensions + "]";
+        return "[" + 
+            this.spriteSheet + "," + 
+            this.sourcePosition + "," + 
+            this.sourceDimensions + 
+        "]";
     }
 }

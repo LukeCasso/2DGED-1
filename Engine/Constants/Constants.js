@@ -54,6 +54,7 @@ const AudioType = {
     WinLose: 3,
     Weapon: 4,
     All: 5,
+    Move: 6,
 };
 
 const CollisionType = {
