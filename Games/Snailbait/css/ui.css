@@ -6,15 +6,16 @@ body {
 }
 
 .wrapper {
-    position: absolute;   
+    position: absolute;
+    margin: auto;
 }
 
-.wrapper, #game-canvas, #menu {
+.wrapper, #main_canvas, #menu {
     width: 864px;
     height: 468px;
 }
 
-#game-canvas {
+#main_canvas {
     position: absolute;
     top: 0;
     left: 0;
@@ -85,5 +86,5 @@ a {
 }
 
 #menu.main {
-    background-image: url('assets/images/ui/menu-background.png');
+    background-image: url('../assets/images/ui/menu-background.png');
 }

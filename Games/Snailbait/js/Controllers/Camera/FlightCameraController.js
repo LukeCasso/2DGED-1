@@ -46,7 +46,7 @@ class FlightCameraController {
         if (this.keyboardManager.isKeyDown(this.moveKeys[4])) {
 
             // Scale up
-            parent.transform.scaleBy(this.scaleSpeed);
+            parent.transform.scaleBy(Vector2.MultiplyScalar(this.scaleSpeed, 1));
         }
 
         else if (this.keyboardManager.isKeyDown(this.moveKeys[5])) {

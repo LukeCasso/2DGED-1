@@ -111,6 +111,8 @@ class AnimatedSpriteArtist extends Artist {
         else {
 
             this.currentFrameIndex = this.startFrameIndex;
+
+            // TO DO: Modify this class to handle N loops or infinite looping ...
         }
     }
 
