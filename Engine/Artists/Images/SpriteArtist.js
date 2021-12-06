@@ -8,6 +8,9 @@
 
 class SpriteArtist extends Artist {
 
+    get spriteSheet() {
+        return this._spriteSheet;
+    }
     get sourcePosition() {
         return this._sourcePosition;
     }
@@ -15,6 +18,9 @@ class SpriteArtist extends Artist {
         return this._sourceDimensions;
     }
 
+    set spriteSheet(value) {
+        this._spriteSheet = value;
+    }
     set sourcePosition(value) {
         this._sourcePosition = value;
     }
@@ -22,9 +28,10 @@ class SpriteArtist extends Artist {
         this._sourceDimensions = value;
     }
 
-    constructor(context, spriteSheet, alpha, sourcePosition, sourceDimensions) {
-        super(context, spriteSheet, alpha);
+    constructor(context, alpha, spriteSheet, sourcePosition, sourceDimensions) {
+        super(context, alpha);
 
+        this.spriteSheet = spriteSheet;
         this.sourcePosition = sourcePosition;
         this.sourceDimensions = sourceDimensions;
     }
@@ -91,8 +98,8 @@ class SpriteArtist extends Artist {
     clone() {
         return new SpriteArtist(
             this.context,
-            this.spriteSheet,
             this.alpha,
+            this.spriteSheet,
             this.sourcePosition,
             this.sourceDimensions
         );

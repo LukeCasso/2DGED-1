@@ -6,7 +6,14 @@
  * @class FlightCameraController
  */
 class FlightCameraController {
-    constructor(keyboardManager, moveKeys, moveSpeed, rotateSpeedInRadians, scaleSpeed) {
+    
+    constructor(
+        keyboardManager, 
+        moveKeys, 
+        moveSpeed, 
+        rotateSpeedInRadians, 
+        scaleSpeed
+    ) {
         this.keyboardManager = keyboardManager;
         this.moveKeys = moveKeys;
         this.moveSpeed = moveSpeed;
@@ -14,6 +21,11 @@ class FlightCameraController {
         this.scaleSpeed = scaleSpeed;
     }
 
+    /**
+     * 
+     * @param {GameTime} gameTime 
+     * @param {Actor2D} parent 
+     */
     update(gameTime, parent) {
 
         // Translate camera

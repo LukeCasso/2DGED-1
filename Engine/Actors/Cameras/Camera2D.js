@@ -34,7 +34,7 @@ class Camera2D extends Actor2D {
 
         context.translate(transform.origin.x, transform.origin.y);              // Translate to Origin
         context.scale(transform.scale.x, transform.scale.y);                    // Scale
-        context.rotate(transform.rotationInRadians);                            // Rotate
+        context.rotate(-transform.rotationInRadians);                           // Rotate
         context.translate(-transform.origin.x, -transform.origin.y);            // Translate Back
         context.translate(-transform.translation.x, -transform.translation.y);  // Move
     }

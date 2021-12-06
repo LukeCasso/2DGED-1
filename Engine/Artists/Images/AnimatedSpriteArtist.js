@@ -10,10 +10,16 @@
  */
 class AnimatedSpriteArtist extends Artist {
 
+    get animationData() {
+        return this._animationData;
+    }
     get frameRatePerSec() {
         return this._frameRatePerSec;
     }
 
+    set animationData(animationData) {
+        this._animationData = animationData;
+    }
     set frameRatePerSec(framesPerSecond) {
         this._frameRatePerSec = framesPerSecond;
 
@@ -38,34 +44,119 @@ class AnimatedSpriteArtist extends Artist {
      *  Constructs an artist which will cycle through (animate) a set of image frames
      *
      * @param {CanvasRenderingContext2D} context Handle to the canvas' context
-     * @param {Image} spriteSheet Image containing frames for the animation
      * @param {Array} frames Array of frames (see GameConstants) defining the animation sequence
-     * @param {Number} startFrameIndex Zero-based index of first animation frame in the sequence
-     * @param {Number} endFrameIndex Zero-based index of last animation frame in the sequence
-     * @param {Number} frameRatePerSec Integer number of frames to play per second
+     * @param {Array} animationData 
      */
-    constructor(
-        context,
-        spriteSheet,
-        alpha,
-        frames,
-        startFrameIndex,
-        endFrameIndex,
-        frameRatePerSec
-    ) {
-        super(context, spriteSheet, alpha);
+    constructor(context, alpha = 1, animationData) {
+        super(context, alpha);
 
-        this.frames = frames;
-        this.startFrameIndex = startFrameIndex;
-        this.endFrameIndex = endFrameIndex;
+        this.animationData = animationData;
 
-        this.frameRatePerSec = frameRatePerSec;
+        this.frameRatePerSec = 0;
+        this.frameIntervalInMs = 0;
 
-        // Internal variables
-        this.frameIntervalInMs = Math.ceil(1000 / frameRatePerSec);
-
+        this.frames = [];
+        this.startFrameIndex = 0;
+        this.endFrameIndex = 0;
         this.currentFrameIndex = 0;
+        this.currentTakeName = "";
+    }
+
+    /**
+     * 
+     * @param {string} takeName 
+     */
+    setTake(takeName) {
+
+        // If the take exists
+        if (this.animationData.takes[takeName]) {
+
+            // If the take isn't already our current take
+            if (takeName != this.currentTakeName) {
+
+                // Retrieve take
+                let take = this.animationData.takes[takeName];
+
+                // Update internal variables based on the values 
+                // contained within 'take'. This allows us to use
+                // these values to play the current take.
+
+                this.currentTakeName = takeName;
+
+                this.timeSinceLastFrameInMs = 0;
+
+                this.frameRatePerSec = take.fps;
+                this.frameIntervalInMs = 1000.0 / this.frameRatePerSec;
+
+                this.frames = take.frameData;
+                
+                this.startFrameIndex = take.startFrameIndex;
+                this.endFrameIndex = take.endFrameIndex;
+
+                this.maxLoopCount = take.maxLoopCount;
+
+                this.currentFrameIndex = this.startFrameIndex;
+            }
+        }
+
+        // Otherwise
+        else {
+
+            // Throw error
+            throw takeName + " does not exist!";
+        }
+    }
+
+    getBoundingBoxByTakeName(takeName) {
+
+        // If the take exists
+        if (this.animationData.takes[takeName]) {
+
+            // Return the take's bounding box dimensions
+            return this.animationData.takes[takeName].boundingBoxDimensions;
+        }
+
+        // Otherwise
+        else {
+
+            // Throw error
+            throw takeName + " does not exist!";
+        }
+    }
+
+
+    /**
+     * Pauses animation
+     *
+     * @memberof AnimatedSpriteArtist
+     */
+    pause() {
+
+        this.paused = true;
+    }
+
+    /**
+     * Unpauses animation
+     *
+     * @memberof AnimatedSpriteArtist
+     */
+    unpause() {
+
+        this.paused = false;
+    }
+
+    /**
+     * Resets animation
+     *
+     * @memberof AnimatedSpriteArtist
+     */
+    reset() {
+
+        // Reset variables
+        this.paused = false;
+        this.currentCellIndex = this.startCellIndex;
         this.timeSinceLastFrameInMs = 0;
+        this.currentTakeIndex = -1;
     }
 
     /**
@@ -77,6 +168,9 @@ class AnimatedSpriteArtist extends Artist {
      * @memberof AnimatedSpriteArtist
      */
     update(gameTime, parent) {
+
+        // If paused, exit function
+        if (this.paused) return;
 
         // Calculate time since last frame
         this.timeSinceLastFrameInMs += Math.round(gameTime.elapsedTimeInMs);
@@ -144,34 +238,26 @@ class AnimatedSpriteArtist extends Artist {
 
         // Draw current animation frame
         this.context.drawImage(
-            this.spriteSheet,
-            frame.x,                // What is x/y?
+            this.animationData.spriteSheet,
+            frame.x,
             frame.y,
-            frame.width,            // What is width/height?
+            frame.width,
             frame.height,
             transform.translation.x - transform.origin.x,
             transform.translation.y - transform.origin.y,
-            transform.dimensions.x * transform.scale.x,
-            transform.dimensions.y * transform.scale.y
+            frame.width * transform.scale.x,
+            frame.height * transform.scale.y
         );
 
-        // Restor context to previous state
+        // Restore context to previous state
         this.context.restore();
     }
 
     clone() {
         return new AnimatedSpriteArtist(
-
-            // Shallow Copy
             this.context,
-            this.spriteSheet,
             this.alpha,
-            this.frames,
-
-            // Deep Copy
-            this.startFrameIndex,
-            this.endFrameIndex,
-            this.frameRatePerSec
+            this.animationData
         );
     }
 }
