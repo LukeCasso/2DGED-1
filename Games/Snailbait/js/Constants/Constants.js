@@ -89,9 +89,34 @@ class GameData {
     collisionType: CollisionType.NotCollidable,
     layerDepth: 0,
     explodeBoundingBoxInPixels: -6,
+
+    // We have just one platform sprite, so it makes sense to
+    // store a list of positions at which we want to place that
+    // sprite in our game world. Mess around with these values
+    // by either adding or removing positions from our array, or
+    // by editing the x, y values of each position. Check out the 
+    // results by refreshing the web page!
     translationArray: [
 
-      // Screen 1
+      /****************** Screen 1 *******************/
+
+      // Middle Low
+      new Vector2(200, 370),
+      new Vector2(250, 370),
+      new Vector2(300, 370),
+      new Vector2(350, 370),
+
+      // Middle High
+      new Vector2(250, 240),
+      new Vector2(300, 240),
+
+      // Middle Right
+      new Vector2(450, 300),
+      new Vector2(500, 300),
+      new Vector2(550, 300),
+      new Vector2(600, 300),
+
+      // Floor
       new Vector2(0, 420),
       new Vector2(50, 420),
       new Vector2(100, 420),
@@ -110,7 +135,9 @@ class GameData {
       new Vector2(750, 420),
       new Vector2(800, 420),
 
-      // Screen 2
+      /****************** Screen 2 *******************/
+
+      // Floor
       new Vector2(850, 420),
       new Vector2(900, 420),
       new Vector2(950, 420),
@@ -120,6 +147,8 @@ class GameData {
       new Vector2(1150, 420),
       new Vector2(1200, 420),
 
+      // GAP!
+
       new Vector2(1400, 420),
       new Vector2(1450, 420),
       new Vector2(1500, 420),
@@ -128,22 +157,6 @@ class GameData {
       new Vector2(1650, 420),
       new Vector2(1700, 420),
       new Vector2(1750, 420),
-
-      // Middle Low
-      new Vector2(200, 370),
-      new Vector2(250, 370),
-      new Vector2(300, 370),
-      new Vector2(350, 370),
-
-      // Middle High
-      new Vector2(250, 240),
-      new Vector2(300, 240),
-
-      // Middle Right
-      new Vector2(450, 300),
-      new Vector2(500, 300),
-      new Vector2(550, 300),
-      new Vector2(600, 300),
     ]
   };
 
@@ -222,7 +235,7 @@ class GameData {
         endFrameIndex: 2,
 
         boundingBoxDimensions: new Vector2(30, 30),
-        
+
         frameData: [
           new Rect(65, 540, 30, 30),
           new Rect(96, 540, 30, 30),

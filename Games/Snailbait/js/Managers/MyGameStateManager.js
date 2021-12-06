@@ -9,6 +9,9 @@ class MyGameStateManager extends GameStateManager {
     get playerHealth() {
         return this._playerHealth;
     }
+    get playerAmmo() {
+        return this._playerAmmo;
+    }
     get inventory() {
         return this._inventory;
     }
@@ -16,16 +19,20 @@ class MyGameStateManager extends GameStateManager {
     set playerHealth(value) {
         this._playerHealth = value;
     }
+    set playerAmmo(value) {
+        this._playerAmmo = value;
+    }
     set inventory(value) {
         this._inventory = value;
     }
 
-    constructor(id, notificationCenter, initialPlayerHealth) {
+    constructor(id, notificationCenter, initialPlayerHealth, initialPlayerAmmo) {
         
         super(id);
 
         this.notificationCenter = notificationCenter;
         this.playerHealth = initialPlayerHealth;
+        this.playerAmmo = initialPlayerAmmo;
 
         this.inventory = [];
         

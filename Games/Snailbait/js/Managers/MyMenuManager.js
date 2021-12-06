@@ -1,7 +1,9 @@
-class MyMenuManager {
+class MyMenuManager extends MenuManager {
 
     constructor(id, notificationCenter, keyboardManager) {
-        this.id = id;
+        
+        super(id);
+        
         this.notificationCenter = notificationCenter;
         this.keyboardManager = keyboardManager;
 
@@ -100,8 +102,12 @@ class MyMenuManager {
         $('.exit').click(function () {
 
             // Do something?
+            
             // Hide the menu?
             // Open exit menu?
+            // Show blank screen?
+
+            // We can't really exit web apps, so it's okay to do something basic here.
         });
     }
 
