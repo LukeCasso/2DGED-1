@@ -74,12 +74,27 @@ class AnimatedSpriteArtist extends Artist {
             // If the take isn't already our current take
             if (takeName != this.currentTakeName) {
 
-                // Retrieve take
+                // Retrieve the take
                 let take = this.animationData.takes[takeName];
 
-                // Update internal variables based on the values 
-                // contained within 'take'. This allows us to use
-                // these values to play the current take.
+                // Update our internal variables based on the values 
+                // contained within 'take'. This allows us to 'play' 
+                // the current take.
+
+                // Essentially, we are just changing the values of
+                // this object which control what take is played, to
+                // match the values of the take that was provided to
+                // this function
+
+                // We set this.frames equal to the take's frame
+                // We set this.frameRatePerSec equal to the take's fps
+                // etc, etc.
+
+                // This allows us to create a flexible sprite artist
+                // class, which can play several different animations
+                // (based on what take is currently set), rather than
+                // just one animation (which was previously passed to
+                // the class as an argument)
 
                 this.currentTakeName = takeName;
 
@@ -206,7 +221,7 @@ class AnimatedSpriteArtist extends Artist {
 
             this.currentFrameIndex = this.startFrameIndex;
 
-            // TO DO: Modify this class to handle N loops or infinite looping ...
+            // TO DO: Modify this class to handle 0 loops, N loops, or infinite looping ...
         }
     }
 
