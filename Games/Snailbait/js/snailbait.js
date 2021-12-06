@@ -14,6 +14,8 @@ let cameraManager;
 let objectManager;
 let keyboardManager;
 let soundManager;
+let gameStateManager;
+let menuManager;
 
 function start() {
 
@@ -26,6 +28,15 @@ function start() {
 
     // Initialize game elements
     initialize();
+
+    // Publish an event to pause the object manager (i.e. no update, no draw) and show the menu
+    notificationCenter.notify(
+        new Notification(
+            NotificationType.Menu,
+            NotificationAction.ShowMenuChanged,
+            [StatusType.Off]
+        )
+    );
 
     // Start the game loop
     window.requestAnimationFrame(animate);
@@ -52,6 +63,16 @@ function update(gameTime) {
     // to update all sprites
     objectManager.update(gameTime);
 
+    // Call the update method of the game state manager
+    // class to update the game state
+    gameStateManager.update(gameTime);
+
+    // Call the update method of the menu manager class to
+    // check for menu state changes
+    menuManager.update(gameTime);
+
+    // Call the update method of the camera manager class
+    // to update all cameras
     cameraManager.update(gameTime);
 }
 
@@ -116,25 +137,41 @@ function initializeManagers() {
         cameraManager
     );
 
-    keyboardManager = new KeyboardManager();
+    keyboardManager = new KeyboardManager(
+        "Keyboard Manager"
+    );
 
     soundManager = new SoundManager(
+        "Sound Manager",
         notificationCenter,
         GameData.AUDIO_CUE_ARRAY
+    );
+
+    gameStateManager = new MyGameStateManager(
+        "Game State Manager",
+        notificationCenter,
+        100,                            // Initial player health
+        36                              // Initial player ammo
+    )
+
+    menuManager = new MyMenuManager(
+        "Menu Manager",
+        notificationCenter,
+        keyboardManager
     );
 }
 
 function initializeCameras() {
 
     let transform = new Transform2D(
-        Vector2.Zero,                   // Translation 
-        0,                              // Rotation
-        Vector2.One,                    // Scale
-        new Vector2(                    // Origin
+        Vector2.Zero,
+        0,
+        Vector2.One,
+        new Vector2(
             canvas.clientWidth / 2,
             canvas.clientHeight / 2
         ),
-        new Vector2(                    // Dimensions
+        new Vector2(
             canvas.clientWidth,
             canvas.clientHeight
         )
@@ -160,13 +197,16 @@ function initializeCameras() {
         )
     );
 
-
     cameraManager.add(camera);
 }
 
 function initializeSprites() {
 
     initializeBackground();
+    initializePlatforms();
+    initializePickups();
+
+    initializeOnScreenText();
 }
 
 function initializeBackground() {
@@ -179,8 +219,8 @@ function initializeBackground() {
 
         artist = new ScrollingSpriteArtist(
             context,
-            GameData.BACKGROUND_DATA[i].spriteSheet,
             1,
+            GameData.BACKGROUND_DATA[i].spriteSheet,
             GameData.BACKGROUND_DATA[i].sourcePosition,
             GameData.BACKGROUND_DATA[i].sourceDimensions,
             canvas.clientWidth,
@@ -211,6 +251,169 @@ function initializeBackground() {
 
         objectManager.add(sprite);
     }
+
+    // Sort all background sprites by depth 0 (back) -> 1 (front)
+    objectManager.sort(
+        ActorType.Background,
+        function sortAscendingDepth(a, b) {
+            return a.layerDepth - b.layerDepth;
+        }
+    );
+}
+
+function initializePlatforms() {
+
+    let artist;
+    let transform;
+
+    let spriteArchetype;
+    let spriteClone = null;
+
+    artist = new SpriteArtist(
+        context,
+        1,
+        GameData.PLATFORM_DATA.spriteSheet,
+        GameData.PLATFORM_DATA.sourcePosition,
+        GameData.PLATFORM_DATA.sourceDimensions
+    );
+
+    transform = new Transform2D(
+        Vector2.Zero,
+        GameData.PLATFORM_DATA.rotation,
+        GameData.PLATFORM_DATA.scale,
+        GameData.PLATFORM_DATA.origin,
+        GameData.PLATFORM_DATA.sourceDimensions,
+        GameData.PLATFORM_DATA.explodeBoundingBoxInPixels
+    );
+
+    spriteArchetype = new Sprite(
+        GameData.PLATFORM_DATA.id,
+        transform,
+        GameData.PLATFORM_DATA.actorType,
+        GameData.PLATFORM_DATA.collisionType,
+        StatusType.Updated | StatusType.Drawn,
+        artist,
+        GameData.PLATFORM_DATA.scrollSpeedMultiplier,
+        GameData.PLATFORM_DATA.layerDepth
+    );
+
+    // Check out the Constant.js file - it contains an object called
+    // PLATFORM_DATA, which contains an array property called translationArray.
+    // This translationArray simply contains a list of positions for where we
+    // want to position the platforms on our screen. Take a look at this array
+    // to understand more.
+    for (let i = 0; i < GameData.PLATFORM_DATA.translationArray.length; i++) {
+
+        // Clone sprite
+        spriteClone = spriteArchetype.clone();
+
+        // Update id
+        spriteClone.id = spriteClone.id + " " + i;
+
+        // Update translation
+        spriteClone.transform.setTranslation(GameData.PLATFORM_DATA.translationArray[i]);
+
+        // Add to object manager
+        objectManager.add(spriteClone);
+    }
+}
+
+function initializePickups() {
+
+    let artist;
+    let transform;
+
+    let spriteArchetype = null;
+    let spriteClone = null;
+
+    artist = new AnimatedSpriteArtist(
+        context,                                        // Context
+        1,                                              // Alpha
+        GameData.COLLECTIBLES_ANIMATION_DATA            // Animation data
+    );
+
+    transform = new Transform2D(
+        new Vector2(530, 250),                          // Translation
+        0,                                              // Rotation
+        Vector2.One,                                    // Scale
+        Vector2.Zero,                                   // Origin
+        artist.getBoundingBoxByTakeName("Gold Glint"),  // Dimensions
+        0                                               // Explode By Value
+    );
+
+    spriteArchetype = new Sprite(
+        "Gold",
+        transform,
+        ActorType.Pickup,
+        CollisionType.Collidable,
+        StatusType.Updated | StatusType.Drawn,
+        artist,
+        1,
+        1
+    );
+
+    // Create 5 pickups
+    for (let i = 1; i <= 5; i++) {
+
+        // Clone sprite
+        spriteClone = spriteArchetype.clone();
+
+        // Update ID
+        spriteClone.id = spriteClone.id + " " + i;
+
+        // Translate sprite
+        spriteClone.transform.translateBy(
+            new Vector2(
+                (i * 100),
+                0
+            )
+        );
+
+        // Set sprite take
+        spriteClone.artist.setTake("Gold Glint");
+
+        // Add to object manager
+        objectManager.add(spriteClone);
+    }
+}
+
+function initializeOnScreenText() {
+
+    let transform;
+    let artist;
+    let sprite;
+
+    transform = new Transform2D(
+        new Vector2(10, 10),
+        0,
+        Vector2.One,
+        Vector2.Zero,
+        new Vector2(10, 10),
+        0
+    );
+
+    artist = new TextSpriteArtist(
+        context,
+        "Go, go, go!",
+        FontType.InformationMedium,
+        Color.White,
+        TextAlignType.Left,
+        200,
+        1,
+    );
+
+    sprite = new Sprite(
+        "Text UI Info",
+        transform,
+        ActorType.HUD,
+        CollisionType.NotCollidable,
+        StatusType.Updated | StatusType.Drawn,
+        artist,
+        1,
+        1
+    );
+
+    objectManager.add(sprite);
 }
 
 function resetGame() {
@@ -219,4 +422,5 @@ function resetGame() {
     startGame();
 }
 
+// Start the game once the page has loaded
 window.addEventListener("load", start);

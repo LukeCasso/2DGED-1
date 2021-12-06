@@ -87,8 +87,8 @@ class AnimatedSpriteArtist extends Artist {
                 // this function
 
                 // We set this.frames equal to the take's frame
-                // We set this.frameRatePerSec equal to the take's fps
-                // etc, etc.
+                // We set this.frameRatePerSec equal to the take's
+                // frameRatePerSec etc, etc.
 
                 // This allows us to create a flexible sprite artist
                 // class, which can play several different animations
@@ -100,10 +100,10 @@ class AnimatedSpriteArtist extends Artist {
 
                 this.timeSinceLastFrameInMs = 0;
 
-                this.frameRatePerSec = take.fps;
+                this.frameRatePerSec = take.frameRatePerSec;
                 this.frameIntervalInMs = 1000.0 / this.frameRatePerSec;
 
-                this.frames = take.frameData;
+                this.frames = take.frames;
                 
                 this.startFrameIndex = take.startFrameIndex;
                 this.endFrameIndex = take.endFrameIndex;

@@ -35,7 +35,6 @@ class MyMenuManager extends MenuManager {
         }
     }
 
-    // If the status type 
     showMenu(statusType) {
 
         // Check out the initialize function of this class. In it, we create a 'Menu' notification
@@ -96,6 +95,16 @@ class MyMenuManager extends MenuManager {
                     [StatusType.Updated | StatusType.Drawn]
                 )
             );
+        });
+
+        // If the audio button is clicked
+        // Or more specifically - if an element which has
+        // the audio class is clicked
+        $('.audio').click(function () {
+
+            // Do something...
+
+            // Hint: Send a notification to toggle the audio on/off
         });
 
         // If the exit button is clicked

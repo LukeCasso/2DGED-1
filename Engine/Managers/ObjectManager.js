@@ -12,7 +12,7 @@ class ObjectManager {
 
     constructor(id, notificationCenter, context, statusType, cameraManager) {
         this.id = id;
-        
+
         this.notificationCenter = notificationCenter;
         this.context = context;
 
@@ -34,23 +34,22 @@ class ObjectManager {
     // So, instead of just storing numbers [1, 2, 3], or strings ["James", "Farrell"], a 2D array
     // stores arrays [[], [], []].
 
-    // The benefit of 2D arrays, is that each individual inner array can be of different length, 
+    // The benefit of 2D arrays, is that each individual inner array can be of different length,
     // and can contain different values.
 
     // In our case, we are creating a 2D array which contains sprites. We could just use a 1D array
     // and simply place all of our sprites into one long array, but this would not be practical. We
     // want to group our sprites together based on their ActorType. This allows us to then draw our
-    // sprites in a particular order. For example, we may wish to draw any background sprites first, 
+    // sprites in a particular order. For example, we may wish to draw any background sprites first,
     // before we draw our enemies and player. If we did this operation in reverse (draw the enemies
     // and players before drawing our background), then we would not be able to see our enemy or
     // player sprites.
 
-
     // As such, we split our sprites up into sub-arrays based on their ActorType. We then use this
     // categorisation of sprites to draw them in the order we choose.
 
-    // Thus, our 2D array will contain an array of arrays. Each 'sub-array' will be an array of 
-    // sprites that all belong to one ActorType. In our case, we will have a Background sub-array, 
+    // Thus, our 2D array will contain an array of arrays. Each 'sub-array' will be an array of
+    // sprites that all belong to one ActorType. In our case, we will have a Background sub-array,
     // a NPC sub-array, a Player sub-array, and a Projectile sub-array.
 
     // e.g. Array[0] is an array of sprites that have the 'Background' ActorType
@@ -59,10 +58,18 @@ class ObjectManager {
 
     registerForNotifications() {
 
+        // When a 'sprite' event fires, call the 'handleSpriteNotification' function of 'this' object
         this.notificationCenter.register(
-            NotificationType.Sprite,            // Register for sound event
-            this,                               // What object is listening for this event
-            this.handleSpriteNotification       // What function is called when a sound notification takes place
+            NotificationType.Sprite,
+            this,
+            this.handleSpriteNotification
+        );
+
+        // When a 'menu' event fires, call the 'handleMenuNotification' function of 'this' object
+        this.notificationCenter.register(
+            NotificationType.Menu,
+            this,
+            this.handleMenuNotification
         );
     }
 
@@ -78,6 +85,17 @@ class ObjectManager {
             case NotificationAction.Remove:
 
                 this.remove(notification.notificationArguments[0]);
+                break;
+        }
+    }
+
+    handleMenuNotification(notification) {
+
+        switch (notification.notificationAction) {
+
+            case NotificationAction.ShowMenuChanged:
+
+                this.statusType = notification.notificationArguments[0];
                 break;
         }
     }
@@ -123,7 +141,7 @@ class ObjectManager {
             // Indicate that the operation was unsuccessful
 
             // In this case, the operation was unsuccessful because the
-            // provided sprite didn't exist in the sprite's ActorType 
+            // provided sprite didn't exist in the sprite's ActorType
             // sub-array
             return false;
         }
@@ -132,7 +150,7 @@ class ObjectManager {
             // Indicate that the operation was unsuccessful
 
             // In this case, the operation was unsuccessful because a related
-            // sub-array for the provided sprite's ActorType doesn't exist in 
+            // sub-array for the provided sprite's ActorType doesn't exist in
             // the this.sprites array.
             return false;
         }
@@ -189,7 +207,7 @@ class ObjectManager {
                 // Loop through each Sprite of ActorType
                 for (let sprite of this.sprites[key]) {
 
-                    // If the sprite is a background sprite OR if it is inside the view of the 
+                    // If the sprite is a background sprite OR if it is inside the view of the
                     // camera, then draw it
                     if (
                         sprite.actorType == ActorType.Background ||

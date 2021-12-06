@@ -170,35 +170,7 @@ class GameData {
       // Animation 1
       "Sapphire Glint": {
 
-        fps: 6,
-        leadInDelayMs: 0,
-        leadOutDelayMs: 0,
-
-        // -1 = Loop forever
-        //  0 = Run once (no loop)
-        //  N = Loop N times
-        maxLoopCount: -1,
-
-        startFrameIndex: 0,
-        endFrameIndex: 4,
-
-        boundingBoxDimensions: new Vector2(46, 50),
-
-        frameData: [
-          new Rect(185, 138, 30, 35),
-          new Rect(220, 138, 30, 35),
-          new Rect(258, 138, 30, 35),
-          new Rect(294, 138, 30, 35),
-          new Rect(331, 138, 30, 35)
-        ]
-      },
-
-      // Animation 2
-      "Ruby Glint": {
-
-        fps: 6,
-        leadInDelayMs: 0,
-        leadOutDelayMs: 0,
+        frameRatePerSec: 6,
 
         // -1 = Loop forever
         //  0 = Run once (no loop)
@@ -210,7 +182,31 @@ class GameData {
 
         boundingBoxDimensions: new Vector2(30, 35),
 
-        frameData: [
+        frames: [
+          new Rect(185, 138, 30, 35), // Frame 1
+          new Rect(220, 138, 30, 35), // Frame 2
+          new Rect(258, 138, 30, 35), // Frame 3
+          new Rect(294, 138, 30, 35), // Frame 4
+          new Rect(331, 138, 30, 35)  // Frame 5
+        ]
+      },
+
+      // Animation 2
+      "Ruby Glint": {
+
+        frameRatePerSec: 6,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 4,
+
+        boundingBoxDimensions: new Vector2(30, 35),
+
+        frames: [
           new Rect(3, 138, 30, 35),
           new Rect(39, 138, 30, 35),
           new Rect(76, 138, 30, 35),
@@ -222,9 +218,7 @@ class GameData {
       // Animation 3
       "Gold Glint": {
 
-        fps: 6,
-        leadInDelayMs: 0,
-        leadOutDelayMs: 0,
+        frameRatePerSec: 6,
 
         // -1 = Loop forever
         //  0 = Run once (no loop)
@@ -236,7 +230,7 @@ class GameData {
 
         boundingBoxDimensions: new Vector2(30, 30),
 
-        frameData: [
+        frames: [
           new Rect(65, 540, 30, 30),
           new Rect(96, 540, 30, 30),
           new Rect(128, 540, 30, 30)

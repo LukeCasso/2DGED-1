@@ -20,36 +20,36 @@ class SpriteData {
         takes: {
 
             "Enemy One": {
-                fps: 4,
+                frameRatePerSec: 4,
                 maxLoopCount: -1,
                 startFrameIndex: 0,
                 endFrameIndex: 1,
                 boundingBoxDimensions: new Vector2(this.ENEMY_ONE_WIDTH, this.ENEMY_ONE_HEIGHT),
-                frameData: [
+                frames: [
                     new Rect(0, 0, this.ENEMY_ONE_WIDTH, this.ENEMY_ONE_HEIGHT),
                     new Rect(0, 16, this.ENEMY_ONE_WIDTH, this.ENEMY_ONE_HEIGHT)
                 ]
             },
 
             "Enemy Two": {
-                fps: 3,
+                frameRatePerSec: 3,
                 maxLoopCount: -1,
                 startFrameIndex: 0,
                 endFrameIndex: 1,
                 boundingBoxDimensions: new Vector2(this.ENEMY_TWO_WIDTH, this.ENEMY_TWO_HEIGHT),
-                frameData: [
+                frames: [
                     new Rect(22, 0, this.ENEMY_TWO_WIDTH, this.ENEMY_TWO_HEIGHT),
                     new Rect(22, 16, this.ENEMY_TWO_WIDTH, this.ENEMY_TWO_HEIGHT)
                 ]
             },
 
             "Enemy Three": {
-                fps: 4,
+                frameRatePerSec: 4,
                 maxLoopCount: -1,
                 startFrameIndex: 0,
                 endFrameIndex: 1,
                 boundingBoxDimensions: new Vector2(this.ENEMY_THREE_WIDTH, this.ENEMY_THREE_HEIGHT),
-                frameData: [
+                frames: [
                     new Rect(38, 0, this.ENEMY_THREE_WIDTH, this.ENEMY_THREE_HEIGHT),
                     new Rect(38, 16, this.ENEMY_THREE_WIDTH, this.ENEMY_THREE_HEIGHT)
                 ]
@@ -68,12 +68,12 @@ class SpriteData {
         takes: {
 
             "Default": {
-                fps: 2,
+                frameRatePerSec: 2,
                 maxLoopCount: -1,
                 startFrameIndex: 0,
                 endFrameIndex: 1,
                 boundingBoxDimensions: new Vector2(this.BULLET_WIDTH, this.BULLET_HEIGHT),
-                frameData: [
+                frames: [
                     new Rect(67, 20, this.BULLET_WIDTH, this.BULLET_HEIGHT),
                     new Rect(74, 20, this.BULLET_WIDTH, this.BULLET_HEIGHT)
                 ]
