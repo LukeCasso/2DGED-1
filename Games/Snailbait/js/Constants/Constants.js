@@ -91,10 +91,43 @@ class GameData {
     explodeBoundingBoxInPixels: -6,
     translationArray: [
 
-      // Bottom Left
+      // Screen 1
       new Vector2(0, 420),
       new Vector2(50, 420),
       new Vector2(100, 420),
+      new Vector2(150, 420),
+      new Vector2(200, 420),
+      new Vector2(250, 420),
+      new Vector2(300, 420),
+      new Vector2(350, 420),
+      new Vector2(400, 420),
+      new Vector2(450, 420),
+      new Vector2(500, 420),
+      new Vector2(550, 420),
+      new Vector2(600, 420),
+      new Vector2(650, 420),
+      new Vector2(700, 420),
+      new Vector2(750, 420),
+      new Vector2(800, 420),
+
+      // Screen 2
+      new Vector2(850, 420),
+      new Vector2(900, 420),
+      new Vector2(950, 420),
+      new Vector2(1000, 420),
+      new Vector2(1050, 420),
+      new Vector2(1100, 420),
+      new Vector2(1150, 420),
+      new Vector2(1200, 420),
+
+      new Vector2(1400, 420),
+      new Vector2(1450, 420),
+      new Vector2(1500, 420),
+      new Vector2(1550, 420),
+      new Vector2(1600, 420),
+      new Vector2(1650, 420),
+      new Vector2(1700, 420),
+      new Vector2(1750, 420),
 
       // Middle Low
       new Vector2(200, 370),
@@ -112,6 +145,91 @@ class GameData {
       new Vector2(550, 300),
       new Vector2(600, 300),
     ]
+  };
+
+  static COLLECTIBLES_ANIMATION_DATA = {
+    id: "Collectibles Animation Data",
+    spriteSheet: document.getElementById("snailbait_sprite_sheet"),
+
+    // List of animations
+    takes: {
+
+      // Animation 1
+      "Sapphire Glint": {
+
+        fps: 6,
+        leadInDelayMs: 0,
+        leadOutDelayMs: 0,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 4,
+
+        boundingBoxDimensions: new Vector2(46, 50),
+
+        frameData: [
+          new Rect(185, 138, 30, 35),
+          new Rect(220, 138, 30, 35),
+          new Rect(258, 138, 30, 35),
+          new Rect(294, 138, 30, 35),
+          new Rect(331, 138, 30, 35)
+        ]
+      },
+
+      // Animation 2
+      "Ruby Glint": {
+
+        fps: 6,
+        leadInDelayMs: 0,
+        leadOutDelayMs: 0,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 4,
+
+        boundingBoxDimensions: new Vector2(30, 35),
+
+        frameData: [
+          new Rect(3, 138, 30, 35),
+          new Rect(39, 138, 30, 35),
+          new Rect(76, 138, 30, 35),
+          new Rect(112, 138, 30, 35),
+          new Rect(148, 138, 30, 35)
+        ]
+      },
+
+      // Animation 3
+      "Gold Glint": {
+
+        fps: 6,
+        leadInDelayMs: 0,
+        leadOutDelayMs: 0,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 2,
+
+        boundingBoxDimensions: new Vector2(30, 30),
+        
+        frameData: [
+          new Rect(65, 540, 30, 30),
+          new Rect(96, 540, 30, 30),
+          new Rect(128, 540, 30, 30)
+        ]
+      }
+    }
   };
 }
 
