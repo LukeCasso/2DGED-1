@@ -129,7 +129,7 @@ class BulletMoveController {
 
     handleExitCanvas(parent) {
 
-        // If the bullet has left the bounds of our canvas
+        // If the bullet has left the top bounds of our canvas
         if (parent.transform.translation.y < 0) {
 
             // Remove from object manager

@@ -46,6 +46,9 @@ class PlayerShootController {
                 // Clone the bullet sprite
                 let bullet = this.bulletSprite.clone();
 
+                // Set the bullet's animation take
+                bullet.artist.setTake("Default");
+                
                 // Update the status type of the bullet
                 bullet.statusType = StatusType.Updated | StatusType.Drawn;
 
