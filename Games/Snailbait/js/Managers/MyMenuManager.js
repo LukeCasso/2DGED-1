@@ -1,9 +1,9 @@
 class MyMenuManager extends MenuManager {
 
     constructor(id, notificationCenter, keyboardManager) {
-        
+
         super(id);
-        
+
         this.notificationCenter = notificationCenter;
         this.keyboardManager = keyboardManager;
 
@@ -64,28 +64,28 @@ class MyMenuManager extends MenuManager {
         // then it means we want the game to run i.e. hide the menu
         if (statusType != 0) {
 
-            $('#main').hide();
-            $('#menu').removeClass('main');
+            $('#main_menu').hide();
         }
 
         else {
 
-            $('#main').show();
-            $('#menu').addClass('main');
+            $('#main_menu').show();
         }
     }
 
     initialize() {
 
-        // Show the wrapper that encloses our menu and canvas - if we dont show the wrapper 
-        // then we will see a blank area only
-        $('.wrapper').show();
+        // TO DO: Please make sure to hide any other menus that you have created
+
+        // Hide the exit menu
+        $('#exit_menu').hide();
+        $('#exit_menu').addClass('hidden');
 
         // If the play button is clicked
         $('.play').click(function () {
 
             // Hide the menu
-            $('#menu').hide();
+            $('#main_menu').hide();
 
             // Send a notification to update and draw the game
             notificationCenter.notify(
@@ -110,13 +110,9 @@ class MyMenuManager extends MenuManager {
         // If the exit button is clicked
         $('.exit').click(function () {
 
-            // Do something?
-            
-            // Hide the menu?
-            // Open exit menu?
-            // Show blank screen?
-
-            // We can't really exit web apps, so it's okay to do something basic here.
+            // Show exit menu
+            $('#exit_menu').show();
+            $('#exit_menu').removeClass('hidden');
         });
     }
 
