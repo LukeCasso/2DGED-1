@@ -6,6 +6,9 @@
  */
 class TextSpriteArtist extends Artist {
 
+  get alpha() {
+    return this._alpha;
+  }
   get text() {
     return this._text;
   }
@@ -18,10 +21,13 @@ class TextSpriteArtist extends Artist {
   get textAlign() {
     return this._textAlign;
   }
-  get alpha() {
-    return this._alpha;
+  get fixedPosition() {
+    return this._fixedPosition;
   }
 
+  set alpha(alpha) {
+    this._alpha = alpha;
+  }
   set text(text) {
     this._text = text;
   }
@@ -34,11 +40,20 @@ class TextSpriteArtist extends Artist {
   set textAlign(textAlign) {
     this._textAlign = textAlign;
   }
-  set alpha(alpha) {
-    this._alpha = alpha;
+  set fixedPosition(fixedPosition) {
+    this._fixedPosition = fixedPosition;
   }
 
-  constructor(context, text, fontType, fillStyle, textAlign, maxWidth, alpha = 1) {
+  constructor(
+    context,
+    alpha = 1,
+    text,
+    fontType,
+    fillStyle,
+    textAlign,
+    maxWidth,
+    fixedPosition,
+  ) {
     super(context, alpha);
 
     this.text = text;
@@ -46,9 +61,12 @@ class TextSpriteArtist extends Artist {
     this.fillStyle = fillStyle;
     this.textAlign = textAlign;
     this.maxWidth = maxWidth;
+    this.fixedPosition = fixedPosition;
   }
 
   update(gameTime, parent, camera) {
+
+    // Your code here...
     // Does it cycle between fonts?
     // Does its align change over time?
     // Does the font colour change?
@@ -59,9 +77,13 @@ class TextSpriteArtist extends Artist {
     // Save whatever context settings were used before this (color, line, text styles)
     this.context.save();
 
-    // Apply the camera transformations to the scene 
-    // (i.e. to enable camera zoom, pan, rotate)
-    activeCamera.setContext(this.context);
+    // If the position of this sprite is not fixed in place
+    if (!this.fixedPosition) {
+
+      // Apply the camera transformations to the scene 
+      // (i.e. to enable camera zoom, pan, rotate)
+      activeCamera.setContext(this.context);
+    }
 
     // Access the transform for the parent that this artist is attached to
     let transform = parent.transform;

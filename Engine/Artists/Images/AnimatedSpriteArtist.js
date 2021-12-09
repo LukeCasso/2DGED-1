@@ -16,6 +16,9 @@ class AnimatedSpriteArtist extends Artist {
     get frameRatePerSec() {
         return this._frameRatePerSec;
     }
+    get fixedPosition() {
+        return this._fixedPosition;
+    }
 
     set animationData(animationData) {
         this._animationData = animationData;
@@ -39,18 +42,23 @@ class AnimatedSpriteArtist extends Artist {
         // The frame interval is used to determine how much time is between each frame
         // so that we can update our animation accordingly
     }
+    set fixedPosition(fixedPosition) {
+        this._fixedPosition = fixedPosition;
+    }
 
     /**
      *  Constructs an artist which will cycle through (animate) a set of image frames
      *
      * @param {CanvasRenderingContext2D} context Handle to the canvas' context
      * @param {Array} frames Array of frames (see GameConstants) defining the animation sequence
-     * @param {Array} animationData 
+     * @param {Array} animationData
+     * @param {boolean} fixedPosition Boolean representing whether this sprite is fixed in place
      */
-    constructor(context, alpha = 1, animationData) {
+    constructor(context, alpha, animationData, fixedPosition = false) {
         super(context, alpha);
 
         this.animationData = animationData;
+        this.fixedPosition = fixedPosition;
 
         this.frameRatePerSec = 0;
         this.frameIntervalInMs = 0;
@@ -104,7 +112,7 @@ class AnimatedSpriteArtist extends Artist {
                 this.frameIntervalInMs = 1000.0 / this.frameRatePerSec;
 
                 this.frames = take.frames;
-                
+
                 this.startFrameIndex = take.startFrameIndex;
                 this.endFrameIndex = take.endFrameIndex;
 
@@ -238,9 +246,13 @@ class AnimatedSpriteArtist extends Artist {
         // Save whatever context settings were used before this (color, line, text styles)
         this.context.save();
 
-        // Apply the camera transformations to the scene 
-        // (i.e. to enable camera zoom, pan, rotate)
-        activeCamera.setContext(this.context);
+        // If the position of this sprite is not fixed in place
+        if (!this.fixedPosition) {
+        
+            // Apply the camera transformations to the scene 
+            // (i.e. to enable camera zoom, pan, rotate)
+            activeCamera.setContext(this.context);
+        }
 
         // Access the transform for the parent that this artist is attached to
         let transform = parent.transform;
@@ -272,7 +284,8 @@ class AnimatedSpriteArtist extends Artist {
         return new AnimatedSpriteArtist(
             this.context,
             this.alpha,
-            this.animationData
+            this.animationData,
+            this.fixedPosition
         );
     }
 }
