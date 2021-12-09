@@ -40,6 +40,7 @@ class Camera2D extends Actor2D {
     }
 
     equals(other) {
+
         return super.equals(other);
     }
 
@@ -50,6 +51,7 @@ class Camera2D extends Actor2D {
     }
 
     clone() {
+        
         return new Camera2D(
             this.id,
             this.transform,

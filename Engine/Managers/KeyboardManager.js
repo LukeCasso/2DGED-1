@@ -35,6 +35,7 @@
      * @returns {Boolean} True if pressed, otherwise false
      */
     isKeyDown(code) {
+        
         if (this.keyState[code]) {
             return true;
         }
