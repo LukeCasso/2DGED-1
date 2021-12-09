@@ -115,7 +115,14 @@ class Transform2D {
      * @param {number} explodeBoundingBoxInPixels
      * @memberof Transform2D
      */
-    constructor(translation, rotationInRadians, scale, origin, dimensions, explodeBoundingBoxInPixels = 0) {
+    constructor(
+        translation, 
+        rotationInRadians, 
+        scale, 
+        origin, 
+        dimensions, 
+        explodeBoundingBoxInPixels = 0
+    ) {
         this.translation = translation;
         this.rotationInRadians = rotationInRadians;
         this.scale = scale;
