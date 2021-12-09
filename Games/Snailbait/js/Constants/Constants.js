@@ -3,12 +3,14 @@ class GameData {
   static AUDIO_CUE_ARRAY = [
     new AudioCue("background", AudioType.Background, 1, 1, 0, true),
     new AudioCue("jump", AudioType.Move, 1, 1, 0, false),
-    new AudioCue("game-over", AudioType.WinLose, 1, 1, 0, false)
+    new AudioCue("boing", AudioType.All, 1, 1, 0, false),
+    new AudioCue("game_over", AudioType.WinLose, 1, 1, 0, false)
   ];
 
   static BACKGROUND_DIMENSIONS = new Vector2(384, 216);
 
   static BACKGROUND_DATA = [
+
     {
       id: "Background 1",
       spriteSheet: document.getElementById("snailbait_background_1"),
@@ -23,6 +25,7 @@ class GameData {
       layerDepth: 0,
       scrollSpeedMultiplier: 0.2
     },
+
     {
       id: "Background 2",
       spriteSheet: document.getElementById("snailbait_background_2"),
@@ -36,6 +39,7 @@ class GameData {
       layerDepth: 0.1,
       scrollSpeedMultiplier: 0.15
     },
+
     {
       id: "Background 3",
       spriteSheet: document.getElementById("snailbait_background_3"),
@@ -49,6 +53,7 @@ class GameData {
       layerDepth: 0.15,
       scrollSpeedMultiplier: 0.1
     },
+
     {
       id: "Background 4",
       spriteSheet: document.getElementById("snailbait_background_4"),
@@ -62,6 +67,7 @@ class GameData {
       layerDepth: 0.2,
       scrollSpeedMultiplier: 0.05
     },
+
     {
       id: "Background 5",
       spriteSheet: document.getElementById("snailbait_background_5"),
@@ -86,7 +92,7 @@ class GameData {
     scale: Vector2.One,
     origin: Vector2.Zero,
     actorType: ActorType.Platform,
-    collisionType: CollisionType.NotCollidable,
+    collisionType: CollisionType.Collidable,
     layerDepth: 0,
     explodeBoundingBoxInPixels: -6,
 
@@ -234,6 +240,144 @@ class GameData {
           new Rect(65, 540, 30, 30),
           new Rect(96, 540, 30, 30),
           new Rect(128, 540, 30, 30)
+        ]
+      }
+    }
+  };
+
+  static RUNNER_START_POSITION = new Vector2(80, 250);
+  static RUNNER_MOVE_KEYS = [Keys.A, Keys.D, Keys.Space];
+  static RUNNER_RUN_VELOCITY = 0.1;
+  static RUNNER_JUMP_VELOCITY = 0.6;
+
+  static RUNNER_ANIMATION_DATA = {
+
+    id: "Runner Animation Data",
+    spriteSheet: document.getElementById("snailbait_sprite_sheet"),
+
+    // Animations
+    takes: {
+
+      // Animation 1
+      "Idle": {
+
+        frameRatePerSec: 2,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 0,
+
+        // Notice that I chose the largest of all the widths taken from the frames
+        // array below
+        boundingBoxDimensions: new Vector2(49, 54),
+
+        frames: [
+
+          // This list of rects just represent the positions
+          // and dimension of each individual animation frame
+          // on the sprite sheet
+          new Rect(96, 385, 46, 54),    // Animation frame 2
+        ]
+      },
+
+      // Animation 2
+      "Run Left": {
+
+        frameRatePerSec: 12,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 8,
+
+        // Notice that I chose the largest of all the widths taken from the frames
+        // array below
+        boundingBoxDimensions: new Vector2(49, 54),
+
+        frames: [
+          new Rect(0, 305, 47, 54),     // Animation frame 1
+          new Rect(55, 305, 44, 54),    // Animation frame 2
+          new Rect(107, 305, 39, 54),   // Animation frame 3
+          new Rect(152, 305, 46, 54),   // Animation frame 4
+          new Rect(208, 305, 49, 54),   // Animation frame 5
+          new Rect(265, 305, 46, 54),   // Animation frame 6
+          new Rect(320, 305, 42, 54),   // Animation frame 7
+          new Rect(380, 305, 35, 54),   // Animation frame 8
+          new Rect(425, 305, 35, 54)    // Animation frame 9
+        ]
+      },
+
+      // Animation 3
+      "Run Right": {
+
+        frameRatePerSec: 12,
+
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 8,
+
+        // Notice that I chose the largest of all the widths taken from the frames
+        // array below
+        boundingBoxDimensions: new Vector2(49, 54),
+
+        frames: [
+
+          // This list of rects just represent the positions
+          // and dimension of each individual animation frame
+          // on the sprite sheet
+
+          new Rect(414, 385, 47, 54),   // Animation frame 1
+          new Rect(362, 385, 44, 54),   // Animation frame 2
+          new Rect(314, 385, 39, 54),   // Animation frame 3
+          new Rect(265, 385, 46, 54),   // Animation frame 4
+          new Rect(205, 385, 49, 54),   // Animation frame 5
+          new Rect(150, 385, 46, 54),   // Animation frame 6
+          new Rect(96, 385, 46, 54),    // Animation frame 7
+          new Rect(45, 385, 35, 54),    // Animation frame 8
+          new Rect(0, 385, 35, 54)      // Animation frame 9
+        ]
+      },
+    }
+  };
+
+  static ENEMY_ANIMATION_DATA = {
+
+    id: "Enemy Animation Data",
+    spriteSheet: document.getElementById("snailbait_sprite_sheet"),
+    
+    // Animations
+    takes: {
+
+      // Animation 1
+      "Wasp Fly": {
+
+        frameRatePerSec: 10,
+        
+        // -1 = Loop forever
+        //  0 = Run once (no loop)
+        //  N = Loop N times
+        maxLoopCount: -1,
+
+        startFrameIndex: 0,
+        endFrameIndex: 2,
+
+        boundingBoxDimensions: new Vector2(35, 50),
+
+        frames: [
+          new Rect(20, 234, 35, 50),
+          new Rect(90, 234, 35, 50),
+          new Rect(160, 234, 35, 50)
         ]
       }
     }
