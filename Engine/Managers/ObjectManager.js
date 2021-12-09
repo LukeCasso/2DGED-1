@@ -86,6 +86,34 @@ class ObjectManager {
 
                 this.remove(notification.notificationArguments[0]);
                 break;
+
+            case NotificationAction.RemoveFirst:
+
+                this.removeFirst(notification.notificationArguments[0]);
+                break;
+
+            case NotificationAction.RemoveFirstBy:
+
+                this.removeFirstBy(
+                    notification.notificationArguments[0],
+                    notification.notificationArguments[1]
+                );
+
+                break;
+
+            case NotificationAction.RemoveAllBy:
+
+                this.removeAllBy(
+                    notification.notificationArguments[0],
+                    notification.notificationArguments[1]
+                );
+
+                break;
+
+            case NotificationAction.RemoveAllByType:
+
+                this.removeAllByType(notification.notificationArguments[0]);
+                break;
         }
     }
 
@@ -100,6 +128,11 @@ class ObjectManager {
         }
     }
 
+    /**
+     * Adds a sprite to the sprites array.
+     * 
+     * @param {Sprite} sprite 
+     */
     add(sprite) {
 
         // Do we have a row for this ActorType?
@@ -115,6 +148,7 @@ class ObjectManager {
 
     /**
      * Removes a sprite from the sprites array.
+     * 
      * @param {Sprite} sprite
      * @returns {Boolean} True if removed, otherwise false
      */
@@ -156,26 +190,129 @@ class ObjectManager {
         }
     }
 
-    find(predicate) {
-        // TO DO...
+    find(actorType, predicate) {
+
+        // Get the index of the sprite in the sprites array
+        const index = this.sprites[actorType].findIndex(predicate);
+
+        // If an index has been found
+        if (index != -1) {
+
+            // Return the sprite at the index
+            return this.sprites[actorType][index];
+        }
+
+        // Otherwise, return -1
+        // This value (-1) inidicates that no sprite was found
+        return -1;
     }
 
-    removeFirstBy(predicate) {
-        // TO DO...
+    findIndex(actorType, predicate) {
+
+        if (this.sprites[actorType]) {
+
+            return this.sprites[actorType].findIndex(predicate);
+        }
+
+        return -1;
     }
 
-    removeAllBy(predicate) {
-        // TO DO...
+    findIndices(actorType, predicate) {
+
+        if (this.sprites[actorType]) {
+
+            let index = 0;
+            let foundIndices = [];
+
+            for (let i = 0; i < this.sprites[actorType].length; i++) {
+
+                if (predicate(this.sprites[actorType][i])) {
+
+                    foundIndices[index] = i;
+                    index++;
+                }
+            }
+
+            return (foundIndices.length != 0) ? foundIndices : null;
+        }
+
+        return null;
+    }
+
+    removeFirst(sprite) {
+
+        if (this.sprites[sprite.actorType]) {
+
+            let index = this.sprites[sprite.actorType].indexOf(sprite);
+
+            if (index != -1) {
+
+                this.sprites[sprite.actorType].splice(index, 1);
+            }
+        }
+    }
+
+    removeFirstBy(actorType, predicate) {
+
+        if (this.sprites[actorType]) {
+
+            this.sprites[actorType].splice(this.findIndex(actorType, predicate), 1);
+        }
+    }
+
+    removeAllBy(actorType, predicate) {
+
+        const indices = this.findIndices(actorType, predicate);
+
+        for (let i = indices.length - 1; i >= 0; i--) {
+
+            this.sprites[actorType].splice(this.sprites[actorType][i], 1);
+        }
+    }
+
+    removeAllByType(actorType) {
+
+        if (this.sprites[actorType]) {
+
+            this.sprites[actorType].splice(0, this.sprites[actorType].length);
+        }
+    }
+
+    get(actorType) {
+
+        if (this.sprites[actorType]) {
+
+            return this.sprites[actorType];
+        }
     }
 
     sort(actorType, compareFunction) {
+
         if (this.sprites[actorType]) {
+
             this.sprites[actorType].sort(compareFunction);
         }
     }
 
     clear() {
-        // TO DO...
+
+        // why not just set length = 0 or sprites = []?
+        // See https://www.tutorialspoint.com/in-javascript-how-to-empty-an-array
+
+        // Loop through each of the sub-arrays in the parent 
+        // sprites array
+        for (let i = 0; i < this.sprites.length; i++) {
+
+            // If we have a valid sub-array at this index
+            if (this.sprites[i] != undefined) {
+
+                // Remove all of the elements in the sub-array
+                this.sprites[i].splice(0, this.sprites[i].length);
+            }
+        }
+
+        // Remove each empty sub-array from the parent array
+        this.sprites.splice(0, this.sprites.length);
     }
 
     update(gameTime) {
@@ -207,11 +344,14 @@ class ObjectManager {
                 // Loop through each Sprite of ActorType
                 for (let sprite of this.sprites[key]) {
 
-                    // If the sprite is a background sprite OR if it is inside the view of the
-                    // camera, then draw it
+                    // If the sprite is a background sprite OR if it is a HUD sprite OR if it is
+                    // inside the view of the camera, then draw it
                     if (
                         sprite.actorType == ActorType.Background ||
-                        sprite.transform.boundingBox.intersects(this.cameraManager.activeCamera.transform.boundingBox)
+                        sprite.actorType == ActorType.HUD ||
+                        sprite.transform.boundingBox.intersects(
+                            this.cameraManager.activeCamera.transform.boundingBox
+                        )
                     ) {
                         sprite.draw(gameTime, this.cameraManager.activeCamera);
                     }
