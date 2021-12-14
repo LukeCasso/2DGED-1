@@ -93,6 +93,10 @@ class MyUIManager extends UIManager {
 
                         console.log("You clicked the pause button!");
                     }
+
+                    if (hudSprite.id === "Exit Button") {
+                        
+                    }
                 }
             }
         }

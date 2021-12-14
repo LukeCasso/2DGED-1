@@ -58,6 +58,11 @@ body {
     background-color: black;
 }
 
+#control_menu {
+    background-color: pink;
+    color: goldenrod;
+}
+
 #main_canvas {
     left: 0;
     top: 0;

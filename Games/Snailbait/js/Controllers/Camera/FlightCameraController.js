@@ -12,8 +12,10 @@ class FlightCameraController {
         moveKeys, 
         moveSpeed, 
         rotateSpeedInRadians, 
-        scaleSpeed
+        scaleSpeed,
+        playerSprite
     ) {
+        this.playerSprite = playerSprite;
         this.keyboardManager = keyboardManager;
         this.moveKeys = moveKeys;
         this.moveSpeed = moveSpeed;

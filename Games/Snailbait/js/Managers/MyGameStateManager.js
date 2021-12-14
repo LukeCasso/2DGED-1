@@ -39,7 +39,6 @@ class MyGameStateManager extends GameStateManager {
         this.registerForNotifications();
     }
 
-    // Handle all GameState type events - see PlayerBehavior::HandleEnemyCollision()
     registerForNotifications() {
         this.notificationCenter.register(
             NotificationType.GameState, 

@@ -492,8 +492,8 @@ function initializePlayer() {
     // Set characteristics of the body attached to the moveable sprite
     // Play around with these values and see what happens.
     sprite.body.maximumSpeed = 6;
-    sprite.body.friction = FrictionType.Normal;
-    sprite.body.gravity = GravityType.Normal;
+    sprite.body.friction = FrictionType.Low;
+    sprite.body.gravity = GravityType.Weak;
 
     // How could you change these values in-game?
     // You have two options - you could access them via a controller which is attached
@@ -504,6 +504,7 @@ function initializePlayer() {
 
     sprite.attachController(
         new PlayerMoveController(
+            notificationCenter,
             keyboardManager,
             objectManager,
             GameData.RUNNER_MOVE_KEYS,

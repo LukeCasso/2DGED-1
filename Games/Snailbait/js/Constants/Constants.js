@@ -4,7 +4,7 @@ class GameData {
     new AudioCue("background", AudioType.Background, 1, 1, 0, true),
     new AudioCue("jump", AudioType.Move, 1, 1, 0, false),
     new AudioCue("boing", AudioType.All, 1, 1, 0, false),
-    new AudioCue("game_over", AudioType.WinLose, 1, 1, 0, false)
+    new AudioCue("game_over", AudioType.WinLose, 1, 1, 0, false),
   ];
 
   static BACKGROUND_DIMENSIONS = new Vector2(384, 216);

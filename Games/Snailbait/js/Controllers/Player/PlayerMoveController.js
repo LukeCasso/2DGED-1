@@ -8,12 +8,14 @@
 class PlayerMoveController {
 
     constructor(
+        notificationCenter,
         keyboardManager,
         objectManager,
         moveKeys,
         runVelocity,
         jumpVelocity
     ) {
+        this.notificationCenter = notificationCenter;
         this.keyboardManager = keyboardManager;
         this.objectManager = objectManager;
 
@@ -24,10 +26,23 @@ class PlayerMoveController {
 
     update(gameTime, parent) {
 
+        this.applyForces(gameTime, parent);
         this.handleInput(gameTime, parent);
-        this.applyForces(parent);
         this.checkCollisions(parent);
         this.applyInput(parent);
+    }
+
+    applyForces(gameTime, parent) {
+
+        // Apply basic physic forces to the
+        // player sprite
+
+        parent.body.applyGravity(gameTime);
+
+        if (parent.body.onGround) {
+            
+            parent.body.applyFriction(gameTime);
+        }
     }
 
     handleInput(gameTime, parent) {
@@ -59,6 +74,7 @@ class PlayerMoveController {
         }
     }
 
+    // UPDATE JUMP 
     handleJump(gameTime, parent) {
 
         // If the player is already jumping, or if the player is
@@ -74,7 +90,7 @@ class PlayerMoveController {
 
             // Apply velocity to begin moving the player up
             // This gives the effect of jumping 
-            parent.body.velocityY = -this.jumpVelocity * gameTime.elapsedTimeInMs;
+            parent.body.setVelocityY(-this.jumpVelocity * gameTime.elapsedTimeInMs);
 
             // Create a jump sound notification
             notificationCenter.notify(
@@ -85,15 +101,6 @@ class PlayerMoveController {
                 )
             );
         }
-    }
-
-    applyForces(parent) {
-
-        // Apply basic physic forces to the
-        // player sprite
-
-        parent.body.applyGravity();
-        parent.body.applyFriction();
     }
 
     checkCollisions(parent) {
@@ -148,29 +155,29 @@ class PlayerMoveController {
                 collisionLocationType === CollisionLocationType.Left ||
                 collisionLocationType === CollisionLocationType.Right
             ) {
-
                 // Reduce their horizontal velocity to 0, to stop them
                 // from moving
-                parent.body.velocityX = 0;
+                parent.body.setVelocityX(0);
             }
 
             // If the player has landed on a platform
-            else if (collisionLocationType === CollisionLocationType.Bottom) {
+            if (collisionLocationType === CollisionLocationType.Bottom) {
 
                 // Update variables to represent their new state
                 parent.body.onGround = true;
                 parent.body.jumping = false;
 
+                parent.body.setVelocityY(0);
             }
 
             // If the player has collided with a platform that is above
             // them
-            else if (collisionLocationType === CollisionLocationType.Top) {
+            if (collisionLocationType === CollisionLocationType.Top) {
 
                 // Update their velocity to move them downwards.
                 // This will create a bounce effect, where it will look 
                 // like the player is bouncing off the platform above
-                parent.body.velocityY = 1;
+                parent.body.setVelocityY(this.jumpVelocity);
             }
         }
     }
@@ -215,13 +222,29 @@ class PlayerMoveController {
                 //     )
                 // );
 
+                notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sound,
+                        NotificationAction.Play,
+                        ["jump"]
+                    )
+                );
+
+                notificationCenter.notify(
+                    new Notification(
+                        NotificationType.Sound,
+                        NotificationAction.Play,
+                        ["jump"]
+                    )
+                );
+
                 // Uncomment this code to see how we could remove the first platform that has an
                 // x position > 400
                 // notificationCenter.notify(
                 //     new Notification(
                 //         NotificationType.Sprite,
                 //         NotificationAction.RemoveFirstBy,
-                //         [ActorType.Platform, pickup => pickup.transform.translation.x > 400]
+                //         [ActorType.Platform, platform => platform.transform.translation.x > 400]
                 //     )
                 // );
             }
@@ -261,7 +284,7 @@ class PlayerMoveController {
                 //     new Notification(
                 //         NotificationType.Sound,
                 //         NotificationAction.Play,
-                //         ["background"]
+                //         ["game_over"]
                 //     )
                 // );
 
@@ -286,25 +309,18 @@ class PlayerMoveController {
 
     applyInput(parent) {
 
-        // If the player is on the ground
-        if (parent.body.onGround) {
-
-            // Then remove any y velocity
-            parent.body.velocityY = 0;
-        }
-
         // If the x velocity value is very small
         if (Math.abs(parent.body.velocityX) <= Body.MIN_SPEED) {
 
             // Then set the velocity to zero
-            parent.body.velocityX = 0;
+            parent.body.setVelocityX(0);
         }
 
         // If the y velocity value is very small
         if (Math.abs(parent.body.velocityY) <= Body.MIN_SPEED) {
 
             // Then set the velocity to zero
-            parent.body.velocityY = 0;
+            parent.body.setVelocityY(0);
         }
 
         // It is important that we 'Zero' velocity valuees which are

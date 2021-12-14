@@ -8,6 +8,8 @@ class MyMenuManager extends MenuManager {
         this.keyboardManager = keyboardManager;
 
         this.initialize();
+
+        // Register this object for notifications
         this.registerForNotifications();
     }
 
@@ -81,6 +83,14 @@ class MyMenuManager extends MenuManager {
         $('#exit_menu').hide();
         $('#exit_menu').addClass('hidden');
 
+        // Hide the control menu
+        $('#control_menu').hide();
+        $('#control_menu').addClass('hidden');
+
+        // Hide the YOUR_MENU menu
+        // $('#YOUR_MENU_ID').hide();
+        // $('#YOUR_MENU_ID').addClass('hidden');
+
         // If the play button is clicked
         $('.play').click(function () {
 
@@ -100,10 +110,12 @@ class MyMenuManager extends MenuManager {
         // If the audio button is clicked
         // Or more specifically - if an element which has
         // the audio class is clicked
-        $('.audio').click(function () {
+        $('#audio_button').click(function () {
 
             // Do something...
 
+            console.log("You clicked the audio button!");
+            
             // Hint: Send a notification to toggle the audio on/off
         });
 
@@ -113,6 +125,14 @@ class MyMenuManager extends MenuManager {
             // Show exit menu
             $('#exit_menu').show();
             $('#exit_menu').removeClass('hidden');
+        });
+
+        // If the control button is clicked
+        $('.control').click(function () {
+
+            // Show control menu
+            $('#control_menu').show();
+            $('#control_menu').removeClass('hidden');
         });
     }
 
