@@ -31,6 +31,7 @@ class MyGameStateManager extends GameStateManager {
         super(id);
 
         this.notificationCenter = notificationCenter;
+
         this.playerHealth = initialPlayerHealth;
         this.playerAmmo = initialPlayerAmmo;
 

@@ -19,7 +19,7 @@ let menuManager;
 let uiManager;
 
 // Set to false to hide bounding boxes
-const debugMode = true;
+const debugMode = false;
 
 function start() {
 
@@ -109,7 +109,13 @@ function draw(gameTime) {
 }
 
 function clearCanvas() {
-    context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    context.save();
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    context.restore();
+
+    // context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 }
 
 /** GAME SPECIFIC CODE BELOW - CHANGE AS NECESSARY */

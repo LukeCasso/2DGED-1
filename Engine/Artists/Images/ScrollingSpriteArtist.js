@@ -75,8 +75,6 @@ class ScrollingSpriteArtist extends Artist {
      * @param {Sprite} parent
      * @memberof ScrollingSpriteArtist
      */
-
-    count = 0;
     updateHorizontalScrolling(parent, activeCamera) {
 
         let rightScrollPositionX = parent.transform.translation.x
@@ -95,28 +93,7 @@ class ScrollingSpriteArtist extends Artist {
             parent.transform.translation.x -= parent.transform.dimensions.x;
         }
 
-        // if (
-        //     activeCamera.transform.translation.x >=
-        //     (parent.transform.translation.x + parent.translation.x * parent.scrollSpeedMultiplier) + scrollPositionX
-        // ) {
-
-        //     parent.transform.translation.x += parent.transform.dimensions.x;
-
-        //     // console.log(parent.transform.translation.x);
-        //     console.log(scrollPositionX);
-        //     // console.log(activeCamera.transform.translation.x);
-
-        //     // console.log(scrollPositionX - parent.transform.translation.x);
-        //     console.log("-------------------------");
-        // }
-
-        // if (
-        //     activeCamera.transform.translation.x <=
-        //     (parent.transform.translation.x * parent.scrollSpeedMultiplier) - scrollPositionX
-        // ) {
-
-        //     parent.transform.translation.x -= parent.transform.dimensions.x;
-        // }
+        // This code is a WIP - if you find a better solution (that actually works!), please let me know
     }
 
     /**
